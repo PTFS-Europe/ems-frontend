@@ -1,0 +1,26 @@
+.sideDrawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    max-width: 70%;
+    height: 100%;
+    z-index: 200;
+    box-sizing: border-box;
+    transition: transform 0.3s ease-out;
+    background: #fff;
+}
+
+@media (min-width: 768px) {
+    .sideDrawerContainer {
+        display: none;
+    }
+}
+
+.open {
+    transform: translateX(0);
+}
+
+.close {
+    transform: translateX(-100%);
+}

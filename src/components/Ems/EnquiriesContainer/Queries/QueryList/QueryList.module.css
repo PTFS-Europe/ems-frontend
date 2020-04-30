@@ -1,0 +1,19 @@
+.queryListContainer {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+ol.queryList {
+    margin: 0;
+    padding: 0;
+}
+
+.noQueries{
+    padding-top: 20px;
+    font-size: 20px;
+    align-self: center;
+    color: #cccccc;
+}
