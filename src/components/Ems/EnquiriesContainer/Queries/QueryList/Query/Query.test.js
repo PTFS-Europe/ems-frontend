@@ -13,6 +13,12 @@ const query = {
     updated_at: '2020-04-30 10:08:58.348203+01'
 };
 
+jest.mock('@fortawesome/react-fontawesome', () => ({
+    FontAwesomeIcon: (props) => {
+        return <i className="fa" />;
+    }
+}));
+
 beforeEach(() => {
     q = render(<Query query={query} />);
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import UserIcon from '../../../../../UI/UserIcon/UserIcon';
 
@@ -22,7 +23,9 @@ function Query({ query }) {
                 <div role="complementary" className={styles.timestamp}>
                     {moment(query.updated_at).fromNow()}
                 </div>
-                <button className={styles.queryActions}></button>
+                <button className={styles.queryActions}>
+                    <FontAwesomeIcon icon="ellipsis-h" />
+                </button>
             </div>
         </li>
     );

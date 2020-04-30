@@ -45,6 +45,12 @@ const mockStateEmpty = {
     }
 };
 
+jest.mock('@fortawesome/react-fontawesome', () => ({
+    FontAwesomeIcon: (props) => {
+        return <i className="fa" />;
+    }
+}));
+
 jest.mock('react-i18next', () => ({
     useTranslation: () => ({ t: (key) => key })
 }));
