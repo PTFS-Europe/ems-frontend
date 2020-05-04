@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './Message.module.css';
 
 const Message = ({ message }) => {
-    return <div className={styles.message}>{JSON.stringify(message)}</div>;
+    return <li className={styles.message}>{message.content}</li>;
 };
 
 export default Message;
