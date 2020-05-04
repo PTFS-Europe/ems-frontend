@@ -7,7 +7,9 @@ const resources = {
     en: {
         translation: {
             Loading: 'Loading',
-            'No queries found': 'No queries found'
+            'No queries found': 'No queries found',
+            'Search or start new query': 'Search or start new query',
+            'Search icon': 'Search icon'
         }
     }
 };

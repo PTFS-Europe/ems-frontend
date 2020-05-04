@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisH, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import Ems from './Ems/Ems';
 
-library.add(faEllipsisH);
+library.add(faEllipsisH, faSearch);
 
 function App() {
     return <Ems></Ems>;
