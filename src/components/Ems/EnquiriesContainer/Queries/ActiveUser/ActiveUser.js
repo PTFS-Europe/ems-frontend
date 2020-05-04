@@ -1,9 +1,16 @@
 import React from 'react';
 
+import UserIcon from '../../../../UI/UserIcon/UserIcon';
+
 import styles from './ActiveUser.module.css';
 
 const ActiveUser = () => {
-    return <div className={styles.activeUser}>Active user</div>;
+    return (
+        <aside className={styles.activeUser}>
+            <UserIcon />
+            <h1 className={styles.userName}>Andrew Isherwood</h1>
+        </aside>
+    );
 };
 
 export default ActiveUser;

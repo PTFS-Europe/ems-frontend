@@ -1,2 +1,12 @@
 .activeUser {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    background: #e8e8e8;
+}
+
+h1.userName {
+    font-size: 25px;
+    color: #aaa;
+    font-weight: normal;
 }
