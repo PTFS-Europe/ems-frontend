@@ -10,7 +10,8 @@ const resources = {
             'No queries found': 'No queries found',
             'Search or start new query': 'Search or start new query',
             'Search icon': 'Search icon',
-            'No messages found': 'No messages found'
+            'No messages found': 'No messages found',
+            You: 'You'
         }
     }
 };

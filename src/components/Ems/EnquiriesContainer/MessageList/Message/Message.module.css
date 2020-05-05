@@ -1,0 +1,19 @@
+.message {
+    margin: 20px 0;
+    display: flex;
+}
+
+.message:first-child,
+.message:last-child {
+    margin: 0;
+}
+
+.creator {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.timestamp {
+    margin-top: 10px;
+    color: #aaa;
+}

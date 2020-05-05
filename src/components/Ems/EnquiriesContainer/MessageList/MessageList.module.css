@@ -4,11 +4,13 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    padding: 20px;
 }
 
 .messagesList {
     margin: 0;
     padding: 0;
+    list-style: none;
 }
 
 .noMessages {
