@@ -18,9 +18,14 @@ const Message = ({ message, user = {}, activeUser = {} }) => {
                 <UserIcon />
             </div>
             <div className={styles.content}>
-                <div className={styles.creator}>{getSenderText()}</div>
-                <div className={styles.body}>{message.content}</div>
-                <div className={styles.timestamp}>
+                <h1 className={styles.creator}>{getSenderText()}</h1>
+                <div data-testid="message-content" className={styles.body}>
+                    {message.content}
+                </div>
+                <div
+                    data-testid="message-timestamp"
+                    className={styles.timestamp}
+                >
                     {moment(message.updated_at).fromNow()}
                 </div>
             </div>

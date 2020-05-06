@@ -6,8 +6,27 @@ import MessageList from './MessageList';
 
 let ml;
 
+const mockStateBase = {
+    activeUser: {
+        userDetails: {
+            id: 1,
+            name: 'Joe Bloggs'
+        }
+    },
+    users: {
+        usersList: [
+            {
+                name: 'Joe Bloggs'
+            }
+        ],
+        loading: false,
+        error: ''
+    }
+};
+
 const mockStateLoading = {
-    queries: {
+    ...mockStateBase,
+    messages: {
         messageList: [],
         loading: true,
         error: ''
@@ -15,6 +34,7 @@ const mockStateLoading = {
 };
 
 const mockState = {
+    ...mockStateBase,
     messages: {
         messageList: [
             {
@@ -44,6 +64,7 @@ const mockState = {
 };
 
 const mockStateEmpty = {
+    ...mockStateBase,
     messages: {
         messageList: [],
         loading: false,
@@ -92,7 +113,7 @@ describe('MessageList: populated', () => {
         const querylist = ml.getByRole('list');
         expect(querylist).toBeTruthy();
     });
-    test('displays our two queries', () => {
+    test('displays our two messages', () => {
         const queries = ml.getAllByRole('listitem');
         expect(queries).toHaveLength(2);
     });

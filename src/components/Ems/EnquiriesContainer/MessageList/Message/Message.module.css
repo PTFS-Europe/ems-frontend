@@ -8,8 +8,9 @@
     margin: 0;
 }
 
-.creator {
-    margin-bottom: 10px;
+h1.creator {
+    font-size: 15px;
+    margin: 0 0 10px 0;
     font-weight: bold;
 }
 
