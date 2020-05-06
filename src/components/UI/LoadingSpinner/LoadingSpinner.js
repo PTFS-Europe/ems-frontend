@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './LoadingSpinner.module.css';
 
-function LoadingSpinner() {
+const LoadingSpinner = () => {
     const { t } = useTranslation();
     return (
         <div
@@ -19,6 +19,6 @@ function LoadingSpinner() {
             <div></div>
         </div>
     );
-}
+};
 
 export default LoadingSpinner;

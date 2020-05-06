@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Backdrop from '../Backdrop/Backdrop';
 
@@ -10,5 +11,9 @@ const SideDrawer = ({ children }) => (
         <Backdrop></Backdrop>
     </div>
 );
+
+SideDrawer.propTypes = {
+    children: PropTypes.object.isRequired
+};
 
 export default SideDrawer;

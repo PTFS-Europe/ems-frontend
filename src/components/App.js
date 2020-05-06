@@ -7,8 +7,8 @@ import Ems from './Ems/Ems';
 
 library.add(faEllipsisH, faSearch);
 
-function App() {
+const App = () => {
     return <Ems></Ems>;
-}
+};
 
 export default App;

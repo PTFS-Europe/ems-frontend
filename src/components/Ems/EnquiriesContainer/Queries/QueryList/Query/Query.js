@@ -7,7 +7,7 @@ import UserIcon from '../../../../../UI/UserIcon/UserIcon';
 
 import styles from './Query.module.css';
 
-function Query({ query }) {
+const Query = ({ query }) => {
     return (
         <li className={styles.query}>
             <div className={styles.user}>
@@ -29,7 +29,7 @@ function Query({ query }) {
             </div>
         </li>
     );
-}
+};
 
 Query.propTypes = {
     query: PropTypes.object.isRequired
