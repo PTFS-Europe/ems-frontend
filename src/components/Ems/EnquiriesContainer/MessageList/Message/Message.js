@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import UserIcon from '../../../../UI/UserIcon/UserIcon';
 
-import styles from './Message.module.css';
+import styles from './Message.module.scss';
 
 const Message = ({ message, user = {}, activeUser = {} }) => {
     const { t } = useTranslation();

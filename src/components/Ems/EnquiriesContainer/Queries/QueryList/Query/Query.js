@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import UserIcon from '../../../../../UI/UserIcon/UserIcon';
 
-import styles from './Query.module.css';
+import styles from './Query.module.scss';
 
 const Query = ({ query }) => {
     return (

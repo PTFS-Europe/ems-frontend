@@ -2,7 +2,7 @@ import React from 'react';
 
 import UserIcon from '../../../../UI/UserIcon/UserIcon';
 
-import styles from './QueryHeader.module.css';
+import styles from './QueryHeader.module.scss';
 
 const QueryHeader = () => {
     return (

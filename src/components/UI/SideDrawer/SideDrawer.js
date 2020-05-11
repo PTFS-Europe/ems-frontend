@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Backdrop from '../Backdrop/Backdrop';
 
-import styles from './SideDrawer.module.css';
+import styles from './SideDrawer.module.scss';
 
 const SideDrawer = ({ children }) => (
     <div className={styles.sideDrawerContainer}>

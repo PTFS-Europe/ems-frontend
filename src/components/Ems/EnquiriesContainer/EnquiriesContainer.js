@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './EnquiriesContainer.module.css';
+import styles from './EnquiriesContainer.module.scss';
 
 import Queries from './Queries/Queries';
 import ActiveQuery from './Queries/ActiveQuery/ActiveQuery';

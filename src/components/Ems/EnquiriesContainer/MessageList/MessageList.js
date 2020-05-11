@@ -7,7 +7,7 @@ import { fetchUsers } from '../../../../store/users/usersActions';
 import Message from './Message/Message';
 import LoadingSpinner from '../../../UI/LoadingSpinner/LoadingSpinner';
 
-import styles from './MessageList.module.css';
+import styles from './MessageList.module.scss';
 
 const MessageList = () => {
     const { t } = useTranslation();

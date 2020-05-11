@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import styles from './LoadingSpinner.module.css';
+import styles from './LoadingSpinner.module.scss';
 
 const LoadingSpinner = () => {
     const { t } = useTranslation();

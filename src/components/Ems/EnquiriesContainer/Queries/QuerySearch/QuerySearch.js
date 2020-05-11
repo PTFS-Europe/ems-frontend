@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import styles from './QuerySearch.module.css';
+import styles from './QuerySearch.module.scss';
 
 const QuerySearch = () => {
     const { t } = useTranslation();

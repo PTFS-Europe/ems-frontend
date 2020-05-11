@@ -2,7 +2,7 @@ import React from 'react';
 
 import UserIcon from '../../../../UI/UserIcon/UserIcon';
 
-import styles from './ActiveUser.module.css';
+import styles from './ActiveUser.module.scss';
 
 const ActiveUser = () => {
     return (

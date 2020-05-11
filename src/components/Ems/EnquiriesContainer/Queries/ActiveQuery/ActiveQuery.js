@@ -4,7 +4,7 @@ import QueryHeader from '../QueryHeader/QueryHeader';
 import MessageList from '../../MessageList/MessageList';
 import QueryEntry from '../QueryEntry/QueryEntry';
 
-import styles from './ActiveQuery.module.css';
+import styles from './ActiveQuery.module.scss';
 
 const ActiveQuery = () => {
     return (

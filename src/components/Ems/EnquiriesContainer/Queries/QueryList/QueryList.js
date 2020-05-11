@@ -6,7 +6,7 @@ import { fetchQueries } from '../../../../../store/queries/queriesActions';
 import Query from './Query/Query';
 import LoadingSpinner from '../../../../UI/LoadingSpinner/LoadingSpinner';
 
-import styles from './QueryList.module.css';
+import styles from './QueryList.module.scss';
 
 const QueryList = () => {
     const { t } = useTranslation();

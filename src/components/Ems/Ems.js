@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import EnquiriesContainer from './EnquiriesContainer/EnquiriesContainer';
 
-import styles from './Ems.module.css';
+import styles from './Ems.module.scss';
 
 const Ems = (props) => {
     return (
