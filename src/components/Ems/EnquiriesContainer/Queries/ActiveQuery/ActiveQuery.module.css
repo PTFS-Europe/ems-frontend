@@ -3,3 +3,8 @@
     flex-direction: column;
     flex: 1;
 }
+
+.queryEntry {
+    position: absolute;
+    bottom: 20px;
+}

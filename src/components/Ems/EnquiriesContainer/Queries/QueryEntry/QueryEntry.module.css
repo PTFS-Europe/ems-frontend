@@ -1,0 +1,48 @@
+.entryContainer {
+    display: flex;
+    align-items: stretch;
+    background: #e8e8e8;
+    padding: 30px;
+}
+
+textarea.entryBox {
+    flex: 1;
+    font-size: 20px;
+    font-weight: 700;
+    color: #aaa;
+    background: #fff;
+    resize: none;
+    border: 0;
+    border-radius: 30px 0 0 30px;
+    padding: 20px 30px;
+}
+
+textarea.entryBox::placeholder {
+    font-weight: 700;
+}
+
+.entryIconsContainer {
+    background: #fff;
+    border-radius: 0 30px 30px 0;
+    min-width: 150px;
+    color: #aaa;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 10px;
+}
+
+.entryIcons {
+    display: flex;
+}
+
+.entryButton {
+    color: #aaa;
+    font-size: 30px;
+    border: 0;
+    background: #fff;
+}
+
+.entryButton:first-child {
+    margin-right: 15px;
+}

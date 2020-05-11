@@ -11,7 +11,10 @@ const resources = {
             'Search or start new query': 'Search or start new query',
             'Search icon': 'Search icon',
             'No messages found': 'No messages found',
-            You: 'You'
+            You: 'You',
+            'Create an attachment': 'Create an attachment',
+            'Send message': 'Send message',
+            'Type your message': 'Type your message'
         }
     }
 };

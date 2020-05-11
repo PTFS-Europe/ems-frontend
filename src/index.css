@@ -10,3 +10,5 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+textarea, input, button, select { font-family: inherit; font-size: inherit; }
