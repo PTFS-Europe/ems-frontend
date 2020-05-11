@@ -1,7 +1,9 @@
+@import '../../../../../variables.scss';
+
 .queryHeader {
     height: 66px;
-    background: #1e2c3c;
-    color: #fff;
+    background: $query-header-background;
+    color: $query-header-text;
     padding: 15px;
     display: flex;
     align-items: center;

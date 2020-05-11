@@ -1,5 +1,7 @@
+@import '../../../../variables.scss';
+
 .messages {
-    background: #e8e8e8;
+    background: $message-list-background;
     height: 100%;
     overflow-y: auto;
     display: flex;

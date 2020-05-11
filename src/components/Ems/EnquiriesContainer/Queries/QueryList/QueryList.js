@@ -23,6 +23,7 @@ const QueryList = () => {
 
     return (
         <nav className={styles.queryListContainer}>
+            <h1 className={styles.yourQueries}>Your queries</h1>
             {d.loading && <LoadingSpinner />}
             {!d.loading && d.queryList && d.queryList.length === 0 && (
                 <h1 className={styles.noQueries}>{t('No queries found')}</h1>

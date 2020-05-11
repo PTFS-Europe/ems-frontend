@@ -1,12 +1,14 @@
+@import '../../../../../variables.scss';
+
 .activeUser {
     display: flex;
     align-items: center;
     padding: 15px 20px;
-    background: #e8e8e8;
+    background: $active-user-background;
 }
 
 h1.userName {
     font-size: 25px;
-    color: #aaa;
-    font-weight: 700;
+    color: $active-user-text;
+    font-weight: 500;
 }

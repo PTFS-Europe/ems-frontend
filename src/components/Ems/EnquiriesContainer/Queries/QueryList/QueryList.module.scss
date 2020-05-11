@@ -1,9 +1,17 @@
+@import '../../../../../variables.scss';
+
 .queryListContainer {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
+}
+
+.yourQueries {
+    padding: 0 20px;
+    font-size: 20px;
+    color: $query-list-your-queries;
 }
 
 ol.queryList {

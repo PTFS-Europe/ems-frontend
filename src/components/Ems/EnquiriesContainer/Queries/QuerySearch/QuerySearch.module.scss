@@ -1,8 +1,10 @@
+@import '../../../../../variables.scss';
+
 .querySearch {
     display: flex;
     flex-direction: column;
     padding: 20px;
-    background: #e8e8e8;
+    background: $query-search-background;
 }
 
 .searchContainer {
@@ -16,7 +18,7 @@
     border-radius: 5px 0 0 5px;
     padding: 7px 10px;
     font-size: 20px;
-    color: #ccc;
+    color: $query-search-icon;
 }
 
 .querySearchInput {
@@ -29,5 +31,5 @@
     color: #aaa;
 }
 .querySearchInput::placeholder {
-    color: #ccc;
+    color: $query-search-placeholder;
 }

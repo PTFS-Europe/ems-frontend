@@ -1,3 +1,5 @@
+@import '../../../../../../variables.scss';
+
 .query {
     padding: 15px;
     display: flex;
@@ -10,10 +12,12 @@ h1.queryTitle {
     font-weight: 700;
     padding-bottom: 11px;
     margin: 0;
+    color: $query-title;
 }
 
 .headMessage {
     font-size: 12px;
+    color: $query-title;
 }
 
 .querySummary {
@@ -29,17 +33,18 @@ h1.queryTitle {
 }
 
 .timestamp {
+    color: $query-title;
     font-size: 12px;
 }
 
 .queryActions {
     margin-top: 8px;
     margin-right: 8px;
-    width: 33px;
-    height: 33px;
-    border: 4px solid #d6d6d6;
+    width: 36px;
+    height: 36px;
+    border: 4px solid $query-actions;
     border-radius: 50%;
-    color: #d6d6d6;
+    color: $query-actions;
     background: #fff;
     text-align: center;
 }
