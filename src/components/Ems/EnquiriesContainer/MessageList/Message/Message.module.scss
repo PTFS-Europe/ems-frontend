@@ -1,20 +1,21 @@
+@import '../../../../../variables.scss';
+
 .message {
-    margin: 20px 0;
-    display: flex;
+    margin: 2px 0;
+    background: $message-staff-background;
+    color: $message-staff-text;
+    border-radius: 4px 20px 20px 4px;
+    padding: 10px 15px;
 }
 
-.message:first-child,
+.message:first-child {
+    border-radius: 20px 20px 20px 4px;
+}
+
 .message:last-child {
-    margin: 0;
+    border-radius: 4px 20px 20px 20px;
 }
 
-h1.creator {
-    font-size: 15px;
-    margin: 0 0 10px 0;
-    font-weight: bold;
-}
-
-.timestamp {
-    margin-top: 10px;
-    color: #aaa;
+.message:only-child {
+    border-radius: 20px 20px 20px 20px;
 }

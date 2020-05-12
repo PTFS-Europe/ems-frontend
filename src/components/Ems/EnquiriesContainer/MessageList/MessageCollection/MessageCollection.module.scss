@@ -1,0 +1,27 @@
+.collection {
+    display: flex;
+    padding: 10px 0;
+}
+
+.collectionContent {
+    display: flex;
+    flex-direction: column;
+}
+
+h1.creator {
+    font-size: 15px;
+    margin: 0 0 10px 0;
+    font-weight: bold;
+}
+
+ul.messages {
+    display: flex;
+    padding: 0;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.timestamp {
+    margin-top: 10px;
+    color: #aaa;
+}

@@ -4,6 +4,15 @@ import { render } from '@testing-library/react';
 
 import MessageList from './MessageList';
 
+jest.mock('./MessageCollection/MessageCollection', () => {
+    return {
+        __esModule: true,
+        default: () => (
+            <div data-testid="mock-message-collection">Message collection</div>
+        )
+    };
+});
+
 let ml;
 
 const mockStateBase = {
@@ -109,12 +118,12 @@ describe('MessageList: populated', () => {
     afterEach(() => {
         useSelector.mockClear();
     });
-    test('displays message list', () => {
+    test('displays collection list', () => {
         const querylist = ml.getByRole('list');
         expect(querylist).toBeTruthy();
     });
-    test('displays our two messages', () => {
-        const queries = ml.getAllByRole('listitem');
+    test('displays our collections', () => {
+        const queries = ml.getAllByTestId('mock-message-collection');
         expect(queries).toHaveLength(2);
     });
 });

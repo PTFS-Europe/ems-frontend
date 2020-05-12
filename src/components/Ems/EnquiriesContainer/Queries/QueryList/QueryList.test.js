@@ -6,6 +6,13 @@ import QueryList from './QueryList';
 
 let ql;
 
+jest.mock('./Query/Query', () => {
+    return {
+        __esModule: true,
+        default: () => <div data-testid="query">Query</div>
+    };
+});
+
 const mockStateLoading = {
     queries: {
         queryList: [],
@@ -93,7 +100,7 @@ describe('QueryList: populated', () => {
         expect(querylist).toBeTruthy();
     });
     test('displays our two queries', () => {
-        const queries = ql.getAllByRole('listitem');
+        const queries = ql.getAllByTestId('query');
         expect(queries).toHaveLength(2);
     });
 });
@@ -109,7 +116,9 @@ describe('QueryList: empty', () => {
         useSelector.mockClear();
     });
     test('displays empty query list message', () => {
-        const heading = ql.getByRole('heading');
-        expect(heading).toBeTruthy();
+        // We should therefore have two headings
+        // The "Your queries" one and "No queries one"
+        const heading = ql.getAllByRole('heading');
+        expect(heading).toHaveLength(2);
     });
 });

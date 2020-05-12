@@ -17,7 +17,6 @@ const QuerySearch = () => {
                 </div>
                 <input
                     type="text"
-                    aria-placeholder={t('Search or start new query')}
                     className={styles.querySearchInput}
                     placeholder={t('Search or start new query')}
                 ></input>

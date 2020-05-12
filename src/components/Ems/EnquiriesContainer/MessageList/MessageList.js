@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchMessages } from '../../../../store/messages/messagesActions';
 import { fetchUsers } from '../../../../store/users/usersActions';
-import Message from './Message/Message';
+import MessageCollection from './MessageCollection/MessageCollection';
 import LoadingSpinner from '../../../UI/LoadingSpinner/LoadingSpinner';
+
+import messageCollections from '../../../../util/messages';
 
 import styles from './MessageList.module.scss';
 
@@ -18,6 +20,13 @@ const MessageList = () => {
 
     // Enable us to dispatch
     const dispatch = useDispatch();
+
+    // The messages we display are behind a memoized method that calculates
+    // their groupings, this should prevent uncessary recalculations
+    const memMessages = useMemo(
+        () => messageCollections(stateMessages.messageList),
+        [stateMessages.messageList]
+    );
 
     const getParticipants = (messages) => {
         const all = messages.map((message) => message.creator_id);
@@ -53,15 +62,15 @@ const MessageList = () => {
                 )}
             <ol className={styles.messagesList}>
                 {stateMessages.messageList &&
-                    stateMessages.messageList.map((message) => (
-                        <Message
-                            key={message.id}
-                            message={message}
-                            user={stateUsers.usersList.find(
-                                (user) => user.id === message.creator_id
-                            )}
+                    // We pass our collection-ified messages,
+                    // rather than the message list
+                    memMessages.map((collection) => (
+                        <MessageCollection
+                            key={collection.timestamp}
+                            collection={collection}
+                            userList={stateUsers.usersList}
                             activeUser={activeUser.userDetails}
-                        />
+                        ></MessageCollection>
                     ))}
             </ol>
         </section>
