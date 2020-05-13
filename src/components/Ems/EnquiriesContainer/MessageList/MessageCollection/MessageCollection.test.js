@@ -60,7 +60,8 @@ describe('MessageCollection display', () => {
         mc = render(
             <MessageCollection
                 collection={mockMessageCollection}
-                userList={mockUserList}
+                usersList={mockUserList}
+                initiator={1}
                 activeUser={mockActiveUserJoe}
             />
         );
@@ -88,7 +89,8 @@ describe('Name display', () => {
         const mOther = render(
             <MessageCollection
                 collection={mockMessageCollection}
-                userList={mockUserList}
+                usersList={mockUserList}
+                initiator={1}
                 activeUser={mockActiveUserJoe}
             />
         );
@@ -99,7 +101,8 @@ describe('Name display', () => {
         const mYou = render(
             <MessageCollection
                 collection={mockMessageCollection}
-                userList={mockUserList}
+                usersList={mockUserList}
+                initiator={1}
                 activeUser={mockActiveUserJane}
             />
         );
@@ -113,7 +116,8 @@ describe('Message display', () => {
         const m = render(
             <MessageCollection
                 collection={mockMessageCollection}
-                userList={mockUserList}
+                usersList={mockUserList}
+                initiator={1}
                 activeUser={mockActiveUserJoe}
             />
         );

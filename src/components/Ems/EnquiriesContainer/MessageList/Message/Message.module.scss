@@ -2,10 +2,18 @@
 
 .message {
     margin: 2px 0;
-    background: $message-staff-background;
-    color: $message-staff-text;
     border-radius: 4px 20px 20px 4px;
     padding: 10px 15px;
+}
+
+.messageStaff {
+    background: $message-staff-background;
+    color: $message-staff-text;
+}
+
+.messageCustomer {
+    background: $message-customer-background;
+    color: $message-customer-text;
 }
 
 .message:first-child {

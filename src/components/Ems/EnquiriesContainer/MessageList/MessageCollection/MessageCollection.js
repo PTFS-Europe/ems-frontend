@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
@@ -8,34 +8,54 @@ import UserIcon from '../../../../UI/UserIcon/UserIcon';
 
 import styles from './MessageCollection.module.scss';
 
-const MessageCollection = ({ collection, userList, activeUser }) => {
+const MessageCollection = ({
+    collection,
+    activeUser,
+    initiator,
+    usersList
+}) => {
+    const [display, setDisplay] = useState({});
     const { t } = useTranslation();
-    const getSenderText = () => {
-        const user = userList.find((u) => u.id === collection.sender);
-        if (!user) {
-            return null;
+
+    // Get the display properties for this collection, these are determined
+    // by the sender and whether or not that is the initiator of the
+    // query and if the collection sender is the current user
+    useEffect(() => {
+        if (usersList.length > 0 && activeUser) {
+            const cSender = collection.sender;
+            const senderObj = usersList.find((ul) => ul.id === cSender);
+            setDisplay({
+                displayName:
+                    cSender === activeUser.id ? t('You') : senderObj.name,
+                css:
+                    cSender === initiator
+                        ? 'collectionLeft'
+                        : 'collectionRight',
+                messageCss:
+                    cSender === initiator ? 'messageStaff' : 'messageCustomer'
+            });
         }
-        return user.id === activeUser.id ? t('You') : user.name;
-    };
+        // Disabling the linting here because it wants us to add
+        // t as a dependency, but doing so causes the tests for
+        // this component to go into an endless loop
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeUser, collection, initiator, usersList]);
+
+    // Return the align-items property for a given collection
     return (
-        <div role="group" className={styles.collection}>
-            <div className={styles.creatorAvatar}>
-                <UserIcon />
-            </div>
+        <div role="group" className={styles[display.css]}>
+            <UserIcon />
             <div className={styles.collectionContent}>
-                <h1 className={styles.creator}>{getSenderText()}</h1>
-                <ul className={styles.messages}>
+                <h1 className={styles.creator}>{display.displayName}</h1>
+                <ol className={styles.messages}>
                     {collection.messages.map((message) => (
                         <Message
+                            css={display.messageCss}
                             key={message.id}
                             message={message}
-                            user={userList.find(
-                                (user) => user.id === message.creator_id
-                            )}
-                            activeUser={activeUser.userDetails}
                         />
                     ))}
-                </ul>
+                </ol>
                 <div
                     data-testid="message-timestamp"
                     className={styles.timestamp}
@@ -48,9 +68,10 @@ const MessageCollection = ({ collection, userList, activeUser }) => {
 };
 
 MessageCollection.propTypes = {
+    activeUser: PropTypes.object.isRequired,
     collection: PropTypes.object.isRequired,
-    userList: PropTypes.array.isRequired,
-    activeUser: PropTypes.object.isRequired
+    usersList: PropTypes.array.isRequired,
+    initiator: PropTypes.number.isRequired
 };
 
 export default MessageCollection;

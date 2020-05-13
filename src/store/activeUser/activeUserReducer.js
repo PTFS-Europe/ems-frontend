@@ -1,7 +1,8 @@
 const initialState = {
     userDetails: {
         id: 1,
-        color: ''
+        color: '',
+        role_id: 14
     },
     loading: false,
     error: ''

@@ -33,9 +33,12 @@ describe('messagesActions', () => {
         expect(actions.fetchMessagesFailure({ my: 'error' })).toEqual(expected);
     });
     test('dispatches FETCH_MESSAGES_REQUEST & FETCH_MESSAGES_SUCCESS', () => {
-        fetchMock.getOnce(`${process.env.REACT_APP_API_URL}/messages`, {
-            body: { messages: ['something'] }
-        });
+        fetchMock.getOnce(
+            `${process.env.REACT_APP_API_URL}/messages?query_id=1`,
+            {
+                body: { messages: ['something'] }
+            }
+        );
         const expectedActions = [
             { type: messagesTypes.FETCH_MESSAGES_REQUEST },
             {
@@ -44,8 +47,10 @@ describe('messagesActions', () => {
             }
         ];
         const store = mockStore();
-        return store.dispatch(actions.fetchMessages()).then(() => {
-            expect(store.getActions()).toEqual(expectedActions);
-        });
+        return store
+            .dispatch(actions.fetchMessages({ queryId: 1 }))
+            .then(() => {
+                expect(store.getActions()).toEqual(expectedActions);
+            });
     });
 });

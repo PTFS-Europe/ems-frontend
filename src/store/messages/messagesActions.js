@@ -21,12 +21,13 @@ export const fetchMessagesFailure = (error) => {
 };
 
 // Our action creator for fetching messages
-export const fetchMessages = () => {
+export const fetchMessages = (args) => {
     return (dispatch) => {
         // Set our loading state to true
         dispatch(fetchMessagesRequest());
         // Make the request
-        return fetch(`${process.env.REACT_APP_API_URL}/messages`)
+        const params = args.queryId ? `?query_id=${args.queryId}` : '';
+        return fetch(`${process.env.REACT_APP_API_URL}/messages${params}`)
             .then((response) => response.json())
             .then((data) => {
                 // Update our messages state
