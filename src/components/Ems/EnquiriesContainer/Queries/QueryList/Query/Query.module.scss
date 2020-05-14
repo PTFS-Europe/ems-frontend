@@ -5,6 +5,7 @@
     display: flex;
     align-items: center;
     border-bottom: 1px solid #ededed;
+    background: $query-list-query-background;
 }
 
 h1.queryTitle {

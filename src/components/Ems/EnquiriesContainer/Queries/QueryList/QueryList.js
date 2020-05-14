@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -31,7 +32,9 @@ const QueryList = () => {
             <ol role="directory" className={styles.queryList}>
                 {d.queryList &&
                     d.queryList.map((query) => (
-                        <Query key={query.id} query={query} />
+                        <NavLink key={query.id} to={`/query/${query.id}`}>
+                            <Query query={query} />
+                        </NavLink>
                     ))}
             </ol>
         </nav>

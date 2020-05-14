@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import { withRouter } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,12 +12,16 @@ import messageCollections from '../../../../util/messages';
 
 import styles from './MessageList.module.scss';
 
-const MessageList = () => {
+const MessageList = ({ match }) => {
     const { t } = useTranslation();
 
     // Make the state we need available
     const stateMessages = useSelector((state) => state.messages);
     const activeUser = useSelector((state) => state.activeUser);
+
+    // The ID of the query currently being viewed
+    const queryId = parseInt(match.params.queryId);
+
     // We grab the usersList here and pass it down to MessageCollection
     // because otherwise every instance of MessageCollection will be
     // independently grabbing it, which has to be worse performance-wise
@@ -43,13 +48,17 @@ const MessageList = () => {
 
     // When we're mounted, fetch the messages
     useEffect(() => {
-        dispatch(fetchMessages({ queryId: 33 }));
-    }, [dispatch]);
+        dispatch(fetchMessages({ queryId }));
+    }, [dispatch, queryId]);
 
     // We may need to populate information about the users
     // involved with the messages we have
     useEffect(() => {
-        if (stateMessages.messageList.messages && activeUser.userDetails) {
+        if (
+            stateMessages.messageList.messages &&
+            stateMessages.messageList.initiator &&
+            activeUser.userDetails
+        ) {
             const participants = getParticipants(
                 stateMessages.messageList.messages,
                 [stateMessages.messageList.initiator, activeUser.userDetails.id]
@@ -90,4 +99,4 @@ const MessageList = () => {
     );
 };
 
-export default MessageList;
+export default withRouter(MessageList);

@@ -1,18 +1,23 @@
 import React from 'react';
 
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 import EnquiriesContainer from './EnquiriesContainer/EnquiriesContainer';
 
 import styles from './Ems.module.scss';
 
-const Ems = (props) => {
+const Ems = () => {
     return (
-        <BrowserRouter>
-            <div className={styles.emsContainer}>
-                <EnquiriesContainer></EnquiriesContainer>
-            </div>
-        </BrowserRouter>
+        <div className={styles.emsContainer}>
+            <BrowserRouter>
+                <Route exact path="/" component={EnquiriesContainer} />
+                <Route
+                    exact
+                    path="/query/:queryId"
+                    component={EnquiriesContainer}
+                />
+            </BrowserRouter>
+        </div>
     );
 };
 
