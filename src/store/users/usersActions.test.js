@@ -42,7 +42,7 @@ describe('usersActions', () => {
     test('dispatches FETCH_USERS_REQUEST & FETCH_USERS_SUCCESS if appropriate', () => {
         const store = mockStore({
             users: {
-                loading: false,
+                loading: [],
                 usersList: [],
                 error: ''
             }
@@ -55,13 +55,14 @@ describe('usersActions', () => {
         };
         fetchMock.getOnce(
             `${process.env.REACT_APP_API_URL}/users?user_ids=1_2`,
-            {
-                body: expectedBody
-            }
+            { body: expectedBody }
         );
         // We should only make a request if user_ids are passed
+        // If we do make a request, the FETCH_USERS_REQUEST action
+        // should pass the IDs of the users we're requesting so
+        // they can be passed to the reducer
         const expectedActions = [
-            { type: usersTypes.FETCH_USERS_REQUEST },
+            { type: usersTypes.FETCH_USERS_REQUEST, payload: [1, 2] },
             {
                 type: usersTypes.FETCH_USERS_SUCCESS,
                 payload: expectedBody

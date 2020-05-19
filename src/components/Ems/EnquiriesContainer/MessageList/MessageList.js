@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,8 +15,11 @@ import styles from './MessageList.module.scss';
 const MessageList = ({ match }) => {
     const { t } = useTranslation();
 
+    const [initiator, setInitiator] = useState();
+
     // Make the state we need available
     const stateMessages = useSelector((state) => state.messages);
+    const stateQueries = useSelector((state) => state.queries);
     const activeUser = useSelector((state) => state.activeUser);
 
     // The ID of the query currently being viewed
@@ -37,35 +40,45 @@ const MessageList = ({ match }) => {
         [stateMessages.messageList]
     );
 
-    const getParticipants = (messages, additional = []) => {
-        let all = [
-            ...messages.map((message) => message.creator_id),
-            ...additional
-        ];
-        const uniques = new Set(all);
-        return [...uniques];
-    };
+    // Determine this query's initiator
+    useEffect(() => {
+        if (stateQueries) {
+            const query = stateQueries.queryList.find(
+                (query) => query.id === queryId
+            );
+            if (query) {
+                setInitiator(query.initiator);
+            }
+        }
+    }, [stateQueries, queryId]);
+
+    // We may need to populate information about the users
+    // involved with the messages we have
+    useEffect(() => {
+        if (initiator && activeUser.userDetails && stateMessages) {
+            const msgParticipants =
+                stateMessages && stateMessages.messageList.participants
+                    ? stateMessages.messageList.participants
+                    : [];
+            const participants = new Set([
+                initiator,
+                activeUser.userDetails.id,
+                ...msgParticipants
+            ]);
+            dispatch(fetchUsers({ user_ids: [...participants] }));
+        }
+    }, [
+        stateMessages,
+        stateMessages.messageList,
+        dispatch,
+        activeUser.userDetails,
+        initiator
+    ]);
 
     // When we're mounted, fetch the messages
     useEffect(() => {
         dispatch(fetchMessages({ queryId }));
     }, [dispatch, queryId]);
-
-    // We may need to populate information about the users
-    // involved with the messages we have
-    useEffect(() => {
-        if (
-            stateMessages.messageList.messages &&
-            stateMessages.messageList.initiator &&
-            activeUser.userDetails
-        ) {
-            const participants = getParticipants(
-                stateMessages.messageList.messages,
-                [stateMessages.messageList.initiator, activeUser.userDetails.id]
-            );
-            dispatch(fetchUsers({ user_ids: participants }));
-        }
-    }, [stateMessages.messageList, dispatch, activeUser.userDetails]);
 
     if (!stateMessages) {
         return <LoadingSpinner />;
@@ -87,7 +100,7 @@ const MessageList = ({ match }) => {
                     // rather than the message list
                     memMessages.map((collection) => (
                         <MessageCollection
-                            initiator={stateMessages.messageList.initiator}
+                            initiator={initiator}
                             key={collection.timestamp}
                             collection={collection}
                             activeUser={activeUser.userDetails}

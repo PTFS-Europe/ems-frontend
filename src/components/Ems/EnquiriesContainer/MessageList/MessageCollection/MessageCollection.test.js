@@ -10,11 +10,18 @@ jest.mock('../Message/Message', () => {
     };
 });
 
-let mc;
+jest.mock('../../../../UI/UserIcon/UserIcon', () => {
+    return {
+        __esModule: true,
+        default: () => <div role="figure">UserIcon</div>
+    };
+});
 
 jest.mock('react-i18next', () => ({
     useTranslation: () => ({ t: (key) => key })
 }));
+
+let mc;
 
 const mockMessageCollection = {
     sender: 2, // Jane is the sender

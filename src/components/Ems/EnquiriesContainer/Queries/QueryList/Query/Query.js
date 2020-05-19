@@ -10,7 +10,7 @@ import styles from './Query.module.scss';
 const Query = ({ query }) => {
     return (
         <li className={styles.query}>
-            <UserIcon />
+            <UserIcon userId={query.initiator} />
             <div className={styles.querySummary}>
                 <h1 className={styles.queryTitle}>{query.title}</h1>
                 <div className={styles.headMessage}>

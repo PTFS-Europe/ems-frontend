@@ -3,6 +3,13 @@ import { render } from '@testing-library/react';
 
 import Query from './Query';
 
+jest.mock('../../../../../UI/UserIcon/UserIcon', () => {
+    return {
+        __esModule: true,
+        default: () => <div role="figure">UserIcon</div>
+    };
+});
+
 let q;
 
 const query = {

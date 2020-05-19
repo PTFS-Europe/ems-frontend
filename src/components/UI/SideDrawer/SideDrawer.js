@@ -13,7 +13,7 @@ const SideDrawer = ({ children }) => (
 );
 
 SideDrawer.propTypes = {
-    children: PropTypes.object.isRequired
+    children: PropTypes.object
 };
 
 export default SideDrawer;

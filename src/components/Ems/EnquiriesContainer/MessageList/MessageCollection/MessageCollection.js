@@ -24,16 +24,20 @@ const MessageCollection = ({
         if (usersList.length > 0 && activeUser) {
             const cSender = collection.sender;
             const senderObj = usersList.find((ul) => ul.id === cSender);
-            setDisplay({
-                displayName:
-                    cSender === activeUser.id ? t('You') : senderObj.name,
-                css:
-                    cSender === initiator
-                        ? 'collectionLeft'
-                        : 'collectionRight',
-                messageCss:
-                    cSender === initiator ? 'messageStaff' : 'messageCustomer'
-            });
+            if (cSender && senderObj) {
+                setDisplay({
+                    displayName:
+                        cSender === activeUser.id ? t('You') : senderObj.name,
+                    css:
+                        cSender === initiator
+                            ? 'collectionLeft'
+                            : 'collectionRight',
+                    messageCss:
+                        cSender === initiator
+                            ? 'messageStaff'
+                            : 'messageCustomer'
+                });
+            }
         }
         // Disabling the linting here because it wants us to add
         // t as a dependency, but doing so causes the tests for
@@ -44,7 +48,7 @@ const MessageCollection = ({
     // Return the align-items property for a given collection
     return (
         <div role="group" className={styles[display.css]}>
-            <UserIcon />
+            <UserIcon userId={collection.sender} />
             <div className={styles.collectionContent}>
                 <h1 className={styles.creator}>{display.displayName}</h1>
                 <ol className={styles.messages}>
