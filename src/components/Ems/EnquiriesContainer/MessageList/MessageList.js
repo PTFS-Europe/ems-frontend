@@ -15,7 +15,7 @@ import styles from './MessageList.module.scss';
 const MessageList = ({ match }) => {
     const { t } = useTranslation();
 
-    const [initiator, setInitiator] = useState();
+    const [initiator, setInitiator] = useState(0);
 
     // Make the state we need available
     const stateMessages = useSelector((state) => state.messages);
@@ -36,7 +36,7 @@ const MessageList = ({ match }) => {
     // The messages we display are behind a memoized method that calculates
     // their groupings, this should prevent uncessary recalculations
     const memMessages = useMemo(
-        () => messageCollections(stateMessages.messageList.messages),
+        () => messageCollections(stateMessages.messageList),
         [stateMessages.messageList]
     );
 
@@ -56,10 +56,11 @@ const MessageList = ({ match }) => {
     // involved with the messages we have
     useEffect(() => {
         if (initiator && activeUser.userDetails && stateMessages) {
-            const msgParticipants =
-                stateMessages && stateMessages.messageList.participants
-                    ? stateMessages.messageList.participants
-                    : [];
+            // Get the query's participants
+            const query = stateQueries.queryList.find(
+                (query) => query.id === queryId
+            );
+            const msgParticipants = query.participants;
             const participants = new Set([
                 initiator,
                 activeUser.userDetails.id,
@@ -68,6 +69,8 @@ const MessageList = ({ match }) => {
             dispatch(fetchUsers({ user_ids: [...participants] }));
         }
     }, [
+        queryId,
+        stateQueries.queryList,
         stateMessages,
         stateMessages.messageList,
         dispatch,
@@ -88,14 +91,14 @@ const MessageList = ({ match }) => {
         <section className={styles.messages}>
             {stateMessages.loading && <LoadingSpinner />}
             {!stateMessages.loading &&
-                stateMessages.messageList.messages &&
-                stateMessages.messageList.messages.length === 0 && (
+                stateMessages.messageList &&
+                stateMessages.messageList.length === 0 && (
                     <h1 className={styles.noMessages}>
                         {t('No messages found')}
                     </h1>
                 )}
             <ol className={styles.messagesList}>
-                {stateMessages.messageList.messages &&
+                {stateMessages.messageList &&
                     // We pass our collection-ified messages,
                     // rather than the message list
                     memMessages.map((collection) => (

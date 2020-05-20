@@ -37,8 +37,18 @@ const mockStateBase = {
 
 const mockStateLoading = {
     ...mockStateBase,
+    queries: {
+        loading: false,
+        error: '',
+        queryList: [
+            {
+                id: 1,
+                initiator: 1
+            }
+        ]
+    },
     messages: {
-        messageList: { messages: [] },
+        messageList: [],
         loading: true,
         error: ''
     }
@@ -57,31 +67,28 @@ const mockState = {
         ]
     },
     messages: {
-        messageList: {
-            initiator: 1,
-            messages: [
-                {
-                    id: 4,
-                    query_id: 33,
-                    creator_id: 1,
-                    content:
-                        "Hi - I'd like to order some chippies and two pea fritters please",
-                    created_at: '2020-05-04 11:56:49.75614+01',
-                    updated_at: '2020-05-04 11:56:49.75614+01',
-                    filename: null
-                },
-                {
-                    id: 5,
-                    query_id: 33,
-                    creator_id: 2,
-                    content:
-                        "Sure, though I've some bad news, we just sold the last pea fritter",
-                    created_at: '2020-05-04 11:57:18.972605+01',
-                    updated_at: '2020-05-04 11:57:18.972605+01',
-                    filename: null
-                }
-            ]
-        },
+        messageList: [
+            {
+                id: 4,
+                query_id: 33,
+                creator_id: 1,
+                content:
+                    "Hi - I'd like to order some chippies and two pea fritters please",
+                created_at: '2020-05-04 11:56:49.75614+01',
+                updated_at: '2020-05-04 11:56:49.75614+01',
+                filename: null
+            },
+            {
+                id: 5,
+                query_id: 33,
+                creator_id: 2,
+                content:
+                    "Sure, though I've some bad news, we just sold the last pea fritter",
+                created_at: '2020-05-04 11:57:18.972605+01',
+                updated_at: '2020-05-04 11:57:18.972605+01',
+                filename: null
+            }
+        ],
         loading: false,
         error: ''
     }
@@ -95,7 +102,7 @@ const mockStateEmpty = {
         error: ''
     },
     messages: {
-        messageList: { messages: [] },
+        messageList: [],
         loading: false,
         error: ''
     }

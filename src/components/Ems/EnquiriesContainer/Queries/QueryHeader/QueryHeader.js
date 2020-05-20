@@ -16,17 +16,28 @@ const QueryHeader = ({ match }) => {
     const queryId = parseInt(match.params.queryId);
 
     useEffect(() => {
-        const query = stateQueries.queryList.find(
-            (query) => query.id === queryId
-        );
-        setQuery(query);
+        if (stateQueries) {
+            const query = stateQueries.queryList.find(
+                (query) => query.id === queryId
+            );
+            setQuery(query);
+        }
     }, [stateQueries, queryId]);
 
     return (
         <div role="banner" className={styles.queryHeader}>
             {query && (
                 <React.Fragment>
-                    <UserIcon userId={query.initiator} />
+                    {query &&
+                        query.participants &&
+                        query.participants.map((participant) => (
+                            <div
+                                key={participant}
+                                className={styles.iconContainer}
+                            >
+                                <UserIcon userId={participant} />
+                            </div>
+                        ))}
                     <h1 className={styles.headerTitle}>{query.title}</h1>
                 </React.Fragment>
             )}

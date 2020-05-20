@@ -6,11 +6,6 @@ import { render } from '@testing-library/react';
 
 import QueryHeader from './QueryHeader';
 
-jest.mock('react-redux', () => ({
-    // Mock useSelector
-    useSelector: jest.fn()
-}));
-
 jest.mock('../../../../UI/UserIcon/UserIcon', () => {
     return {
         __esModule: true,
@@ -18,13 +13,26 @@ jest.mock('../../../../UI/UserIcon/UserIcon', () => {
     };
 });
 
+let q;
+
 const mockState = {
     queries: {
-        queryList: [],
+        queryList: [
+            {
+                id: 1,
+                title: 'This is the query title',
+                participants: [1, 2, 3]
+            }
+        ],
         loading: false,
         error: ''
     }
 };
+
+jest.mock('react-redux', () => ({
+    // Mock useSelector
+    useSelector: jest.fn()
+}));
 
 const mockMatch = {
     params: {
@@ -33,7 +41,6 @@ const mockMatch = {
 };
 
 describe('QueryHeader', () => {
-    let q;
     beforeEach(() => {
         const history = createMemoryHistory();
         useSelector.mockImplementation((callback) => {
@@ -44,6 +51,9 @@ describe('QueryHeader', () => {
                 <QueryHeader match={mockMatch} />
             </Router>
         );
+    });
+    afterEach(() => {
+        useSelector.mockClear();
     });
     test('loads and displays header', () => {
         const header = q.getByRole('banner');

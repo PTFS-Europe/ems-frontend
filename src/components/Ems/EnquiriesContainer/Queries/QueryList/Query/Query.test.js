@@ -17,6 +17,10 @@ const query = {
     folder_id: null,
     id: 31,
     title: 'Do you sell curry?',
+    latestMessage: {
+        creator_id: 1,
+        content: 'This is the latest message'
+    },
     updated_at: '2020-04-30 10:08:58.348203+01'
 };
 
@@ -48,6 +52,11 @@ describe('Query', () => {
 
     test('displays the query timestamp', () => {
         const time = q.getByRole('complementary');
+        expect(time).toBeTruthy();
+    });
+
+    test('displays the latest message text', () => {
+        const time = q.getByText('This is the latest message');
         expect(time).toBeTruthy();
     });
 

@@ -10,11 +10,11 @@ import styles from './Query.module.scss';
 const Query = ({ query }) => {
     return (
         <li className={styles.query}>
-            <UserIcon userId={query.initiator} />
+            <UserIcon userId={query.latestMessage.creator_id} />
             <div className={styles.querySummary}>
                 <h1 className={styles.queryTitle}>{query.title}</h1>
                 <div className={styles.headMessage}>
-                    First line of the most recent message
+                    {query.latestMessage.content}
                 </div>
             </div>
             <div className={styles.metaActions}>
