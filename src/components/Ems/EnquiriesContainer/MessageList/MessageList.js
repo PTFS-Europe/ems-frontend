@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +8,7 @@ import { fetchMessages } from '../../../../store/messages/messagesActions';
 import { fetchUsers } from '../../../../store/users/usersActions';
 import MessageCollection from './MessageCollection/MessageCollection';
 import LoadingSpinner from '../../../UI/LoadingSpinner/LoadingSpinner';
+import { debounce } from '../../../../util/ui';
 
 import messageCollections from '../../../../util/messages';
 
@@ -16,6 +18,9 @@ const MessageList = ({ match }) => {
     const { t } = useTranslation();
 
     const [initiator, setInitiator] = useState(0);
+    const [scrollPosition, setScrollPosition] = useState();
+
+    const myRef = useRef(null);
 
     // Make the state we need available
     const stateMessages = useSelector((state) => state.messages);
@@ -52,6 +57,23 @@ const MessageList = ({ match }) => {
         }
     }, [stateQueries, queryId]);
 
+    // If a new query is loaded, reset our scroll position
+    useEffect(() => {
+        setScrollPosition();
+    }, [queryId]);
+
+    // When the messageList changes (e.g. a new message comes in)
+    // scroll to the bottom of the messages if appropriate
+    useEffect(() => {
+        // We're testing for scrollIntoView here because the unit
+        // test complains about the subsequent call of it. I've not
+        // been able to find a way to mock it in the test, so have
+        // resorted to preventing it being called in the test :-(
+        if (!scrollPosition && myRef.current.scrollIntoView) {
+            myRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [stateMessages.messageList, scrollPosition]);
+
     // We may need to populate information about the users
     // involved with the messages we have
     useEffect(() => {
@@ -87,8 +109,27 @@ const MessageList = ({ match }) => {
         return <LoadingSpinner />;
     }
 
+    // We need to debounce the updating of our scroll position
+    const debounceScrollUpdate = debounce((data) => {
+        const newScrollPosition = data.scrollHeight - data.scrollTop;
+        // If we have scrolled to the bottom, we want to nullify
+        // scrollPosition
+        const newScrollValue =
+            newScrollPosition === data.clientHeight ? null : data;
+        setScrollPosition(newScrollValue);
+    }, 500);
+
     return (
-        <section className={styles.messages}>
+        <section
+            className={styles.messages}
+            onScroll={(e) =>
+                debounceScrollUpdate({
+                    scrollHeight: e.target.scrollHeight,
+                    scrollTop: e.target.scrollTop,
+                    clientHeight: e.target.clientHeight
+                })
+            }
+        >
             {stateMessages.loading && <LoadingSpinner />}
             {!stateMessages.loading &&
                 stateMessages.messageList &&
@@ -104,15 +145,20 @@ const MessageList = ({ match }) => {
                     memMessages.map((collection) => (
                         <MessageCollection
                             initiator={initiator}
-                            key={collection.timestamp}
+                            key={collection.id}
                             collection={collection}
                             activeUser={activeUser.userDetails}
                             usersList={stateUsers.usersList}
                         ></MessageCollection>
                     ))}
+                <li ref={myRef}></li>
             </ol>
         </section>
     );
+};
+
+MessageList.propTypes = {
+    match: PropTypes.object.isRequired
 };
 
 export default withRouter(MessageList);

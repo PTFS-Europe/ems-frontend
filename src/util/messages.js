@@ -10,7 +10,12 @@ const messageCollections = (messages = []) => {
     // be grouped with its predecessor
     const groupPeriod = 600;
     // An empty collection, for when we need to create a new one
-    const emptyCollection = { sender: null, messages: [], timestamp: null };
+    const emptyCollection = {
+        sender: null,
+        messages: [],
+        timestamp: null,
+        id: null
+    };
     // What we'll ultimately return
     let collections = [];
 
@@ -45,6 +50,9 @@ const messageCollections = (messages = []) => {
     messages.forEach((message) => {
         const sender = message.creator_id;
         const timestamp = message.created_at;
+        // We create a nonsensical ID, this is purely so the display
+        // component can have a key for its iterator
+        const id = sender + Math.floor(Math.random() * 100000);
         // If this message should not be part of the current collection,
         // store the old one and create a new one
         if (
@@ -56,6 +64,7 @@ const messageCollections = (messages = []) => {
             currentCollection = JSON.parse(JSON.stringify(emptyCollection));
         }
         currentCollection.messages.push(message);
+        currentCollection.id = id;
         currentCollection.timestamp = timestamp;
         currentCollection.sender = sender;
     });

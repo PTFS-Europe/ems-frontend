@@ -6,6 +6,10 @@
     padding: 10px 15px;
 }
 
+.pending {
+    opacity: 0.2;
+}
+
 .messageStaff {
     background: $message-staff-background;
     color: $message-staff-text;
