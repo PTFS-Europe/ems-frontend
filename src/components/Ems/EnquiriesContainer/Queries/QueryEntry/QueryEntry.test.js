@@ -1,12 +1,9 @@
 import React from 'react';
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
 import { useSelector } from 'react-redux';
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
+import { renderWithRouterMatch } from '../../../../../util/testHelpers';
 
 import QueryEntry from './QueryEntry';
-
-let qe;
 
 jest.mock('@fortawesome/react-fontawesome', () => ({
     FontAwesomeIcon: (props) => {
@@ -55,19 +52,20 @@ const mockStateLoaded = {
 };
 
 const getComponent = (msgArg, loading) => {
-    const history = createMemoryHistory();
     useSelector.mockImplementation((callback) => {
         return callback(loading ? mockStateLoading : mockStateLoaded);
     });
-    return render(
-        <Router history={history}>
-            <QueryEntry
-                updateMessage={updateMessage}
-                message={msgArg}
-                match={mockMatch}
-            />
-        </Router>
+    const comp = () => (
+        <QueryEntry
+            updateMessage={updateMessage}
+            message={msgArg}
+            match={mockMatch}
+        />
     );
+    return renderWithRouterMatch(comp, {
+        path: '/query/:queryId',
+        route: '/query/1'
+    });
 };
 
 describe('QueryEntry: loading', () => {

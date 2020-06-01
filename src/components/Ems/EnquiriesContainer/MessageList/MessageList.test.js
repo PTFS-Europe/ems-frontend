@@ -1,8 +1,6 @@
 import React from 'react';
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
 import { useSelector } from 'react-redux';
-import { render } from '@testing-library/react';
+import { renderWithRouterMatch } from '../../../../util/testHelpers';
 
 import MessageList from './MessageList';
 
@@ -119,23 +117,15 @@ jest.mock('react-redux', () => ({
     useDispatch: jest.fn().mockImplementation(() => () => {})
 }));
 
-const mockMatch = {
-    params: {
-        queryId: 1
-    }
-};
-
 describe('MessageList: loading', () => {
     beforeEach(() => {
-        const history = createMemoryHistory();
         useSelector.mockImplementation((callback) => {
             return callback(mockStateLoading);
         });
-        ml = render(
-            <Router history={history}>
-                <MessageList match={mockMatch} />
-            </Router>
-        );
+        ml = renderWithRouterMatch(MessageList, {
+            path: '/query/:queryId',
+            route: '/query/33'
+        });
     });
     afterEach(() => {
         useSelector.mockClear();
@@ -148,15 +138,13 @@ describe('MessageList: loading', () => {
 
 describe('MessageList: populated', () => {
     beforeEach(() => {
-        const history = createMemoryHistory();
         useSelector.mockImplementation((callback) => {
             return callback(mockState);
         });
-        ml = render(
-            <Router history={history}>
-                <MessageList />
-            </Router>
-        );
+        ml = renderWithRouterMatch(MessageList, {
+            path: '/query/:queryId',
+            route: '/query/33'
+        });
     });
     afterEach(() => {
         useSelector.mockClear();
@@ -173,15 +161,13 @@ describe('MessageList: populated', () => {
 
 describe('MessageList: empty', () => {
     beforeEach(() => {
-        const history = createMemoryHistory();
         useSelector.mockImplementation((callback) => {
             return callback(mockStateEmpty);
         });
-        ml = render(
-            <Router history={history}>
-                <MessageList />
-            </Router>
-        );
+        ml = renderWithRouterMatch(MessageList, {
+            path: '/query/:queryId',
+            route: '/query/33'
+        });
     });
     afterEach(() => {
         useSelector.mockClear();

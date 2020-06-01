@@ -1,8 +1,7 @@
 import React from 'react';
-import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { useSelector } from 'react-redux';
-import { render } from '@testing-library/react';
+import { renderWithRouterMatch } from '../../../../../util/testHelpers';
 
 import QueryList from './QueryList';
 
@@ -73,15 +72,10 @@ jest.mock('react-redux', () => ({
 
 describe('QueryList: loading', () => {
     beforeEach(() => {
-        const history = createMemoryHistory();
         useSelector.mockImplementation((callback) => {
             return callback(mockStateLoading);
         });
-        ql = render(
-            <Router history={history}>
-                <QueryList />
-            </Router>
-        );
+        ql = renderWithRouterMatch(QueryList);
     });
     afterEach(() => {
         useSelector.mockClear();
@@ -94,15 +88,10 @@ describe('QueryList: loading', () => {
 
 describe('QueryList: populated', () => {
     beforeEach(() => {
-        const history = createMemoryHistory();
         useSelector.mockImplementation((callback) => {
             return callback(mockState);
         });
-        ql = render(
-            <Router history={history}>
-                <QueryList />
-            </Router>
-        );
+        ql = renderWithRouterMatch(QueryList);
     });
     afterEach(() => {
         useSelector.mockClear();
@@ -119,15 +108,10 @@ describe('QueryList: populated', () => {
 
 describe('QueryList: empty', () => {
     beforeEach(() => {
-        const history = createMemoryHistory();
         useSelector.mockImplementation((callback) => {
             return callback(mockStateEmpty);
         });
-        ql = render(
-            <Router history={history}>
-                <QueryList />
-            </Router>
-        );
+        ql = renderWithRouterMatch(QueryList);
     });
     afterEach(() => {
         useSelector.mockClear();

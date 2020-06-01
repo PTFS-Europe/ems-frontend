@@ -1,8 +1,6 @@
 import React from 'react';
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
 import { useSelector } from 'react-redux';
-import { render } from '@testing-library/react';
+import { renderWithRouterMatch } from '../../../../../util/testHelpers';
 
 import QueryHeader from './QueryHeader';
 
@@ -34,23 +32,15 @@ jest.mock('react-redux', () => ({
     useSelector: jest.fn()
 }));
 
-const mockMatch = {
-    params: {
-        queryId: 1
-    }
-};
-
 describe('QueryHeader', () => {
     beforeEach(() => {
-        const history = createMemoryHistory();
         useSelector.mockImplementation((callback) => {
             return callback(mockState);
         });
-        q = render(
-            <Router history={history}>
-                <QueryHeader match={mockMatch} />
-            </Router>
-        );
+        q = renderWithRouterMatch(QueryHeader, {
+            path: '/query/:queryId',
+            route: '/query/1'
+        });
     });
     afterEach(() => {
         useSelector.mockClear();
