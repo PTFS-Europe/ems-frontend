@@ -12,7 +12,8 @@ const MessageCollection = ({
     collection,
     activeUser,
     initiator,
-    usersList
+    usersList,
+    updateMessage
 }) => {
     const [display, setDisplay] = useState({});
     const { t } = useTranslation();
@@ -26,6 +27,7 @@ const MessageCollection = ({
             const senderObj = usersList.find((ul) => ul.id === cSender);
             if (cSender && senderObj) {
                 setDisplay({
+                    isSender: cSender === activeUser.id,
                     displayName:
                         cSender === activeUser.id ? t('You') : senderObj.name,
                     css:
@@ -54,6 +56,8 @@ const MessageCollection = ({
                 <ol className={styles.messages}>
                     {collection.messages.map((message) => (
                         <Message
+                            updateMessage={updateMessage}
+                            isSender={display.isSender}
                             css={display.messageCss}
                             key={message.id}
                             message={message}

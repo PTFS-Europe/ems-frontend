@@ -5,12 +5,25 @@ import {
     faEllipsisH,
     faSearch,
     faPaperclip,
-    faPaperPlane
+    faPaperPlane,
+    faTrashAlt,
+    faPencilAlt,
+    faCheck,
+    faTimes
 } from '@fortawesome/free-solid-svg-icons';
 
 import Ems from './Ems/Ems';
 
-library.add(faEllipsisH, faSearch, faPaperclip, faPaperPlane);
+library.add(
+    faEllipsisH,
+    faSearch,
+    faPaperclip,
+    faPaperPlane,
+    faTrashAlt,
+    faPencilAlt,
+    faCheck,
+    faTimes
+);
 
 const App = () => {
     return <Ems></Ems>;

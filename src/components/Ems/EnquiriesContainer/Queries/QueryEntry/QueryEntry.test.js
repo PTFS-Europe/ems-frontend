@@ -25,6 +25,13 @@ jest.mock('react-redux', () => ({
     useDispatch: () => jest.fn()
 }));
 
+// Mock the props we're passing to QueryEntry
+let mockMessage = {
+    content: ''
+};
+
+const updateMessage = jest.fn();
+
 const mockMatch = {
     params: {
         queryId: 1
@@ -47,93 +54,73 @@ const mockStateLoaded = {
     }
 };
 
+const getComponent = (msgArg, loading) => {
+    const history = createMemoryHistory();
+    useSelector.mockImplementation((callback) => {
+        return callback(loading ? mockStateLoading : mockStateLoaded);
+    });
+    return render(
+        <Router history={history}>
+            <QueryEntry
+                updateMessage={updateMessage}
+                message={msgArg}
+                match={mockMatch}
+            />
+        </Router>
+    );
+};
+
 describe('QueryEntry: loading', () => {
     test('displays the entry box', () => {
-        const history = createMemoryHistory();
-        useSelector.mockImplementation((callback) => {
-            return callback(mockStateLoading);
-        });
-        qe = render(
-            <Router history={history}>
-                <QueryEntry match={mockMatch} />
-            </Router>
-        );
+        const qe = getComponent(mockMessage, true);
         const textarea = qe.getByRole('textbox');
         expect(textarea).toBeTruthy();
     });
     test('displays the two buttons', () => {
-        const history = createMemoryHistory();
-        useSelector.mockImplementation((callback) => {
-            return callback(mockStateLoading);
-        });
-        qe = render(
-            <Router history={history}>
-                <QueryEntry match={mockMatch} />
-            </Router>
-        );
+        const qe = getComponent(mockMessage, true);
         const buttons = qe.getAllByRole('button');
         expect(buttons).toHaveLength(2);
     });
     test('entry box is initialised empty', () => {
-        const history = createMemoryHistory();
-        useSelector.mockImplementation((callback) => {
-            return callback(mockStateLoading);
-        });
-        qe = render(
-            <Router history={history}>
-                <QueryEntry match={mockMatch} />
-            </Router>
-        );
+        const qe = getComponent(mockMessage, true);
         const textarea = qe.getByRole('textbox');
         expect(textarea.value).toBe('');
     });
     test('disables the "Send" & "Attachment" buttons if the loading state is true', () => {
-        const history = createMemoryHistory();
-        useSelector.mockImplementation((callback) => {
-            return callback(mockStateLoading);
-        });
-        qe = render(
-            <Router history={history}>
-                <QueryEntry match={mockMatch} />
-            </Router>
-        );
+        const qe = getComponent(mockMessage, true);
         const buttons = qe.getAllByRole('button');
         expect(buttons[0]).toBeDisabled();
         expect(buttons[1]).toBeDisabled();
     });
 });
-describe('QueryEntry: loaded', () => {
-    beforeEach(() => {
-        const history = createMemoryHistory();
-        useSelector.mockImplementation((callback) => {
-            return callback(mockStateLoaded);
-        });
-        qe = render(
-            <Router history={history}>
-                <QueryEntry match={mockMatch} />
-            </Router>
-        );
+describe('QueryEntry: new message - loaded', () => {
+    test('entering text in the entry box calls updateMessage', async () => {
+        const qe = getComponent(mockMessage);
+        const textarea = qe.getByRole('textbox');
+        fireEvent.input(textarea, { target: { value: 'Hello' } });
+        expect(updateMessage).toBeCalled();
     });
     test('disables the "Send" button if the entry box is empty', () => {
+        const qe = getComponent(mockMessage);
         const buttons = qe.getAllByRole('button');
         expect(buttons[1]).toBeDisabled();
     });
-    test('enables the "Send" button if the entry box is not empty', () => {
-        const textarea = qe.getByRole('textbox');
-        fireEvent.input(textarea, { target: { value: 'Hello' } });
+    test('enables the "Attachment" button if the entry box is empty', () => {
+        const qe = getComponent(mockMessage);
         const buttons = qe.getAllByRole('button');
-        expect(buttons[1]).toBeEnabled();
+        expect(buttons[0]).toBeEnabled();
     });
-    test('disables the "Attachment" button if the entry box is not empty', () => {
-        const textarea = qe.getByRole('textbox');
-        fireEvent.input(textarea, { target: { value: 'Hello' } });
+    test('entering text in the entry box disables the "Attachment" button', () => {
+        const qe = getComponent({ content: 'Hello' });
         const buttons = qe.getAllByRole('button');
         expect(buttons[0]).toBeDisabled();
     });
-    test('enables the "Attachment" button if the entry box is empty', () => {
+});
+
+describe('QueryEntry: edit message - loaded', () => {
+    test('adds the edit class to the entry box when in edit mode', () => {
+        const qe = getComponent({ ...mockMessage, id: 1 });
         const textarea = qe.getByRole('textbox');
-        fireEvent.input(textarea, { target: { value: '' } });
-        const buttons = qe.getAllByRole('button');
-        expect(buttons[0]).toBeEnabled();
+        expect(textarea.classList.contains('edit')).toBe(true);
     });
 });

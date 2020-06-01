@@ -1,0 +1,52 @@
+.container {
+    display: flex;
+    width: auto;
+    background-color: #fff;
+    padding: 4px;
+    border-radius: 20px;
+}
+
+.container:hover .edit,
+.container:hover .delete {
+    opacity: 1;
+    margin-left: 0;
+}
+
+.actionButton {
+    width: 36px;
+    height: 36px;
+    border: 0;
+    margin-right: 5px;
+    outline: 0;
+    cursor: pointer;
+}
+
+.actionButton:last-child {
+    margin-right: 0;
+}
+
+.default {
+    border: 4px solid #bebebe;
+    color: #bebebe;
+    border-radius: 18px;
+    background: #fff;
+    z-index: 9999;
+}
+
+.delete {
+    opacity: 0;
+    margin-left: -41px;
+    color: #fff;
+    border-radius: 18px;
+    background: #c65050;
+    transition: margin-left 0.5s, opacity  0.5s;
+}
+
+.edit {
+    opacity: 0;
+    margin-left: -41px;
+    color: #fff;
+    border-radius: 18px;
+    background: #c6c650;
+    transition: margin-left 0.5s, opacity  0.5s;
+}

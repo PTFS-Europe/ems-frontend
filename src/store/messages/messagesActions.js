@@ -41,7 +41,6 @@ export const fetchMessages = (args) => {
 };
 
 export const sendMessageRequest = (requestBody) => {
-    // Detemine the active user
     return {
         type: messagesTypes.SEND_MESSAGE_REQUEST,
         payload: requestBody
@@ -71,20 +70,16 @@ export const sendMessage = ({ queryId, message }) => {
         let sendObj = {
             creator_id: userDetails.id,
             query_id: queryId,
-            content: message
+            content: message.content
         };
         // Generate a temporary ID for this message, it will enable
         // us to find this message when we get a response and need to
         // replace it
         const tempId = Date.now();
-        // Update our state to reflect that we've sent the request,
-        // we update our state with the message here, it is then
-        // embellished once we receive a response
-        sendObj = {
-            ...sendObj,
-            id: tempId
-        };
-        dispatch(sendMessageRequest(sendObj));
+        // Update our state to reflect that we've sent the request
+        // We update our state with the message here, it is then
+        // replaced once we receive a response
+        dispatch(sendMessageRequest({ ...sendObj, id: tempId, pending: true }));
         // Make the request
         return fetch(`${process.env.REACT_APP_API_URL}/messages`, {
             headers: {
@@ -111,6 +106,128 @@ export const sendMessage = ({ queryId, message }) => {
             .catch((error) =>
                 // Update our error state
                 dispatch(sendMessageFailure({ error: error.message, tempId }))
+            );
+    };
+};
+
+export const deleteMessageRequest = (requestBody) => {
+    return {
+        type: messagesTypes.DELETE_MESSAGE_REQUEST,
+        payload: requestBody
+    };
+};
+
+export const deleteMessageSuccess = (success) => {
+    return {
+        type: messagesTypes.DELETE_MESSAGE_SUCCESS,
+        payload: success
+    };
+};
+
+export const deleteMessageFailure = (errorPayload) => {
+    return {
+        type: messagesTypes.DELETE_MESSAGE_FAILURE,
+        payload: errorPayload
+    };
+};
+
+// Our action creator for deleting a message
+export const deleteMessage = ({ id }) => {
+    return (dispatch) => {
+        // Update our state to reflect that we've sent the request
+        // This will be updated again once we have deleted the
+        // message at the API
+        dispatch(deleteMessageRequest({ id }));
+        // Make the request
+        return fetch(`${process.env.REACT_APP_API_URL}/messages/${id}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors',
+            method: 'DELETE'
+        })
+            .then((response) => {
+                // Fetch will not reject if we encounter an HTTP error
+                // so we need to manually reject in that case
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                } else {
+                    return response;
+                }
+            })
+            .then(() =>
+                // Update our messages state
+                dispatch(deleteMessageSuccess({ id }))
+            )
+            .catch((error) =>
+                // Update our error state
+                dispatch(deleteMessageFailure({ error: error.message, id }))
+            );
+    };
+};
+
+export const editMessageRequest = (requestBody) => {
+    return {
+        type: messagesTypes.EDIT_MESSAGE_REQUEST,
+        payload: requestBody
+    };
+};
+
+export const editMessageSuccess = (success) => {
+    return {
+        type: messagesTypes.EDIT_MESSAGE_SUCCESS,
+        payload: success
+    };
+};
+
+export const editMessageFailure = (errorPayload) => {
+    return {
+        type: messagesTypes.EDIT_MESSAGE_FAILURE,
+        payload: errorPayload
+    };
+};
+
+// Our action creator for editing a message
+export const editMessage = (message) => {
+    return (dispatch) => {
+        // Update our state to reflect that we've sent the request
+        // This will be updated again once we have confirmation from
+        // the API that the message was edited
+        dispatch(editMessageRequest(message));
+        const sendObj = {
+            content: message.content
+        };
+        // Make the request
+        return fetch(
+            `${process.env.REACT_APP_API_URL}/messages/${message.id}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors',
+                method: 'PUT',
+                body: JSON.stringify(sendObj)
+            }
+        )
+            .then((response) => {
+                // Fetch will not reject if we encounter an HTTP error
+                // so we need to manually reject in that case
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                } else {
+                    return response;
+                }
+            })
+            .then((response) => response.json())
+            .then((data) =>
+                // Update our messages state
+                dispatch(editMessageSuccess(data))
+            )
+            .catch((error) =>
+                // Update our error state
+                dispatch(
+                    editMessageFailure({ error: error.message, id: message.id })
+                )
             );
     };
 };

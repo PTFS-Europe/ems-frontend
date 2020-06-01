@@ -3,6 +3,17 @@ import { render } from '@testing-library/react';
 
 import Message from './Message';
 
+jest.mock('react-i18next', () => ({
+    useTranslation: () => ({ t: (key) => key })
+}));
+
+jest.mock('react-redux', () => ({
+    // Mock useSelector
+    useSelector: jest.fn(),
+    // Mock useDispatch, it just returns a function
+    useDispatch: jest.fn().mockImplementation(() => () => {})
+}));
+
 let m;
 
 const mockMessage = {

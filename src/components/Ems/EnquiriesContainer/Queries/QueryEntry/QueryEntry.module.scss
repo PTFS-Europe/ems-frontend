@@ -17,6 +17,11 @@ textarea.entryBox {
     padding: 20px 30px;
     outline: none;
     line-height: 25px;
+    transition: background 0.3s;
+}
+
+textarea.entryBox.edit {
+    background: rgba(198,198,80,0.1);
 }
 
 textarea.entryBox::placeholder {
@@ -32,6 +37,11 @@ textarea.entryBox::placeholder {
     flex-direction: column;
     justify-content: flex-end;
     padding-bottom: 10px;
+    transition: background 0.3s;
+}
+
+.entryIconsContainer.edit {
+    background: rgba(198,198,80,0.1);
 }
 
 .entryIcons {
@@ -42,7 +52,7 @@ textarea.entryBox::placeholder {
     color: #aaa;
     font-size: 30px;
     border: 0;
-    background: #fff;
+    background: inherit;
     cursor: pointer;
     outline: none;
 }

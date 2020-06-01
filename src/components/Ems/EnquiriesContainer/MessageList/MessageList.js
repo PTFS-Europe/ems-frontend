@@ -14,7 +14,7 @@ import messageCollections from '../../../../util/messages';
 
 import styles from './MessageList.module.scss';
 
-const MessageList = ({ match }) => {
+const MessageList = ({ match, updateMessage }) => {
     const { t } = useTranslation();
 
     const [initiator, setInitiator] = useState(0);
@@ -144,6 +144,7 @@ const MessageList = ({ match }) => {
                     // rather than the message list
                     memMessages.map((collection) => (
                         <MessageCollection
+                            updateMessage={updateMessage}
                             initiator={initiator}
                             key={collection.id}
                             collection={collection}
