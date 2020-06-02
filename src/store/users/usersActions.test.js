@@ -18,14 +18,14 @@ describe('usersActions', () => {
         };
         expect(actions.fetchUsersRequest()).toEqual(expected);
     });
-    test('fetchQueriesSuccess', async () => {
+    test('fetchUsersSuccess', async () => {
         const expected = {
             type: usersTypes.FETCH_USERS_SUCCESS,
             payload: { test: 'me' }
         };
         expect(actions.fetchUsersSuccess({ test: 'me' })).toEqual(expected);
     });
-    test('fetchQueriesFailure', async () => {
+    test('fetchUsersFailure', async () => {
         const expected = {
             type: usersTypes.FETCH_USERS_FAILURE,
             payload: { my: 'error' }
