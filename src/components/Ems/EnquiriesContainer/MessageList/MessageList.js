@@ -83,12 +83,14 @@ const MessageList = ({ match, updateMessage }) => {
                 (query) => query.id === queryId
             );
             const msgParticipants = query.participants;
-            const participants = new Set([
-                initiator,
-                activeUser.userDetails.id,
-                ...msgParticipants
-            ]);
-            dispatch(fetchUsers({ user_ids: [...participants] }));
+            if (msgParticipants && msgParticipants.length > 0) {
+                const participants = new Set([
+                    initiator,
+                    activeUser.userDetails.id,
+                    ...msgParticipants
+                ]);
+                dispatch(fetchUsers({ user_ids: [...participants] }));
+            }
         }
     }, [
         queryId,

@@ -5,6 +5,7 @@ import styles from './LoadingSpinner.module.scss';
 
 const LoadingSpinner = () => {
     const { t } = useTranslation();
+
     return (
         <div
             role="alert"

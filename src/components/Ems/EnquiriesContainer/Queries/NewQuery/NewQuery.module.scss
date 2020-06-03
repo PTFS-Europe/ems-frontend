@@ -1,0 +1,9 @@
+@import '../../../../../variables.scss';
+
+.newQuery {
+    display: flex;
+    background: $message-list-background;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}

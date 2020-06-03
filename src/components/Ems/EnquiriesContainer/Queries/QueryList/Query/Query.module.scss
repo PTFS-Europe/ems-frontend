@@ -8,6 +8,10 @@
     background: $query-list-query-background;
 }
 
+.pending {
+    opacity: 0.5;
+}
+
 h1.queryTitle {
     font-size: 17px;
     font-weight: 700;

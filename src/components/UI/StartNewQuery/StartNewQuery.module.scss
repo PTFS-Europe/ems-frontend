@@ -1,0 +1,55 @@
+@import '../../../variables.scss';
+
+.container {
+    display: flex;
+    background: $query-header-background;
+    border-radius: 50px;
+}
+
+
+.startButton {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    padding: 10px 20px;
+    color: #fff;
+    font-weight: 700;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+}
+
+.icon {
+    margin-right: 10px;
+}
+
+.setTitle {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    color: #fff;
+    outline: none;
+}
+
+.queryTitle {
+    width: 20em;
+    color: #aaa;
+    padding: 5px;
+    border-radius: 5px;
+    border: 0;
+}
+
+.queryTitle::placeholder {
+    color: #aaa;
+}
+
+.entryButton {
+    color: #fff;
+    font-size: 30px;
+    border: 0;
+    background: inherit;
+    cursor: pointer;
+    outline: none;
+    margin-left: 10px;
+    padding: 0;
+}

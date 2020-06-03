@@ -8,14 +8,20 @@ import UserIcon from '../../../../../UI/UserIcon/UserIcon';
 import styles from './Query.module.scss';
 
 const Query = ({ query }) => {
+    const isPending = query.pending ? styles.pending : '';
     return (
-        <li className={styles.query}>
-            <UserIcon userId={query.latestMessage.creator_id} />
+        <li className={`${styles.query} ${isPending}`}>
+            {query.latestMessage && (
+                <UserIcon userId={query.latestMessage.creator_id} />
+            )}
+            {!query.latestMessage && <UserIcon />}
             <div className={styles.querySummary}>
                 <h1 className={styles.queryTitle}>{query.title}</h1>
-                <div className={styles.headMessage}>
-                    {query.latestMessage.content}
-                </div>
+                {query.latestMessage && (
+                    <div className={styles.headMessage}>
+                        {query.latestMessage.content}
+                    </div>
+                )}
             </div>
             <div className={styles.metaActions}>
                 <div role="complementary" className={styles.timestamp}>

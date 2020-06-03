@@ -9,7 +9,9 @@ import {
     faTrashAlt,
     faPencilAlt,
     faCheck,
-    faTimes
+    faTimes,
+    faPlusCircle,
+    faChevronCircleRight
 } from '@fortawesome/free-solid-svg-icons';
 
 import Ems from './Ems/Ems';
@@ -22,7 +24,9 @@ library.add(
     faTrashAlt,
     faPencilAlt,
     faCheck,
-    faTimes
+    faTimes,
+    faPlusCircle,
+    faChevronCircleRight
 );
 
 const App = () => {

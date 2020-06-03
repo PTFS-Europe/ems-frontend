@@ -14,7 +14,9 @@ const resources = {
             You: 'You',
             'Create an attachment': 'Create an attachment',
             'Send message': 'Send message',
-            'Type your message': 'Type your message'
+            'Type your message': 'Type your message',
+            'Start a new query': 'Start a new query',
+            'Enter a query title': 'Enter a query title'
         }
     }
 };

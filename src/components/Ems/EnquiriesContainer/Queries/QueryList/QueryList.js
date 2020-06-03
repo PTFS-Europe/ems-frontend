@@ -46,11 +46,17 @@ const QueryList = () => {
                 )}
             <ol role="directory" className={styles.queryList}>
                 {stateQueries.queryList &&
-                    stateQueries.queryList.map((query) => (
-                        <NavLink key={query.id} to={`/query/${query.id}`}>
-                            <Query query={query} />
-                        </NavLink>
-                    ))}
+                    stateQueries.queryList
+                        .sort(
+                            (a, b) =>
+                                Date.parse(b.updated_at) -
+                                Date.parse(a.updated_at)
+                        )
+                        .map((query) => (
+                            <NavLink key={query.id} to={`/query/${query.id}`}>
+                                <Query query={query} />
+                            </NavLink>
+                        ))}
             </ol>
         </nav>
     );
