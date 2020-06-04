@@ -39,6 +39,37 @@ export const fetchQueries = () => {
     };
 };
 
+export const updateQuerySuccess = (query) => {
+    return {
+        type: queriesTypes.UPDATE_QUERY_SUCCESS,
+        payload: query
+    };
+};
+
+export const updateQueryFailure = (error) => {
+    return {
+        type: queriesTypes.UPDATE_QUERY_FAILURE,
+        payload: error
+    };
+};
+
+// Our action creator for updating a query in our store
+export const updateQuery = (id) => {
+    return (dispatch) => {
+        // Make the request
+        return fetch(`${process.env.REACT_APP_API_URL}/queries/${id}`)
+            .then((response) => response.json())
+            .then((data) => {
+                // Update our queries state
+                dispatch(updateQuerySuccess(data));
+            })
+            .catch((error) => {
+                // Update our error state
+                dispatch(updateQueryFailure(error.message));
+            });
+    };
+};
+
 export const createQueryRequest = (requestBody) => {
     return {
         type: queriesTypes.CREATE_QUERY_REQUEST,

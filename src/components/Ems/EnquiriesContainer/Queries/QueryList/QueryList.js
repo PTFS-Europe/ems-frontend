@@ -18,6 +18,20 @@ const QueryList = () => {
     // Enable us to dispatch
     const dispatch = useDispatch();
 
+    const querySorter = (a, b) => {
+        if (
+            a.hasOwnProperty('latestMessage') &&
+            b.hasOwnProperty('latestMessage')
+        ) {
+            return (
+                Date.parse(b.latestMessage.updated_at) -
+                Date.parse(a.latestMessage.updated_at)
+            );
+        } else {
+            return Date.parse(b.updated_at) - Date.parse(a.updated_at);
+        }
+    };
+
     // When we're mounted, fetch the queries
     useEffect(() => {
         dispatch(fetchQueries());
@@ -46,17 +60,11 @@ const QueryList = () => {
                 )}
             <ol role="directory" className={styles.queryList}>
                 {stateQueries.queryList &&
-                    stateQueries.queryList
-                        .sort(
-                            (a, b) =>
-                                Date.parse(b.updated_at) -
-                                Date.parse(a.updated_at)
-                        )
-                        .map((query) => (
-                            <NavLink key={query.id} to={`/query/${query.id}`}>
-                                <Query query={query} />
-                            </NavLink>
-                        ))}
+                    stateQueries.queryList.sort(querySorter).map((query) => (
+                        <NavLink key={query.id} to={`/query/${query.id}`}>
+                            <Query query={query} />
+                        </NavLink>
+                    ))}
             </ol>
         </nav>
     );

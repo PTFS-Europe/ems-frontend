@@ -9,6 +9,11 @@ import styles from './Query.module.scss';
 
 const Query = ({ query }) => {
     const isPending = query.pending ? styles.pending : '';
+    const updatedAt = () => {
+        return query.hasOwnProperty('latestMessage')
+            ? query.latestMessage.updated_at
+            : query.updated_at;
+    };
     return (
         <li className={`${styles.query} ${isPending}`}>
             {query.latestMessage && (
@@ -25,7 +30,7 @@ const Query = ({ query }) => {
             </div>
             <div className={styles.metaActions}>
                 <div role="complementary" className={styles.timestamp}>
-                    {moment(query.updated_at).fromNow()}
+                    {moment(updatedAt()).fromNow()}
                 </div>
                 <button className={styles.queryActions}>
                     <FontAwesomeIcon icon="ellipsis-h" />

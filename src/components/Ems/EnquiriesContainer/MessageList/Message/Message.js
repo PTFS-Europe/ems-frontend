@@ -23,7 +23,7 @@ const Message = ({ message, css, isSender, updateMessage }) => {
     const finalStyles = stylesList.join(' ');
 
     const deleteMess = () => {
-        dispatch(deleteMessage({ id: message.id }));
+        dispatch(deleteMessage(message));
     };
 
     const editMess = () => {

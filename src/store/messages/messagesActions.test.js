@@ -8,6 +8,14 @@ import * as messagesTypes from './messagesTypes';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
+/*
+jest.mock('./messagesActions', () => ({
+    __esModule: true,
+    doUpdateQuery: jest.fn().mockImplementation(() => Promise.resolve())
+}));
+*/
+actions.lib.doUpdateQuery = jest.fn(() => Promise.resolve());
+
 describe('messagesActions', () => {
     afterEach(() => {
         fetchMock.restore();
@@ -89,7 +97,7 @@ describe('messagesActions', () => {
         });
         test('dispatches SEND_MESSAGE_REQUEST & SEND_MESSAGE_SUCCESS', () => {
             fetchMock.postOnce(`${process.env.REACT_APP_API_URL}/messages`, {
-                body: { content: 'Hello' }
+                body: { content: 'Hello', query_id: 1 }
             });
             const store = mockStore({ activeUser: { userDetails: { id: 1 } } });
             return store

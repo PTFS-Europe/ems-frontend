@@ -66,6 +66,21 @@ const reducer = (state = initialState, action) => {
                 queryList: filteredQueries,
                 error: action.payload
             };
+        case queriesTypes.UPDATE_QUERY_SUCCESS:
+            // Receive an updated query and update our state
+            const updatedQuery = state.queryList.map((query) => {
+                if (query.id !== action.payload.id) {
+                    return query;
+                } else {
+                    return action.payload;
+                }
+            });
+            return {
+                ...state,
+                loading: false,
+                queryList: updatedQuery,
+                error: ''
+            };
         default:
             return state;
     }

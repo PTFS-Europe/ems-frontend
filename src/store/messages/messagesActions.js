@@ -1,4 +1,15 @@
 import * as messagesTypes from './messagesTypes';
+import { updateQuery } from '../queries/queriesActions';
+
+// Call a query action which will cause an associated
+// query to update itself
+export const doUpdateQuery = (id, dispatch) => {
+    dispatch(updateQuery(id));
+};
+
+export const lib = {
+    doUpdateQuery
+};
 
 export const fetchMessagesRequest = () => {
     return {
@@ -99,10 +110,12 @@ export const sendMessage = ({ queryId, message }) => {
                 }
             })
             .then((response) => response.json())
-            .then((data) =>
+            .then((data) => {
+                // Repopulate the query metadata
+                lib.doUpdateQuery(data.query_id, dispatch);
                 // Update our messages state
-                dispatch(sendMessageSuccess({ data, tempId }))
-            )
+                return dispatch(sendMessageSuccess({ data, tempId }));
+            })
             .catch((error) =>
                 // Update our error state
                 dispatch(sendMessageFailure({ error: error.message, tempId }))
@@ -132,20 +145,23 @@ export const deleteMessageFailure = (errorPayload) => {
 };
 
 // Our action creator for deleting a message
-export const deleteMessage = ({ id }) => {
+export const deleteMessage = (message) => {
     return (dispatch) => {
         // Update our state to reflect that we've sent the request
         // This will be updated again once we have deleted the
         // message at the API
-        dispatch(deleteMessageRequest({ id }));
+        dispatch(deleteMessageRequest({ id: message.id }));
         // Make the request
-        return fetch(`${process.env.REACT_APP_API_URL}/messages/${id}`, {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            mode: 'cors',
-            method: 'DELETE'
-        })
+        return fetch(
+            `${process.env.REACT_APP_API_URL}/messages/${message.id}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors',
+                method: 'DELETE'
+            }
+        )
             .then((response) => {
                 // Fetch will not reject if we encounter an HTTP error
                 // so we need to manually reject in that case
@@ -155,13 +171,20 @@ export const deleteMessage = ({ id }) => {
                     return response;
                 }
             })
-            .then(() =>
+            .then(() => {
+                // Repopulate the query metadata
+                lib.doUpdateQuery(message.query_id, dispatch);
                 // Update our messages state
-                dispatch(deleteMessageSuccess({ id }))
-            )
+                return dispatch(deleteMessageSuccess({ id: message.id }));
+            })
             .catch((error) =>
                 // Update our error state
-                dispatch(deleteMessageFailure({ error: error.message, id }))
+                dispatch(
+                    deleteMessageFailure({
+                        error: error.message,
+                        id: message.id
+                    })
+                )
             );
     };
 };
@@ -219,10 +242,12 @@ export const editMessage = (message) => {
                 }
             })
             .then((response) => response.json())
-            .then((data) =>
+            .then((data) => {
+                // Repopulate the query metadata
+                lib.doUpdateQuery(message.query_id, dispatch);
                 // Update our messages state
-                dispatch(editMessageSuccess(data))
-            )
+                return dispatch(editMessageSuccess(data));
+            })
             .catch((error) =>
                 // Update our error state
                 dispatch(
