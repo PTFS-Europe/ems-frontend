@@ -14,7 +14,12 @@ const rootReducer = combineReducers({
     users: usersReducer
 });
 
+const composeEnhancers = composeWithDevTools({
+    trace: true,
+    traceLimit: 25
+});
+
 export const store = createStore(
     rootReducer,
-    composeWithDevTools(applyMiddleware(thunk))
+    composeEnhancers(applyMiddleware(thunk))
 );
