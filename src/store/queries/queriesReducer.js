@@ -4,7 +4,8 @@ const initialState = {
     loading: false,
     queryList: [],
     error: '',
-    search: ''
+    search: '',
+    preserved: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -20,6 +21,7 @@ const reducer = (state = initialState, action) => {
             // our state. This situation can arise if the
             // user is doing a search whilst an active query
             // is selected
+            let preserve = false;
             const queryList = action.payload.data;
             if (action.payload.queryId) {
                 // Ensure we don't add it again if it's already there
@@ -28,7 +30,7 @@ const reducer = (state = initialState, action) => {
                         returned.id === parseInt(action.payload.queryId)
                 );
                 if (!found) {
-                    const preserve = state.queryList.find(
+                    preserve = state.queryList.find(
                         (query) => query.id === parseInt(action.payload.queryId)
                     );
                     if (preserve) {
@@ -40,7 +42,8 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 queryList,
-                error: ''
+                error: '',
+                preserved: preserve ? true : false
             };
         case queriesTypes.FETCH_QUERIES_FAILURE:
             return {

@@ -104,7 +104,9 @@ const QueryList = ({ match }) => {
             // The valid length of queryList varies according to whether
             // we have an active query or not
             if (
-                (queryId && stateQueries.queryList.length === 1) ||
+                (queryId &&
+                    stateQueries.queryList.length === 1 &&
+                    stateQueries.preserved) ||
                 (!queryId && stateQueries.queryList.length === 0)
             ) {
                 return true;
