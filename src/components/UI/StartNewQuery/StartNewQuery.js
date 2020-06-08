@@ -39,7 +39,7 @@ const StartNewQuery = () => {
                     className={styles.startButton}
                 >
                     <FontAwesomeIcon
-                        className={styles.icon}
+                        className={styles.startIcon}
                         alt={t('Start a new query')}
                         icon="plus-circle"
                     />

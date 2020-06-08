@@ -1,5 +1,4 @@
 import React from 'react';
-import { createMemoryHistory } from 'history';
 import { useSelector } from 'react-redux';
 import { renderWithRouterMatch } from '../../../../../util/testHelpers';
 
@@ -18,7 +17,8 @@ const mockStateLoading = {
     queries: {
         queryList: [],
         loading: true,
-        error: ''
+        error: '',
+        search: ''
     }
 };
 
@@ -41,7 +41,8 @@ const mockState = {
             }
         ],
         loading: false,
-        error: ''
+        error: '',
+        search: ''
     }
 };
 
@@ -49,7 +50,8 @@ const mockStateEmpty = {
     queries: {
         queryList: [],
         loading: false,
-        error: ''
+        error: '',
+        search: 'abc'
     }
 };
 
@@ -70,7 +72,7 @@ jest.mock('react-redux', () => ({
     useDispatch: jest.fn().mockImplementation(() => () => {})
 }));
 
-describe('QueryList: loading', () => {
+describe('loading', () => {
     beforeEach(() => {
         useSelector.mockImplementation((callback) => {
             return callback(mockStateLoading);
@@ -86,7 +88,7 @@ describe('QueryList: loading', () => {
     });
 });
 
-describe('QueryList: populated', () => {
+describe('populated', () => {
     beforeEach(() => {
         useSelector.mockImplementation((callback) => {
             return callback(mockState);
@@ -106,7 +108,7 @@ describe('QueryList: populated', () => {
     });
 });
 
-describe('QueryList: empty', () => {
+describe('empty', () => {
     beforeEach(() => {
         useSelector.mockImplementation((callback) => {
             return callback(mockStateEmpty);
@@ -121,5 +123,45 @@ describe('QueryList: empty', () => {
         // The "Your queries" one and "No queries one"
         const heading = ql.getAllByRole('heading');
         expect(heading).toHaveLength(2);
+    });
+});
+
+describe('displays "Start new query" button correctly', () => {
+    test('active search, search returned no results and active query', () => {
+        const mockState = {
+            queries: {
+                // This is our active query
+                queryList: [{ id: 33 }],
+                loading: false,
+                error: '',
+                search: 'abc'
+            }
+        };
+        useSelector.mockImplementation((callback) => {
+            return callback(mockState);
+        });
+        ql = renderWithRouterMatch(QueryList, {
+            path: '/query/:queryId',
+            route: '/query/33'
+        });
+        const button = ql.getByText('Start a new query');
+        expect(button).toBeInTheDocument();
+    });
+    test('active search, search returned no results and no active query', () => {
+        const mockState = {
+            queries: {
+                // No active query
+                queryList: [],
+                loading: false,
+                error: '',
+                search: 'abc'
+            }
+        };
+        useSelector.mockImplementation((callback) => {
+            return callback(mockState);
+        });
+        ql = renderWithRouterMatch(QueryList);
+        const button = ql.getByText('Start a new query');
+        expect(button).toBeInTheDocument();
     });
 });

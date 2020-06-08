@@ -32,7 +32,8 @@ describe('queriesActions', () => {
         };
         expect(actions.fetchQueriesFailure({ my: 'error' })).toEqual(expected);
     });
-    test('dispatches FETCH_QUERIES_REQUEST & FETCH_QUERIES_SUCCESS', () => {
+    test('dispatches FETCH_QUERIES_REQUEST & FETCH_QUERIES_SUCCESS with no queryId', () => {
+        const store = mockStore();
         fetchMock.getOnce(`${process.env.REACT_APP_API_URL}/queries`, {
             body: { queries: ['something'] }
         });
@@ -40,11 +41,26 @@ describe('queriesActions', () => {
             { type: queriesTypes.FETCH_QUERIES_REQUEST },
             {
                 type: queriesTypes.FETCH_QUERIES_SUCCESS,
-                payload: { queries: ['something'] }
+                payload: { data: { queries: ['something'] } }
             }
         ];
-        const store = mockStore();
         return store.dispatch(actions.fetchQueries()).then(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+    test('dispatches FETCH_QUERIES_REQUEST & FETCH_QUERIES_SUCCESS with queryId', () => {
+        const store = mockStore();
+        fetchMock.getOnce(`${process.env.REACT_APP_API_URL}/queries`, {
+            body: { queries: ['something'] }
+        });
+        const expectedActions = [
+            { type: queriesTypes.FETCH_QUERIES_REQUEST },
+            {
+                type: queriesTypes.FETCH_QUERIES_SUCCESS,
+                payload: { data: { queries: ['something'] }, queryId: 1 }
+            }
+        ];
+        return store.dispatch(actions.fetchQueries({}, 1)).then(() => {
             expect(store.getActions()).toEqual(expectedActions);
         });
     });

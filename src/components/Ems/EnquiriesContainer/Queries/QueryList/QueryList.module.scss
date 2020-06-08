@@ -23,9 +23,21 @@ ol.queryList {
     padding: 0;
 }
 
+.noResultsContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .noQueries{
-    padding-top: 20px;
+    padding: 20px 0;
     font-size: 20px;
     align-self: center;
     color: #cccccc;
+}
+
+.startNewQuery {
+    align-self: center;
 }

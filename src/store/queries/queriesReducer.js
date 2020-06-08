@@ -3,7 +3,8 @@ import * as queriesTypes from './queriesTypes';
 const initialState = {
     loading: false,
     queryList: [],
-    error: ''
+    error: '',
+    search: ''
 };
 
 const reducer = (state = initialState, action) => {
@@ -14,10 +15,31 @@ const reducer = (state = initialState, action) => {
                 loading: true
             };
         case queriesTypes.FETCH_QUERIES_SUCCESS:
+            // If we've received a queryId (the ID of the
+            // active query) we need to keep that query in
+            // our state. This situation can arise if the
+            // user is doing a search whilst an active query
+            // is selected
+            const queryList = action.payload.data;
+            if (action.payload.queryId) {
+                // Ensure we don't add it again if it's already there
+                const found = queryList.find(
+                    (returned) =>
+                        returned.id === parseInt(action.payload.queryId)
+                );
+                if (!found) {
+                    const preserve = state.queryList.find(
+                        (query) => query.id === parseInt(action.payload.queryId)
+                    );
+                    if (preserve) {
+                        queryList.push(preserve);
+                    }
+                }
+            }
             return {
                 ...state,
                 loading: false,
-                queryList: action.payload,
+                queryList,
                 error: ''
             };
         case queriesTypes.FETCH_QUERIES_FAILURE:
@@ -80,6 +102,11 @@ const reducer = (state = initialState, action) => {
                 loading: false,
                 queryList: updatedQuery,
                 error: ''
+            };
+        case queriesTypes.SET_QUERY_SEARCH:
+            return {
+                ...state,
+                search: action.payload
             };
         default:
             return state;

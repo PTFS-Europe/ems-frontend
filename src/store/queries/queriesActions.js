@@ -6,10 +6,10 @@ export const fetchQueriesRequest = () => {
     };
 };
 
-export const fetchQueriesSuccess = (queries) => {
+export const fetchQueriesSuccess = (payload) => {
     return {
         type: queriesTypes.FETCH_QUERIES_SUCCESS,
-        payload: queries
+        payload
     };
 };
 
@@ -21,16 +21,23 @@ export const fetchQueriesFailure = (error) => {
 };
 
 // Our action creator for fetching queries
-export const fetchQueries = () => {
+export const fetchQueries = (params, queryId) => {
     return (dispatch) => {
         // Set our loading state to true
         dispatch(fetchQueriesRequest());
+        let append = [];
+        if (params) {
+            append = Object.keys(params).map(
+                (param) => `${param}=${params[param]}`
+            );
+        }
+        const appendStr = append.length > 0 ? '?' + append.join('&') : '';
         // Make the request
-        return fetch(`${process.env.REACT_APP_API_URL}/queries`)
+        return fetch(`${process.env.REACT_APP_API_URL}/queries${appendStr}`)
             .then((response) => response.json())
             .then((data) => {
                 // Update our queries state
-                dispatch(fetchQueriesSuccess(data));
+                dispatch(fetchQueriesSuccess({ data, queryId }));
             })
             .catch((error) => {
                 // Update our error state
@@ -144,5 +151,12 @@ export const createQuery = ({ query }) => {
                 // Update our error state
                 dispatch(createQueryFailure({ error: error.message, tempId }))
             );
+    };
+};
+
+export const setQuerySearch = ({ search }) => {
+    return {
+        type: queriesTypes.SET_QUERY_SEARCH,
+        payload: search
     };
 };

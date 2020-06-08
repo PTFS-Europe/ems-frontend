@@ -1,8 +1,6 @@
 @import '../../../../../variables.scss';
 
 .querySearch {
-    display: flex;
-    flex-direction: column;
     padding: 20px;
     background: $query-search-background;
     box-shadow: 2px 5px 5px 0px rgba(0,0,0,0.1);
@@ -12,25 +10,37 @@
     display: flex;
     align-items: stretch;
     box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.1);
+    background: #fff;
 }
 
 .searchIcon {
-    background: #fff;
+    align-self: center;
     border-radius: 5px 0 0 5px;
-    padding: 7px 10px;
+    padding: 0 10px;
     font-size: 20px;
     color: $query-search-icon;
 }
 
 .querySearchInput {
     flex: 1;
-    background: #fff;
     font-size: 20px;
     padding: 7px 10px;
     border: 0;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0;
     color: #aaa;
+    outline: none;
 }
 .querySearchInput::placeholder {
     color: $query-search-placeholder;
+}
+
+.newQueryButton {
+    align-self: center;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    padding: 0 10px;
+    font-size: 20px;
+    color: $query-search-icon;
+    cursor: pointer;
 }
