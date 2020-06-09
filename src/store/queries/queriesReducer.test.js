@@ -7,14 +7,16 @@ const initialState = {
     loading: false,
     queryList: [],
     error: '',
-    search: ''
+    search: '',
+    preserved: false
 };
 
 const populatedState = {
     loading: false,
     queryList: [{ id: 1 }, { id: 2 }, { id: 3 }],
     error: '',
-    search: ''
+    search: '',
+    preserved: false
 };
 
 describe('queriesReducer', () => {
@@ -28,7 +30,8 @@ describe('queriesReducer', () => {
             loading: true,
             queryList: [],
             error: '',
-            search: ''
+            search: '',
+            preserved: false
         });
     });
     test('should handle FETCH_QUERIES_SUCCESS', () => {
@@ -41,7 +44,8 @@ describe('queriesReducer', () => {
             loading: false,
             queryList: [{ test: 'test' }],
             error: '',
-            search: ''
+            search: '',
+            preserved: false
         });
     });
     // If a query ID is passed, we should preserve that query in
@@ -56,7 +60,8 @@ describe('queriesReducer', () => {
             loading: false,
             queryList: [{ id: 4 }, { id: 2 }],
             error: '',
-            search: ''
+            search: '',
+            preserved: true
         });
     });
     test('should handle FETCH_QUERIES_FAILURE', () => {
@@ -69,7 +74,8 @@ describe('queriesReducer', () => {
             loading: false,
             queryList: [],
             error: 'Oh no',
-            search: ''
+            search: '',
+            preserved: false
         });
     });
 });

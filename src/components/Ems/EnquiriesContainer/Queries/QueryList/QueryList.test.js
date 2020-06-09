@@ -128,13 +128,16 @@ describe('empty', () => {
 
 describe('displays "Start new query" button correctly', () => {
     test('active search, search returned no results and active query', () => {
+        // Active query is the query in queryList, so the button should
+        // not display
         const mockState = {
             queries: {
                 // This is our active query
                 queryList: [{ id: 33 }],
                 loading: false,
                 error: '',
-                search: 'abc'
+                search: 'abc',
+                preserved: false
             }
         };
         useSelector.mockImplementation((callback) => {
@@ -144,8 +147,30 @@ describe('displays "Start new query" button correctly', () => {
             path: '/query/:queryId',
             route: '/query/33'
         });
-        const button = ql.getByText('Start a new query');
-        expect(button).toBeInTheDocument();
+        const button = ql.queryByText('Start a new query');
+        expect(button).not.toBeInTheDocument();
+    });
+    test('active search, search returned no results and active query', () => {
+        // Active query is not the query we already have, so the button should
+        // not display
+        const mockState = {
+            queries: {
+                queryList: [{ id: 34 }],
+                loading: false,
+                error: '',
+                search: 'abc',
+                preserved: false
+            }
+        };
+        useSelector.mockImplementation((callback) => {
+            return callback(mockState);
+        });
+        ql = renderWithRouterMatch(QueryList, {
+            path: '/query/:queryId',
+            route: '/query/33'
+        });
+        const button = ql.queryByText('Start a new query');
+        expect(button).not.toBeInTheDocument();
     });
     test('active search, search returned no results and no active query', () => {
         const mockState = {
@@ -154,7 +179,8 @@ describe('displays "Start new query" button correctly', () => {
                 queryList: [],
                 loading: false,
                 error: '',
-                search: 'abc'
+                search: 'abc',
+                preserved: false
             }
         };
         useSelector.mockImplementation((callback) => {
