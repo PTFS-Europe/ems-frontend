@@ -11,7 +11,8 @@ import {
     faCheck,
     faTimes,
     faPlusCircle,
-    faChevronCircleRight
+    faChevronCircleRight,
+    faDownload
 } from '@fortawesome/free-solid-svg-icons';
 
 import Ems from './Ems/Ems';
@@ -26,7 +27,8 @@ library.add(
     faCheck,
     faTimes,
     faPlusCircle,
-    faChevronCircleRight
+    faChevronCircleRight,
+    faDownload
 );
 
 const App = () => {

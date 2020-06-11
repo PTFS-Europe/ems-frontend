@@ -14,6 +14,12 @@ jest.mock('react-redux', () => ({
     useDispatch: jest.fn().mockImplementation(() => () => {})
 }));
 
+jest.mock('@fortawesome/react-fontawesome', () => ({
+    FontAwesomeIcon: (props) => {
+        return <i className="fa" alt={props.alt} />;
+    }
+}));
+
 let m;
 
 const mockMessage = {
@@ -23,7 +29,30 @@ const mockMessage = {
     content: 'Testing 1,2,3',
     created_at: '2020-05-04 11:59:02.614159+01',
     updated_at: '2020-05-04 11:59:02.614159+01',
-    filename: null
+    filename: null,
+    originalname: null
+};
+const mockUploading = {
+    id: 2,
+    query_id: 1,
+    creator_id: 2,
+    content: null,
+    created_at: '2020-05-04 11:59:02.614159+01',
+    updated_at: '2020-05-04 11:59:02.614159+01',
+    filename: 'myfile-1234.txt',
+    originalname: 'myfile.txt',
+    uploading: true
+};
+
+const mockAttachment = {
+    id: 2,
+    query_id: 1,
+    creator_id: 2,
+    content: null,
+    created_at: '2020-05-04 11:59:02.614159+01',
+    updated_at: '2020-05-04 11:59:02.614159+01',
+    filename: 'myfile-1234.txt',
+    originalname: 'myfile.txt'
 };
 
 describe('Message display', () => {
@@ -33,5 +62,37 @@ describe('Message display', () => {
     test('displays message container', () => {
         const container = m.getByRole('listitem');
         expect(container).toBeTruthy();
+    });
+    test('displays message content', () => {
+        const content = m.getByText('Testing 1,2,3');
+        expect(content).toBeTruthy();
+    });
+});
+
+describe('Attachment uploading', () => {
+    beforeEach(() => {
+        m = render(<Message message={mockUploading} />);
+    });
+    test('displays message container', () => {
+        const container = m.getByRole('listitem');
+        expect(container).toBeTruthy();
+    });
+    test('displays loading spinner', () => {
+        const alert = m.getByRole('alert');
+        expect(alert).toBeTruthy();
+    });
+});
+
+describe('Attachment display', () => {
+    beforeEach(() => {
+        m = render(<Message message={mockAttachment} />);
+    });
+    test('displays attachment container', () => {
+        const container = m.getByRole('listitem');
+        expect(container).toBeTruthy();
+    });
+    test('displays download link', () => {
+        const link = m.getByRole('link');
+        expect(link).toBeTruthy();
     });
 });

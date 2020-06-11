@@ -1,3 +1,5 @@
+import uid from 'uid';
+
 import * as messagesTypes from './messagesTypes';
 import { updateQuery } from '../queries/queriesActions';
 
@@ -86,7 +88,7 @@ export const sendMessage = ({ queryId, message }) => {
         // Generate a temporary ID for this message, it will enable
         // us to find this message when we get a response and need to
         // replace it
-        const tempId = Date.now();
+        const tempId = uid();
         // Update our state to reflect that we've sent the request
         // We update our state with the message here, it is then
         // replaced once we receive a response
@@ -252,6 +254,121 @@ export const editMessage = (message) => {
                 // Update our error state
                 dispatch(
                     editMessageFailure({ error: error.message, id: message.id })
+                )
+            );
+    };
+};
+
+export const uploadFileRequest = (payload) => {
+    return {
+        type: messagesTypes.UPLOAD_FILE_REQUEST,
+        payload
+    };
+};
+
+export const uploadFileSuccess = (payload) => {
+    return {
+        type: messagesTypes.UPLOAD_FILE_SUCCESS,
+        payload
+    };
+};
+
+export const uploadFileFailure = (errorPayload) => {
+    return {
+        type: messagesTypes.UPLOAD_FILE_FAILURE,
+        payload: errorPayload
+    };
+};
+
+// Our action creator for uploading a file
+export const uploadFile = (files, queryId) => {
+    return (dispatch, getState) => {
+        // Create the formdata
+        let formData = new FormData();
+
+        // Create an message tempId => filename mapping
+        // This will enable us to update the correct message
+        // when file uploads are complete
+        const messageIdFilenameMap = {};
+
+        // We need an array of messages to pass to the uploadFileRequest
+        // reducer, so we can temporarily add them to the state while
+        // they upload
+        let messageArray = [];
+
+        // files is a FileList, not an array. Although it does share
+        // much of its API, so we can convert it into an array
+        const fileArray = Array.from(files);
+
+        // The name of the fieldname needs to vary depending on the
+        // number of files, the [] indicates this is an array of files
+        const key = fileArray.length === 1 ? 'userfile' : 'userfiles[]';
+
+        // Determine the active user
+        const { userDetails } = getState().activeUser;
+
+        // Iterate through our files
+        fileArray.forEach((file) => {
+            // Add the file to the form body
+            formData.append(key, file);
+            // Prepare an object to be tempoarily added to our messageList
+            // Generate a temporary ID for this message, it will enable
+            // us to find this message when we get a response and need to
+            // replace it. Add the temporary ID and filename to our mapping
+            const tempId = uid();
+            let sendObj = {
+                id: tempId,
+                creator_id: userDetails.id,
+                query_id: queryId,
+                content: null,
+                originalname: file.name,
+                pending: true
+            };
+            messageIdFilenameMap[file.name] = tempId;
+            messageArray.push(sendObj);
+        });
+
+        // Update our state to reflect that we're uploading
+        // This will be updated again once we have confirmation from
+        // the API that the file was received
+        dispatch(uploadFileRequest(messageArray));
+
+        // Append the additional data required
+        formData.append('queryId', queryId);
+        formData.append('userId', userDetails.id);
+
+        // Make the request
+        return fetch(`${process.env.REACT_APP_API_URL}/upload`, {
+            method: 'POST',
+            body: formData
+        })
+            .then((response) => {
+                // Fetch will not reject if we encounter an HTTP error
+                // so we need to manually reject in that case
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                } else {
+                    return response;
+                }
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                // Repopulate the query metadata
+                lib.doUpdateQuery(queryId, dispatch);
+                // Replace the temporary messages with actual ones
+                dispatch(
+                    uploadFileSuccess({
+                        data,
+                        messageMap: messageIdFilenameMap
+                    })
+                );
+            })
+            .catch((error) =>
+                dispatch(
+                    uploadFileFailure({
+                        error,
+                        messageMap: messageIdFilenameMap
+                    })
                 )
             );
     };

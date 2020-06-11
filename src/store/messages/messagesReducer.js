@@ -32,7 +32,6 @@ const reducer = (state = initialState, action) => {
             // be replaced if/when a response arrives
             return {
                 ...state,
-                loading: true,
                 messageList: [...state.messageList, action.payload]
             };
         case messagesTypes.SEND_MESSAGE_SUCCESS:
@@ -79,7 +78,6 @@ const reducer = (state = initialState, action) => {
             });
             return {
                 ...state,
-                loading: true,
                 messageList: updatedMessagesDelPending
             };
         case messagesTypes.DELETE_MESSAGE_SUCCESS:
@@ -128,7 +126,6 @@ const reducer = (state = initialState, action) => {
             });
             return {
                 ...state,
-                loading: true,
                 messageList: updatedMessagesEditPending
             };
         case messagesTypes.EDIT_MESSAGE_SUCCESS:
@@ -162,6 +159,74 @@ const reducer = (state = initialState, action) => {
                 loading: false,
                 messageList: updatedMessagesEditFailure,
                 error: action.payload
+            };
+        case messagesTypes.UPLOAD_FILE_REQUEST:
+            // Add the uploading flag to the messages
+            const msgUploading = action.payload.map((message) => ({
+                ...message,
+                uploading: true
+            }));
+            return {
+                ...state,
+                messageList: [...state.messageList, ...msgUploading]
+            };
+        case messagesTypes.UPLOAD_FILE_SUCCESS:
+            // Find and replace the messages that we've just
+            // received from the API
+            // Our iteration of messageList is reversed because it is
+            // conceivable that the user will have uploaded files with
+            // the same name multiple times, the one we want is the most
+            // recent one. We also keep track of how many replacements we've made
+            // so we can stop when we're done
+            let replacements = 0;
+            const msgMapSuccess = action.payload.messageMap;
+            const updatedMsg = state.messageList.reverse().map((msg) => {
+                // If this message is one we're concerned with
+                if (
+                    msgMapSuccess.hasOwnProperty(msg.originalname) &&
+                    replacements < Object.keys(msgMapSuccess).length
+                ) {
+                    const newMsg = action.payload.data.find(
+                        (retMsg) => retMsg.originalname === msg.originalname
+                    );
+                    replacements++;
+                    return newMsg;
+                } else {
+                    return msg;
+                }
+            });
+            return {
+                ...state,
+                messageList: updatedMsg.reverse()
+            };
+        case messagesTypes.UPLOAD_FILE_FAILURE:
+            // The upload probably didn't get accepted by the API,
+            // so remove it from our local state
+            // TODO: We should probably replace the message with an
+            // "Unable to send" error instead
+            // Our iteration of messageList is reversed because it is
+            // conceivable that the user will have uploaded files with
+            // the same name multiple times, the one we want is the most
+            // recent one. We also keep track of how many replacements we've made
+            // so we can stop when we're done
+            let removals = 0;
+            let msgMapFailure = action.payload.messageMap;
+            const filtered = state.messageList.reverse().filter((msg) => {
+                if (
+                    msgMapFailure.hasOwnProperty(msg.originalname) &&
+                    removals < Object.keys(msgMapFailure).length
+                ) {
+                    removals++;
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+            return {
+                ...state,
+                loading: false,
+                messageList: filtered.reverse(),
+                error: action.payload.error
             };
         default:
             return state;

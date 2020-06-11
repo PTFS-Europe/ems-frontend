@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as messagesTypes from '../../../../../store/messages/messagesTypes';
 import {
     sendMessage,
-    editMessage
+    editMessage,
+    uploadFile
 } from '../../../../../store/messages/messagesActions';
 
 import styles from './QueryEntry.module.scss';
@@ -21,14 +22,15 @@ const QueryEntry = ({ match, message, updateMessage }) => {
     const dispatch = useDispatch();
     const stateMessages = useSelector((state) => state.messages);
 
+    // The ID of the query currently being viewed
+    const queryId = parseInt(match.params.queryId);
+
     useEffect(() => {
         setEdit(message.id ? styles.edit : '');
     }, [message]);
 
     // Call the redux action for sending the message to the API
     const dispatchSendAction = () => {
-        // The ID of the query currently being viewed
-        const queryId = parseInt(match.params.queryId);
         // We pass the query ID that the message is being sent
         // to, also the body of the message. The API call
         // requires the active user, the action determines this
@@ -77,6 +79,19 @@ const QueryEntry = ({ match, message, updateMessage }) => {
             }
         }
     };
+
+    // Should the file upload be disabled, if so return
+    // the appropriate style
+    const uploadDisabled = () => {
+        return message.content.length > 0 || stateMessages.loading
+            ? styles.fileLabelDisabled
+            : '';
+    };
+
+    const handleUpload = (event) => {
+        dispatch(uploadFile(event.target.files, queryId));
+    };
+
     return (
         <form className={styles.entryContainer}>
             <TextareaAutosize
@@ -92,19 +107,29 @@ const QueryEntry = ({ match, message, updateMessage }) => {
             <div className={`${styles.entryIconsContainer} ${edit}`}>
                 {!message.hasOwnProperty('id') && (
                     <div className={styles.entryIcons}>
-                        <button
-                            type="button"
-                            disabled={
-                                message.content.length > 0 ||
-                                stateMessages.loading
-                            }
-                            className={styles.entryButton}
+                        <label
+                            data-testid="fileattachlabel"
+                            className={`${
+                                styles.fileLabel
+                            } ${uploadDisabled()}`}
                         >
                             <FontAwesomeIcon
                                 alt={t('Create an attachment')}
                                 icon="paperclip"
                             />
-                        </button>
+                            <input
+                                multiple
+                                data-testid="fileattach"
+                                onChange={handleUpload}
+                                disabled={
+                                    message.content.length > 0 ||
+                                    stateMessages.loading
+                                }
+                                type="file"
+                                className={styles.fileInput}
+                                aria-label={t('File picker')}
+                            />
+                        </label>
                         <button
                             type="button"
                             className={styles.entryButton}

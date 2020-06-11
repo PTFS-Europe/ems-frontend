@@ -34,13 +34,31 @@
 }
 
 .messageStaff .messageText {
-    background: $message-staff-background;
     color: $message-staff-text;
+    a:link,
+    a:visited,
+    a:hover,
+    a:active {
+        color: $message-staff-text;
+    }
+}
+
+.messageStaff .messageText {
+    background: $message-staff-background;
+}
+
+.messageCustomer .messageText {
+    color: $message-customer-text;
+    a:link,
+    a:visited,
+    a:hover,
+    a:active {
+        color: $message-customer-text;
+    }
 }
 
 .messageCustomer .messageText {
     background: $message-customer-background;
-    color: $message-customer-text;
 }
 
 .message:first-child .messageText {
@@ -53,4 +71,15 @@
 
 .message:only-child .messageText {
     border-radius: 20px 20px 20px 20px;
+}
+
+.attachment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fileIcon {
+    font-size: 30px;
+    margin-bottom: 10px;
 }

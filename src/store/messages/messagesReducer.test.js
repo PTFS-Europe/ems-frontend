@@ -56,8 +56,8 @@ describe('messagesReducer', () => {
                     payload: { id: 1 }
                 })
             ).toEqual({
-                loading: true,
                 messageList: [{ id: 1 }],
+                loading: false,
                 error: ''
             });
         });
@@ -143,8 +143,8 @@ describe('messagesReducer', () => {
                 ]
             };
             const deleteUpdatedState = {
-                loading: true,
                 error: '',
+                loading: false,
                 messageList: [
                     {
                         id: 1,
@@ -242,8 +242,8 @@ describe('messagesReducer', () => {
                 ]
             };
             const editUpdatedState = {
-                loading: true,
                 error: '',
+                loading: false,
                 messageList: [
                     {
                         id: 1,
@@ -324,6 +324,160 @@ describe('messagesReducer', () => {
                 messageList: [],
                 error: 'Oh no'
             });
+        });
+    });
+    describe('upload', () => {
+        test('should handle UPLOAD_FILE_REQUEST', () => {
+            const uploadInitialState = {
+                error: '',
+                loading: false,
+                messageList: [
+                    {
+                        id: 1,
+                        content: 'Hello there'
+                    },
+                    {
+                        id: 2,
+                        content: 'What brings you out this far?'
+                    }
+                ]
+            };
+            const uploadUpdatedState = {
+                error: '',
+                loading: false,
+                messageList: [
+                    {
+                        id: 1,
+                        content: 'Hello there'
+                    },
+                    {
+                        id: 2,
+                        content: 'What brings you out this far?'
+                    },
+                    {
+                        id: 3,
+                        content: 'Very interesting',
+                        uploading: true
+                    },
+                    {
+                        id: 4,
+                        content: 'Quickly, they are on the move',
+                        uploading: true
+                    }
+                ]
+            };
+            expect(
+                reducer(uploadInitialState, {
+                    type: messagesTypes.UPLOAD_FILE_REQUEST,
+                    payload: [
+                        { id: 3, content: 'Very interesting' },
+                        { id: 4, content: 'Quickly, they are on the move' }
+                    ]
+                })
+            ).toEqual(uploadUpdatedState);
+        });
+        test('should handle UPLOAD_FILE_SUCCESS', () => {
+            const uploadInitialState = {
+                ...initialState,
+                messageList: [
+                    {
+                        id: 1,
+                        content: 'Hello there'
+                    },
+                    {
+                        id: 2,
+                        content: 'What brings you out this far?'
+                    },
+                    {
+                        id: 3,
+                        content: 'Very interesting',
+                        uploading: true,
+                        originalname: 'myfile.txt'
+                    }
+                ]
+            };
+            const uploadUpdatedState = {
+                ...initialState,
+                messageList: [
+                    {
+                        id: 1,
+                        content: 'Hello there'
+                    },
+                    {
+                        id: 2,
+                        content: 'What brings you out this far?'
+                    },
+                    {
+                        id: 3,
+                        content: 'Very interesting',
+                        originalname: 'myfile.txt'
+                    }
+                ]
+            };
+            expect(
+                reducer(uploadInitialState, {
+                    type: messagesTypes.UPLOAD_FILE_SUCCESS,
+                    payload: {
+                        data: [
+                            {
+                                id: 3,
+                                content: 'Very interesting',
+                                originalname: 'myfile.txt'
+                            }
+                        ],
+                        messageMap: {
+                            'myfile.txt': 3
+                        }
+                    }
+                })
+            ).toEqual(uploadUpdatedState);
+        });
+        test('should handle UPLOAD_FILE_FAILURE', () => {
+            const uploadInitialState = {
+                ...initialState,
+                messageList: [
+                    {
+                        id: 1,
+                        content: 'Hello there'
+                    },
+                    {
+                        id: 2,
+                        content: 'What brings you out this far?'
+                    },
+                    {
+                        id: 3,
+                        content: 'Very interesting',
+                        uploading: true,
+                        originalname: 'myfile.txt'
+                    }
+                ]
+            };
+            const uploadFailedState = {
+                ...initialState,
+                loading: false,
+                error: 'Oh no',
+                messageList: [
+                    {
+                        id: 1,
+                        content: 'Hello there'
+                    },
+                    {
+                        id: 2,
+                        content: 'What brings you out this far?'
+                    }
+                ]
+            };
+            expect(
+                reducer(uploadInitialState, {
+                    type: messagesTypes.UPLOAD_FILE_FAILURE,
+                    payload: {
+                        messageMap: {
+                            'myfile.txt': 3
+                        },
+                        error: 'Oh no'
+                    }
+                })
+            ).toEqual(uploadFailedState);
         });
     });
 });

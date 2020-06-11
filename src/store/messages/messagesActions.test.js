@@ -207,4 +207,53 @@ describe('messagesActions', () => {
                 });
         });
     });
+    describe('upload', () => {
+        test('uploadFileRequest', async () => {
+            const expected = {
+                type: messagesTypes.UPLOAD_FILE_REQUEST,
+                payload: { test: 'me' }
+            };
+            expect(actions.uploadFileRequest({ test: 'me' })).toEqual(expected);
+        });
+        test('uploadFileSuccess', async () => {
+            const expected = {
+                type: messagesTypes.UPLOAD_FILE_SUCCESS,
+                payload: { test: 'me' }
+            };
+            expect(actions.uploadFileSuccess({ test: 'me' })).toEqual(expected);
+        });
+        test('uploadFileFailure', async () => {
+            const expected = {
+                type: messagesTypes.UPLOAD_FILE_FAILURE,
+                payload: { test: 'me' }
+            };
+            expect(actions.uploadFileFailure({ test: 'me' })).toEqual(expected);
+        });
+        test('dispatches UPLOAD_FILE_REQUEST & UPLOAD_FILE_SUCCESS', () => {
+            fetchMock.postOnce(`${process.env.REACT_APP_API_URL}/upload`, {
+                body: { id: 1, originalname: 'myfile.txt' }
+            });
+            const store = mockStore({ activeUser: { userDetails: { id: 1 } } });
+            return store
+                .dispatch(actions.uploadFile([{ name: 'myfile.txt' }], 3))
+                .then(() => {
+                    const [requestResp, successResp] = store.getActions();
+                    expect(requestResp.payload).toHaveLength(1);
+                    expect(requestResp.payload[0].query_id).toEqual(3);
+                    expect(requestResp.payload[0].creator_id).toEqual(1);
+                    expect(requestResp.payload[0].content).toEqual(null);
+                    expect(requestResp.payload[0].originalname).toEqual(
+                        'myfile.txt'
+                    );
+                    expect(successResp.payload.data.originalname).toEqual(
+                        'myfile.txt'
+                    );
+                    // We test the keys here because the property value will
+                    // be the randomly generated ID
+                    expect(
+                        Object.keys(successResp.payload.messageMap)
+                    ).toEqual(['myfile.txt']);
+                });
+        });
+    });
 });

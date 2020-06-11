@@ -64,3 +64,19 @@ textarea.entryBox::placeholder {
 .entryButton:first-child {
     margin-right: 15px;
 }
+
+.fileInput {
+    display: none;
+}
+
+.fileLabel {
+    color: #aaa;
+    cursor: pointer;
+    font-size: 30px;
+    background: inherit;
+    margin-right: 15px;
+}
+
+.fileLabelDisabled {
+    color: #ccc;
+}

@@ -1,10 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 import styles from './LoadingSpinner.module.scss';
 
-const LoadingSpinner = () => {
+const LoadingSpinner = ({ colour }) => {
     const { t } = useTranslation();
+
+    const colourStyle = colour ? { background: colour } : {};
 
     return (
         <div
@@ -14,12 +17,16 @@ const LoadingSpinner = () => {
             title={t('Loading')}
             className={styles.loadingSpinner}
         >
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div style={colourStyle}></div>
+            <div style={colourStyle}></div>
+            <div style={colourStyle}></div>
+            <div style={colourStyle}></div>
         </div>
     );
+};
+
+LoadingSpinner.propTypes = {
+    colour: PropTypes.string
 };
 
 export default LoadingSpinner;
