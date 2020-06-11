@@ -2,26 +2,23 @@
     display: flex;
     align-items: stretch;
     background: #e8e8e8;
-    padding: 30px;
+    padding: 25px;
+    border-radius: 0px 0px 12px 0px;
 }
 
 textarea.entryBox {
     flex: 1;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     color: #aaa;
     background: #fff;
     resize: none;
     border: 0;
-    border-radius: 30px 0 0 30px;
-    padding: 20px 30px;
+    border-radius: 24px 0 0 24px;
+    padding: 17px 23px;
     outline: none;
     line-height: 25px;
     transition: background 0.3s;
-}
-
-textarea.entryBox.edit {
-    background: rgba(198,198,80,0.1);
 }
 
 textarea.entryBox::placeholder {
@@ -30,18 +27,14 @@ textarea.entryBox::placeholder {
 
 .entryIconsContainer {
     background: #fff;
-    border-radius: 0 30px 30px 0;
-    min-width: 150px;
+    border-radius: 0 24px 24px 0;
+    min-width: 93px;
     color: #aaa;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding-bottom: 10px;
+    padding-bottom: 13px;
     transition: background 0.3s;
-}
-
-.entryIconsContainer.edit {
-    background: rgba(198,198,80,0.1);
 }
 
 .entryIcons {
@@ -50,7 +43,7 @@ textarea.entryBox::placeholder {
 
 .entryButton {
     color: #aaa;
-    font-size: 30px;
+    font-size: 24px;
     border: 0;
     background: inherit;
     cursor: pointer;
@@ -62,5 +55,5 @@ textarea.entryBox::placeholder {
 }
 
 .entryButton:first-child {
-    margin-right: 15px;
+    margin-right: 5px;
 }
