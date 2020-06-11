@@ -10,11 +10,13 @@ a {
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
+    border-radius: 0px 0px 0px 12px;
+    background-color: #fff;
 }
 
 .yourQueries {
     padding: 0 20px;
-    font-size: 20px;
+    font-size: 17px;
     color: $query-list-your-queries;
 }
 

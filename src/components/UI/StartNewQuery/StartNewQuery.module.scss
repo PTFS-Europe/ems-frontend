@@ -27,14 +27,14 @@
     padding: 10px 20px;
     color: #fff;
     outline: none;
-    border: 2px solid $query-header-background;
-    border-radius: 5px;
+    background-color: #1e2c3c;
+    border-radius: 25px;
     font-size: 20px;
 }
 
 .queryTitle {
     width: 20em;
-    color: #aaa;
+    color: #fff;
     padding: 0;
     border: 0;
     outline: none;
@@ -42,11 +42,11 @@
 }
 
 .queryTitle::placeholder {
-    color: #aaa;
+    color: #fff;
 }
 
 .entryButton {
-    color: $query-header-background;
+    color: #fff;
     border: 0;
     background: inherit;
     cursor: pointer;

@@ -3,6 +3,7 @@
 .message {
     display: flex;
     align-items: center;
+    margin-bottom: -2px;
 }
 
 .message > div.actionContainer {
@@ -20,6 +21,7 @@
     margin: 2px 0;
     border-radius: 4px 20px 20px 4px;
     padding: 10px 15px;
+    font-size: 14px;
 }
 
 .edited {

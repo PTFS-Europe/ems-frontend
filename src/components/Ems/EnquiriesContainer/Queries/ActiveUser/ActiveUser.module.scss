@@ -5,11 +5,12 @@
     align-items: center;
     padding: 15px 20px;
     background: $active-user-background;
-    box-shadow: 2px 5px 5px 0px rgba(0,0,0,0.1);
+    border-radius: 12px 0px 0px 0px;
+    max-height: 66px;
 }
 
 h1.userName {
-    font-size: 25px;
+    font-size: 20px;
     color: $active-user-text;
     font-weight: 500;
 }

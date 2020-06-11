@@ -10,6 +10,8 @@ body {
     font-family: $font-family;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: #c4c4c4;
+    overflow: hidden;
 }
 
 textarea, input, button, select { font-family: inherit; font-size: inherit; }
