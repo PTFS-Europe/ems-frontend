@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Truncate from 'react-truncate';
 
 import UserIcon from '../../../../../UI/UserIcon/UserIcon';
 
@@ -24,7 +25,9 @@ const Query = ({ query }) => {
                 <h1 className={styles.queryTitle}>{query.title}</h1>
                 {query.latestMessage && (
                     <div className={styles.headMessage}>
-                        {query.latestMessage.content}
+                        <Truncate lines={3}>
+                            {query.latestMessage.content}
+                        </Truncate>
                     </div>
                 )}
             </div>

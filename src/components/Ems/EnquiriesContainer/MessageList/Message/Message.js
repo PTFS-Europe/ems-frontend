@@ -79,12 +79,15 @@ const Message = ({ message, css, isSender, updateMessage }) => {
 
     return (
         <li className={finalStyles}>
-            <span className={styles.messageText}>
-                {messageDisplay()}
-                {message.created_at !== message.updated_at && (
-                    <div className={styles.edited}>(edited)</div>
-                )}
-            </span>
+            <div className={styles.messageText}>
+                <div>
+                    {/* ^^^ Do not remove this div, it preserves the vertical-ness of the text & "edited" */}
+                    {messageDisplay()}
+                    {message.created_at !== message.updated_at && (
+                        <div className={styles.edited}>(edited)</div>
+                    )}
+                </div>
+            </div>
             {isSender && (
                 <div className={styles.actionContainer}>
                     <MessageActions actions={validActions()} />
