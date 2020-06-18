@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import Folder from './Folder/Folder';
+import CalculatedFolders from './CalculatedFolders/CalculatedFolders';
 
 import { fetchFolders } from '../../../../../store/folders/foldersActions';
 import LoadingSpinner from '../../../../UI/LoadingSpinner/LoadingSpinner';
@@ -32,6 +33,9 @@ const Folders = () => {
     return (
         <aside className={styles.container}>
             <h1 className={styles.heading}>{t('Folders')}</h1>
+            <ul className={styles.folderList}>
+                <CalculatedFolders />
+            </ul>
             {stateFolders && stateFolders.loading && (
                 <div className={styles.loading}>
                     <LoadingSpinner />

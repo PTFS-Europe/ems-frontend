@@ -69,7 +69,7 @@ describe('queriesActions', () => {
     test('makes API request with passed parameters', () => {
         const store = mockStore();
         fetchMock.getOnce(
-            `${process.env.REACT_APP_API_URL}/queries?title=Mos%20Eisley%20Spaceport&folder=INBOX&label=1`,
+            `${process.env.REACT_APP_API_URL}/queries?title=Mos%20Eisley%20Spaceport&folder=UNREAD&label=1`,
             {
                 body: { queries: ['something'] }
             }
@@ -87,7 +87,7 @@ describe('queriesActions', () => {
                     search: {
                         title: 'Mos Eisley Spaceport'
                     },
-                    folder: 'INBOX',
+                    folder: 'UNREAD',
                     label: 1
                 })
             )

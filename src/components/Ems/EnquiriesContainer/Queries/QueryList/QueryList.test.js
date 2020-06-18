@@ -15,7 +15,7 @@ jest.mock('./Query/Query', () => {
 
 const mockStateFolders = {
     folders: {
-        folderList: [{ code: 'INBOX' }],
+        folderList: [{ code: 'UNREAD' }],
         loading: false,
         error: '',
         filter: ''
@@ -243,7 +243,7 @@ describe('displays "Start new query" button correctly', () => {
                 queryList: [
                     {
                         id: 1,
-                        folder: 'INBOX',
+                        folder: 'UNREAD',
                         initiator: 1,
                         participants: [1, 2]
                     }
@@ -255,7 +255,7 @@ describe('displays "Start new query" button correctly', () => {
             },
             folders: {
                 ...mockStateFolders.folders,
-                filter: 'INBOX'
+                filter: 'UNREAD'
             },
             ...mockStateLabels
         };
@@ -278,7 +278,7 @@ describe('displays "Start new query" button correctly', () => {
             },
             folders: {
                 ...mockStateFolders.folders,
-                filter: 'INBOX'
+                filter: 'UNREAD'
             },
             ...mockStateLabels
         };
@@ -296,7 +296,7 @@ describe('displays "Start new query" button correctly', () => {
                 queryList: [
                     {
                         id: 1,
-                        folder: 'INBOX',
+                        folder: 'UNREAD',
                         initiator: 1,
                         participants: [1, 2]
                     }

@@ -134,6 +134,8 @@ export const createQuery = ({ query }) => {
             createQueryRequest({
                 ...sendObj,
                 id: tempId,
+                initiator: userDetails.id,
+                participants: [],
                 pending: true,
                 updated_at: currentDate
             })

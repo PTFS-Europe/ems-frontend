@@ -26,7 +26,7 @@ let m;
 
 const mockLabel = {
     id: 1,
-    name: 'Inbox',
+    name: 'Unread',
     position: 0,
     colour: '#f00',
     count: 10,
@@ -57,7 +57,7 @@ describe('Label display', () => {
             expect(content).toBeTruthy();
         });
         test('displays label name button with correct text', () => {
-            const content = m.getByText('Inbox');
+            const content = m.getByText('Unread');
             expect(content).toBeTruthy();
         });
         test('displays label count', () => {

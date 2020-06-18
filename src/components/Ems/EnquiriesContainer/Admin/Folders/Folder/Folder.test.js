@@ -26,8 +26,8 @@ let m;
 
 const mockFolder = {
     id: 1,
-    name: 'Inbox',
-    code: 'INBOX',
+    name: 'Unread',
+    code: 'UNREAD',
     position: 0,
     count: 10,
     created_at: '2020-05-04 11:59:02.614159+01',
@@ -57,7 +57,7 @@ describe('Folder display', () => {
             expect(content).toBeTruthy();
         });
         test('displays folder name button with correct text', () => {
-            const content = m.getByText('folderName_INBOX');
+            const content = m.getByText('folderName_UNREAD');
             expect(content).toBeTruthy();
         });
         test('displays folder count', () => {
@@ -72,7 +72,7 @@ describe('Folder display', () => {
     });
     describe('Matching active filter', () => {
         beforeEach(() => {
-            const withActive = { ...mockStateFolders, filter: 'INBOX' };
+            const withActive = { ...mockStateFolders, filter: 'UNREAD' };
             m = render(
                 <Folder folder={mockFolder} stateFolders={withActive} />
             );

@@ -42,7 +42,7 @@ describe('foldersActions', () => {
         });
         const expectedBody = {
             folders: [
-                { id: 1, name: 'Inbox', code: 'INBOX', position: 0 },
+                { id: 1, name: 'Unread', code: 'UNREAD', position: 0 },
                 { id: 2, name: 'All queries', code: 'ALL_QUERIES', position: 1 }
             ]
         };
