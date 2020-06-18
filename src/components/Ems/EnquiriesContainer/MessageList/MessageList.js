@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchMessages } from '../../../../store/messages/messagesActions';
-import { fetchUsers } from '../../../../store/users/usersActions';
 import MessageCollection from './MessageCollection/MessageCollection';
 import LoadingSpinner from '../../../UI/LoadingSpinner/LoadingSpinner';
 import { debounce } from '../../../../util/ui';
@@ -73,34 +72,6 @@ const MessageList = ({ match, updateMessage }) => {
             myRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, [stateMessages.messageList, scrollPosition]);
-
-    // We may need to populate information about the users
-    // involved with the messages we have
-    useEffect(() => {
-        if (initiator && activeUser.userDetails && stateMessages) {
-            // Get the query's participants
-            const query = stateQueries.queryList.find(
-                (query) => query.id === queryId
-            );
-            const msgParticipants = query.participants;
-            if (msgParticipants && msgParticipants.length > 0) {
-                const participants = new Set([
-                    initiator,
-                    activeUser.userDetails.id,
-                    ...msgParticipants
-                ]);
-                dispatch(fetchUsers({ user_ids: [...participants] }));
-            }
-        }
-    }, [
-        queryId,
-        stateQueries.queryList,
-        stateMessages,
-        stateMessages.messageList,
-        dispatch,
-        activeUser.userDetails,
-        initiator
-    ]);
 
     // When we're mounted, fetch the messages
     useEffect(() => {

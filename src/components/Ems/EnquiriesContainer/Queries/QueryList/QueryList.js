@@ -116,13 +116,19 @@ const QueryList = ({ match }) => {
         return false;
     };
 
-    // When we have the queries, make sure the initiators are populated
+    // When we have the queries, make sure the initiators & participants
+    // are populated
     useEffect(() => {
         if (stateQueries.queryList) {
-            const initiators = stateQueries.queryList.map(
-                (queryList) => queryList.initiator
+            const involved = stateQueries.queryList.reduce(
+                (acc, current) =>
+                    acc.concat([current.initiator, ...current.participants]),
+                []
             );
-            dispatch(fetchUsers({ user_ids: initiators }));
+            if (involved.length > 0) {
+                const deDuped = new Set(involved);
+                dispatch(fetchUsers({ user_ids: [...deDuped] }));
+            }
         }
     }, [stateQueries.queryList, dispatch]);
 
