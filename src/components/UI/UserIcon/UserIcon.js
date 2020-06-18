@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import PropTypes from 'prop-types';
 
-import Avatar from 'react-avatar';
+import Avatar, { ConfigProvider } from 'react-avatar';
 
 import styles from './UserIcon.module.scss';
 
@@ -23,7 +23,19 @@ const UserIcon = ({ userId }) => {
 
     return (
         <figure className={styles.userIcon}>
-            <Avatar round={true} size="40" name={name}></Avatar>
+            <ConfigProvider
+                colors={[
+                    '#e2875d',
+                    '#586e84',
+                    '#50c650',
+                    '#c65050',
+                    '#50c6a6',
+                    '#b450c6',
+                    '#c68250'
+                ]}
+            >
+                <Avatar round={true} size="40" name={name}></Avatar>
+            </ConfigProvider>
         </figure>
     );
 };
