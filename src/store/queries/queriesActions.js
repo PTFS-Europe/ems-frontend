@@ -21,15 +21,27 @@ export const fetchQueriesFailure = (error) => {
 };
 
 // Our action creator for fetching queries
-export const fetchQueries = (params, queryId) => {
+export const fetchQueries = ({
+    search = {},
+    folder = null,
+    label = null,
+    showLoading = true
+} = {}) => {
     return (dispatch) => {
         // Set our loading state to true
-        dispatch(fetchQueriesRequest());
+        // if appropriate
+        if (showLoading) {
+            dispatch(fetchQueriesRequest());
+        }
         let append = [];
-        if (params) {
-            append = Object.keys(params).map(
-                (param) => `${param}=${params[param]}`
-            );
+        if (search && search.title) {
+            append.push(`title=${search.title}`);
+        }
+        if (folder) {
+            append.push(`folder=${folder}`);
+        }
+        if (label) {
+            append.push(`label=${label}`);
         }
         const appendStr = append.length > 0 ? '?' + append.join('&') : '';
         // Make the request
@@ -37,6 +49,8 @@ export const fetchQueries = (params, queryId) => {
             .then((response) => response.json())
             .then((data) => {
                 // Update our queries state
+                const queryId =
+                    search && search.queryId ? search.queryId : null;
                 dispatch(fetchQueriesSuccess({ data, queryId }));
             })
             .catch((error) => {

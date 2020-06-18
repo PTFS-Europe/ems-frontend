@@ -41,7 +41,7 @@ describe('queriesActions', () => {
             { type: queriesTypes.FETCH_QUERIES_REQUEST },
             {
                 type: queriesTypes.FETCH_QUERIES_SUCCESS,
-                payload: { data: { queries: ['something'] } }
+                payload: { data: { queries: ['something'] }, queryId: null }
             }
         ];
         return store.dispatch(actions.fetchQueries()).then(() => {
@@ -60,8 +60,60 @@ describe('queriesActions', () => {
                 payload: { data: { queries: ['something'] }, queryId: 1 }
             }
         ];
-        return store.dispatch(actions.fetchQueries({}, 1)).then(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+        return store
+            .dispatch(actions.fetchQueries({ search: { queryId: 1 } }))
+            .then(() => {
+                expect(store.getActions()).toEqual(expectedActions);
+            });
+    });
+    test('makes API request with passed parameters', () => {
+        const store = mockStore();
+        fetchMock.getOnce(
+            `${process.env.REACT_APP_API_URL}/queries?title=Mos%20Eisley%20Spaceport&folder=INBOX&label=1`,
+            {
+                body: { queries: ['something'] }
+            }
+        );
+        const expectedActions = [
+            { type: queriesTypes.FETCH_QUERIES_REQUEST },
+            {
+                type: queriesTypes.FETCH_QUERIES_SUCCESS,
+                payload: { data: { queries: ['something'] }, queryId: null }
+            }
+        ];
+        return store
+            .dispatch(
+                actions.fetchQueries({
+                    search: {
+                        title: 'Mos Eisley Spaceport'
+                    },
+                    folder: 'INBOX',
+                    label: 1
+                })
+            )
+            .then(() => {
+                expect(store.getActions()).toEqual(expectedActions);
+            });
+    });
+    test('does not dispatch FETCH_QUERIES_REQUEST if showLoading is falsy', () => {
+        const store = mockStore();
+        fetchMock.getOnce(`${process.env.REACT_APP_API_URL}/queries`, {
+            body: { queries: ['something'] }
         });
+        const expectedActions = [
+            {
+                type: queriesTypes.FETCH_QUERIES_SUCCESS,
+                payload: { data: { queries: ['something'] }, queryId: null }
+            }
+        ];
+        return store
+            .dispatch(
+                actions.fetchQueries({
+                    showLoading: false
+                })
+            )
+            .then(() => {
+                expect(store.getActions()).toEqual(expectedActions);
+            });
     });
 });

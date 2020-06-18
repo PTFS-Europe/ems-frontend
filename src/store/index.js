@@ -6,12 +6,16 @@ import queriesReducer from './queries/queriesReducer';
 import messagesReducer from './messages/messagesReducer';
 import activeUserReducer from './activeUser/activeUserReducer';
 import usersReducer from './users/usersReducer';
+import foldersReducer from './folders/foldersReducer';
+import labelsReducer from './labels/labelsReducer';
 
 const rootReducer = combineReducers({
     queries: queriesReducer,
     messages: messagesReducer,
     activeUser: activeUserReducer,
-    users: usersReducer
+    users: usersReducer,
+    folders: foldersReducer,
+    labels: labelsReducer
 });
 
 const composeEnhancers = composeWithDevTools({

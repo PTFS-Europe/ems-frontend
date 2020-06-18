@@ -17,7 +17,18 @@ const resources = {
             'Type your message': 'Type your message',
             'Start a new query': 'Start a new query',
             'Enter a query title': 'Enter a query title',
-            'File picker': 'File picker'
+            'File picker': 'File picker',
+            Folders: 'Folders',
+            folderName_INBOX: 'Inbox',
+            folderName_ALL_QUERIES: 'All queries',
+            folderName_ESCALATED: 'Escalated',
+            folderName_COMPLETE: 'Complete',
+            folderName_BIN: 'Bin',
+            folderIcon_INBOX: 'inbox',
+            folderIcon_ALL_QUERIES: 'archive',
+            folderIcon_ESCALATED: 'exclamation-circle',
+            folderIcon_COMPLETE: 'check-circle',
+            folderIcon_BIN: 'trash-alt'
         }
     }
 };

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setQuerySearch } from '../../../../../store/queries/queriesActions';
 import styles from './QuerySearch.module.scss';
 
-const QuerySearch = () => {
+const QuerySearch = ({ placeholder, showAdd }) => {
     const { t } = useTranslation();
 
     const history = useHistory();
@@ -21,23 +21,20 @@ const QuerySearch = () => {
     };
 
     return (
-        <div role="search" className={styles.querySearch}>
-            <div className={styles.searchContainer}>
-                <div
-                    data-testid="query-search-icon"
-                    className={styles.searchIcon}
-                >
-                    <FontAwesomeIcon alt={t('Search icon')} icon="search" />
-                </div>
-                <input
-                    type="text"
-                    value={search}
-                    onChange={(e) =>
-                        dispatch(setQuerySearch({ search: e.target.value }))
-                    }
-                    className={styles.querySearchInput}
-                    placeholder={t('Search or start new query')}
-                ></input>
+        <div role="search" className={styles.searchContainer}>
+            <div data-testid="query-search-icon" className={styles.searchIcon}>
+                <FontAwesomeIcon alt={t('Search icon')} icon="search" />
+            </div>
+            <input
+                type="text"
+                value={search}
+                onChange={(e) =>
+                    dispatch(setQuerySearch({ search: e.target.value }))
+                }
+                className={styles.querySearchInput}
+                placeholder={placeholder}
+            ></input>
+            {showAdd && (
                 <button
                     onClick={startNewQuery}
                     type="button"
@@ -48,7 +45,7 @@ const QuerySearch = () => {
                         icon="plus-circle"
                     />
                 </button>
-            </div>
+            )}
         </div>
     );
 };

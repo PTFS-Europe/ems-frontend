@@ -1,0 +1,58 @@
+@import '../../../../variables.scss';
+
+.adminContainer {
+    flex: 1;
+    display: flex;
+}
+
+.leftColumn,
+.rightColumn {
+    display: flex;
+    flex-direction: column;
+}
+
+.leftColumn {
+    width: 250px;
+    background: #f7f7f7;
+}
+
+.rightColumn {
+    flex: 1;
+}
+
+.rightColumnHeading {
+    display: flex;
+}
+
+.queryHeader {
+    flex: 1;
+}
+
+.search {
+    padding: 15px 0;
+    display: flex;
+    width: 400px;
+}
+
+.enq {
+    flex: 1;
+    display: flex;
+    overflow-y: auto;
+    background: $query-header-background;
+}
+
+.activeUser,
+.search {
+    background: $query-header-background;
+}
+
+.activeUser {
+    height: 200px;
+    display: flex;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

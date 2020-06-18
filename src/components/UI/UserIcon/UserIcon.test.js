@@ -12,7 +12,8 @@ jest.mock('react-redux', () => ({
 jest.mock('react-avatar', () => {
     return {
         __esModule: true,
-        default: () => <div data-testid="avatar">Avatar</div>
+        default: () => <div data-testid="avatar">Avatar</div>,
+        ConfigProvider: (wrapped) => wrapped.children
     };
 });
 

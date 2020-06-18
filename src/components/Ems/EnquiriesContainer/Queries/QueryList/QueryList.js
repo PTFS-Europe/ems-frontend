@@ -36,6 +36,8 @@ const QueryList = ({ match }) => {
 
     // Make the state we need available
     const stateQueries = useSelector((state) => state.queries);
+    const stateFolders = useSelector((state) => state.folders);
+    const stateLabels = useSelector((state) => state.labels);
 
     // Enable us to dispatch
     const dispatch = useDispatch();
@@ -76,18 +78,27 @@ const QueryList = ({ match }) => {
     // We pass the query ID so the reducer can ultimately keep the
     // currently active query (if there is one) in the queryList
     useEffect(() => {
-        const search = stateQueries.search;
-        if (
-            myRef.current &&
-            (search.length >= minSearchLength || search.length === 0)
-        ) {
+        if (myRef.current) {
+            let params = {};
             const debDispatch = debouncedDispatchRef.current;
-            if (stateQueries.search.length > 0) {
-                debDispatch(
-                    fetchQueries({ title: stateQueries.search }, queryId)
-                );
-            } else {
-                debDispatch(fetchQueries());
+
+            if (stateFolders.filter) {
+                params.folder = stateFolders.filter;
+            }
+            if (stateLabels.filter) {
+                params.label = stateLabels.filter;
+            }
+            const search = stateQueries.search;
+            if (search.length >= minSearchLength || search.length === 0) {
+                if (stateQueries.search.length > 0) {
+                    params.search = { title: stateQueries.search, queryId };
+                } else {
+                    params.search = {};
+                }
+            }
+            if (Object.keys(params).length > 0) {
+                params.showLoading = false;
+                debDispatch(fetchQueries(params));
             }
         }
         myRef.current = true;
@@ -95,12 +106,16 @@ const QueryList = ({ match }) => {
         // add dispatch as a dependency, but we don't want to be
         // triggered by that, we have a separate hook for that
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [stateQueries.search]);
+    }, [stateQueries.search, stateFolders.filter, stateLabels.filter]);
 
     // Should we display the "Start new query" button
     const shouldDisplayNewQuery = () => {
-        // If there is an active search
-        if (stateQueries.search.length > 0) {
+        // If there is an active search or selected folder
+        if (
+            stateQueries.search.length > 0 ||
+            stateFolders.filter ||
+            stateLabels.filter
+        ) {
             // The valid length of queryList varies according to whether
             // we have an active query or not
             if (

@@ -1,0 +1,39 @@
+@import '../../../../../../variables.scss';
+
+.folder {
+    display: flex;
+    align-items: center;
+    margin: 8px 25px 8px 0;
+    padding: 7px 10px 7px 25px;
+    font-size: 14px;
+    border-radius: 0 50px 50px 0;
+}
+.folder.selected {
+    background: #ddd;
+}
+.folderName {
+    border: 0;
+    background: transparent;
+    text-align: left;
+    font-weight: bold;
+    outline: none;
+    color: #4d4f5C;
+    cursor: pointer;
+    margin-left: 20px;
+    flex: 1;
+}
+.icon_INBOX {
+    color: $folder-inbox-color;
+}
+.icon_ALL_QUERIES {
+    color: $folder-allQueries-color;
+}
+.icon_ESCALATED {
+    color: $folder-escalated-color;
+}
+.icon_COMPLETE {
+    color: $folder-complete-color;
+}
+.icon_BIN {
+    color: $folder-bin-color;
+}
