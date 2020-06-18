@@ -12,14 +12,16 @@ const Admin = ({ children }) => {
     return (
         <div className={styles.adminContainer}>
             <div className={styles.leftColumn}>
-                <div className={styles.activeUser}>
+                <div className={styles.activeUserContainer}>
                     <ActiveUser />
                 </div>
-                <div className={styles.folders}>
-                    <Folders />
-                </div>
-                <div className={styles.labels}>
-                    <Labels />
+                <div className={styles.foldersLabelsContainer}>
+                    <div className={styles.folders}>
+                        <Folders />
+                    </div>
+                    <div className={styles.labels}>
+                        <Labels />
+                    </div>
                 </div>
             </div>
             <div className={styles.rightColumn}>

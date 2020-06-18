@@ -3,6 +3,7 @@
 .adminContainer {
     flex: 1;
     display: flex;
+    border-radius: 12px;
 }
 
 .leftColumn,
@@ -13,7 +14,12 @@
 
 .leftColumn {
     width: 250px;
+}
+
+.foldersLabelsContainer {
     background: #f7f7f7;
+    flex: 1;
+    border-radius: 0 0 0 12px;
 }
 
 .rightColumn {
@@ -38,15 +44,14 @@
     flex: 1;
     display: flex;
     overflow-y: auto;
-    background: $query-header-background;
 }
 
-.activeUser,
+.activeUserContainer,
 .search {
     background: $query-header-background;
 }
 
-.activeUser {
+.activeUserContainer {
     height: 200px;
     display: flex;
     font-size: 20px;
@@ -55,4 +60,5 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    border-radius: 12px 0 0 0;
 }

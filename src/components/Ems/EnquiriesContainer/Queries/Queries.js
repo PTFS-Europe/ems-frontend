@@ -12,6 +12,12 @@ const Queries = () => {
     const { t } = useTranslation();
     return (
         <div className={styles.queries}>
+            <QueryList />
+        </div>
+    );
+    /*
+    return (
+        <div className={styles.queries}>
             <div className={styles.activeUserContainer}>
                 <ActiveUser colour={'#707070'}></ActiveUser>
             </div>
@@ -24,6 +30,7 @@ const Queries = () => {
             <QueryList></QueryList>
         </div>
     );
+    */
 };
 
 export default Queries;
