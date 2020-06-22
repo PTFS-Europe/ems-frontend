@@ -18,6 +18,7 @@ const resources = {
             'Start a new query': 'Start a new query',
             'Enter a query title': 'Enter a query title',
             'File picker': 'File picker',
+            'Your queries': 'Your queries',
             Folders: 'Folders',
             folderName_UNREAD: 'Unread',
             folderName_ALL_QUERIES: 'All queries',

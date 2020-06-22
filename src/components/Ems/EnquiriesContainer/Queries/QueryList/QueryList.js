@@ -152,7 +152,12 @@ const QueryList = ({ match }) => {
 
     return (
         <nav className={styles.queryListContainer}>
-            <h1 className={styles.yourQueries}>Your queries</h1>
+            {/*
+            <h1 className={styles.yourQueries}>{t('Your queries')}</h1>
+            */}
+            <div className={styles.header}>
+                <input type="checkbox" className={styles.checkbox} />
+            </div>
             {stateQueries.loading && <LoadingSpinner />}
             <ol role="directory" className={styles.queryList}>
                 {stateQueries.queryList &&
