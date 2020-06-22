@@ -49,18 +49,18 @@ const QueryList = ({ match }) => {
         }
     }, [dispatch]);
 
+    // Given a query, get the date that should be used for sorting
+    // and return it as a Date object
+    const getSortingDate = (query) => {
+        return query.hasOwnProperty('latestMessage')
+            ? Date.parse(query.latestMessage.updated_at)
+            : Date.parse(query.updated_at);
+    };
+
     const querySorter = (a, b) => {
-        if (
-            a.hasOwnProperty('latestMessage') &&
-            b.hasOwnProperty('latestMessage')
-        ) {
-            return (
-                Date.parse(b.latestMessage.updated_at) -
-                Date.parse(a.latestMessage.updated_at)
-            );
-        } else {
-            return Date.parse(b.updated_at) - Date.parse(a.updated_at);
-        }
+        const aDate = getSortingDate(a);
+        const bDate = getSortingDate(b);
+        return bDate - aDate;
     };
 
     // When we're mounted, fetch the queries
