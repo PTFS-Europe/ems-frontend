@@ -74,7 +74,8 @@ const QueryList = ({ match }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
 
-    // When the search string changes, fetch the queries, debounced
+    // When the search string changes, or a folder or label is
+    // toggled, fetch the queries, debounced
     // We pass the query ID so the reducer can ultimately keep the
     // currently active query (if there is one) in the queryList
     useEffect(() => {
@@ -90,16 +91,18 @@ const QueryList = ({ match }) => {
             }
             const search = stateQueries.search;
             if (search.length >= minSearchLength || search.length === 0) {
+                if (queryId) {
+                    params.search = { queryId };
+                }
                 if (stateQueries.search.length > 0) {
-                    params.search = { title: stateQueries.search, queryId };
-                } else {
-                    params.search = {};
+                    params.search = {
+                        ...params.search,
+                        title: stateQueries.search
+                    };
                 }
             }
-            if (Object.keys(params).length > 0) {
-                params.showLoading = false;
-                debDispatch(fetchQueries(params));
-            }
+            params.showLoading = false;
+            debDispatch(fetchQueries(params));
         }
         myRef.current = true;
         // Disable the linting on the following line. It wants us to
