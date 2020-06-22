@@ -24,6 +24,13 @@ jest.mock('./Folder/Folder', () => {
     };
 });
 
+jest.mock('./CalculatedFolders/CalculatedFolders', () => {
+    return {
+        __esModule: true,
+        default: () => <li>Calculated</li>
+    };
+});
+
 let m;
 
 const mockFoldersLoading = {
@@ -76,16 +83,24 @@ describe('Folders display', () => {
             const element = m.getByRole('heading');
             expect(element).toBeTruthy();
         });
-        test('displays folders list', () => {
-            const element = m.getByRole('list');
-            expect(element).toBeTruthy();
+        test('displays both folders list', () => {
+            const element = m.getAllByRole('list');
+            expect(element).toHaveLength(2);
+        });
+        test('displays calculated and regular folders', () => {
+            const lists = m.getAllByRole('list');
+            expect(lists).toHaveLength(2);
         });
         test('sorts folders by ascending position', () => {
             const element = m.getAllByRole('listitem');
-            expect(element.length).toEqual(3);
-            expect(element[0].textContent).toEqual('0');
-            expect(element[1].textContent).toEqual('1');
-            expect(element[2].textContent).toEqual('2');
+            // Length is 4 here because our mocked <CalculatedFolders>
+            // component returns a single list item
+            expect(element.length).toEqual(4);
+            // We start at index 1 here because we want to ignore our
+            // mocked <CalculatedFolders> component
+            expect(element[1].textContent).toEqual('0');
+            expect(element[2].textContent).toEqual('1');
+            expect(element[3].textContent).toEqual('2');
         });
     });
 });
