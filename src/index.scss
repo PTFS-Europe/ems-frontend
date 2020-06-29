@@ -29,12 +29,6 @@ ul, ol {
 // achieves that
 a.active > li {
     background: $query-list-query-background-active;
-    // This is to satisfy one of those CSS oddities that, in order for
-    // an element's drop shadow to appear above its adjacent elements
-    // it needs position: relative
-    position: relative;
-    box-shadow: 2px 5px 5px 0px rgba(0,0,0,0.1);
-    border-bottom: none;
 }
 
 #root {

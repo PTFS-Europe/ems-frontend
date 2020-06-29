@@ -10,6 +10,13 @@ jest.mock('../../../../../UI/UserIcon/UserIcon', () => {
     };
 });
 
+jest.mock('../../../../../UI/QueryActionButton/QueryActionButton', () => {
+    return {
+        __esModule: true,
+        default: () => <button>QueryActionButton</button>
+    };
+});
+
 let q;
 
 const query = {

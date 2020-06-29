@@ -1,5 +1,7 @@
 import * as queriesTypes from './queriesTypes';
 
+// TODO: Write tests for the other actions we have here
+
 export const fetchQueriesRequest = () => {
     return {
         type: queriesTypes.FETCH_QUERIES_REQUEST
@@ -60,33 +62,33 @@ export const fetchQueries = ({
     };
 };
 
-export const updateQuerySuccess = (query) => {
+export const refreshQuerySuccess = (query) => {
     return {
-        type: queriesTypes.UPDATE_QUERY_SUCCESS,
+        type: queriesTypes.REFRESH_QUERY_SUCCESS,
         payload: query
     };
 };
 
-export const updateQueryFailure = (error) => {
+export const refreshQueryFailure = (error) => {
     return {
-        type: queriesTypes.UPDATE_QUERY_FAILURE,
+        type: queriesTypes.REFRESH_QUERY_FAILURE,
         payload: error
     };
 };
 
-// Our action creator for updating a query in our store
-export const updateQuery = (id) => {
+// Our action creator for refreshing a query in our store
+export const refreshQuery = (id) => {
     return (dispatch) => {
         // Make the request
         return fetch(`${process.env.REACT_APP_API_URL}/queries/${id}`)
             .then((response) => response.json())
             .then((data) => {
                 // Update our queries state
-                dispatch(updateQuerySuccess(data));
+                dispatch(refreshQuerySuccess(data));
             })
             .catch((error) => {
                 // Update our error state
-                dispatch(updateQueryFailure(error.message));
+                dispatch(refreshQueryFailure(error.message));
             });
     };
 };
@@ -166,6 +168,86 @@ export const createQuery = ({ query }) => {
             .catch((error) =>
                 // Update our error state
                 dispatch(createQueryFailure({ error: error.message, tempId }))
+            );
+    };
+};
+
+export const updateQueryRequest = (requestBody) => {
+    return {
+        type: queriesTypes.UPDATE_QUERY_REQUEST,
+        payload: requestBody
+    };
+};
+
+export const updateQuerySuccess = (query) => {
+    return {
+        type: queriesTypes.UPDATE_QUERY_SUCCESS,
+        payload: query
+    };
+};
+
+export const updateQueryFailure = (payload) => {
+    return {
+        type: queriesTypes.UPDATE_QUERY_FAILURE,
+        payload
+    };
+};
+
+// Our action creator for updating a query
+export const updateQuery = (updatedProps) => {
+    return (dispatch, getState) => {
+        // Find the query we're updating
+        let toUpdate = getState().queries.queryList.find(
+            (query) => query.id === updatedProps.id
+        );
+        // Make a copy of the query we're about to update in case we
+        // need to rollback
+        const unmodifiedQuery = JSON.parse(JSON.stringify(toUpdate));
+        // Update our state to reflect that we've sent the request
+        // We update our state with the updated query here, it is then
+        // replaced once we receive a response
+        const updateObj = {
+            id: toUpdate.id,
+            folder: toUpdate.folder,
+            title: toUpdate.title,
+            initiator: toUpdate.initiator,
+            ...updatedProps
+        };
+        dispatch(updateQueryRequest(updateObj));
+        // Make the request
+        return fetch(
+            `${process.env.REACT_APP_API_URL}/queries/${toUpdate.id}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors',
+                method: 'PUT',
+                body: JSON.stringify(updateObj)
+            }
+        )
+            .then((response) => {
+                // Fetch will not reject if we encounter an HTTP error
+                // so we need to manually reject in that case
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                } else {
+                    return response;
+                }
+            })
+            .then((response) => response.json())
+            .then((data) =>
+                // Update our queries state
+                dispatch(updateQuerySuccess({ data }))
+            )
+            .catch((error) =>
+                // Update our error state
+                dispatch(
+                    updateQueryFailure({
+                        error: error.message,
+                        unmodifiedQuery
+                    })
+                )
             );
     };
 };

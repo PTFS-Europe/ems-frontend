@@ -91,9 +91,52 @@ const reducer = (state = initialState, action) => {
                 queryList: filteredQueries,
                 error: action.payload
             };
+        case queriesTypes.UPDATE_QUERY_REQUEST:
+            // Update the just updated query in our state, it will
+            // be replaced if/when a response arrives
+            const updatedQueriesPending = state.queryList.map((query) =>
+                query.id === action.payload.id
+                    ? { ...query, ...action.payload }
+                    : query
+            );
+            return {
+                ...state,
+                // We don't set loading to true here as we do not want
+                // the loading spinner to be displayed
+                loading: false,
+                queryList: updatedQueriesPending
+            };
         case queriesTypes.UPDATE_QUERY_SUCCESS:
-            // Receive an updated query and update our state
-            const updatedQuery = state.queryList.map((query) => {
+            // Find and replace the query that we've just received
+            // from the API
+            const updatedQueriesSuccess = state.queryList.map((query) =>
+                query.id === action.payload.data.id
+                    ? action.payload.data
+                    : query
+            );
+            return {
+                ...state,
+                loading: false,
+                queryList: updatedQueriesSuccess,
+                error: ''
+            };
+        case queriesTypes.UPDATE_QUERY_FAILURE:
+            // The query probably didn't get accepted by the API
+            // TODO: We should announce to the user that something
+            // went wrong
+            const unmodified = action.payload.unmodifiedQuery;
+            const queriesFailure = state.queryList.map((query) =>
+                query.id === unmodified.id ? unmodified : query
+            );
+            return {
+                ...state,
+                loading: false,
+                queryList: queriesFailure,
+                error: action.payload.error
+            };
+        case queriesTypes.REFRESH_QUERY_SUCCESS:
+            // Receive an refreshed query and update our state
+            const refreshedQueries = state.queryList.map((query) => {
                 if (query.id !== action.payload.id) {
                     return query;
                 } else {
@@ -103,7 +146,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                queryList: updatedQuery,
+                queryList: refreshedQueries,
                 error: ''
             };
         case queriesTypes.SET_QUERY_SEARCH:

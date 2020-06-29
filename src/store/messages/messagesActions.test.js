@@ -8,13 +8,7 @@ import * as messagesTypes from './messagesTypes';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-/*
-jest.mock('./messagesActions', () => ({
-    __esModule: true,
-    doUpdateQuery: jest.fn().mockImplementation(() => Promise.resolve())
-}));
-*/
-actions.lib.doUpdateQuery = jest.fn(() => Promise.resolve());
+actions.lib.doRefreshQuery = jest.fn(() => Promise.resolve());
 
 describe('messagesActions', () => {
     afterEach(() => {

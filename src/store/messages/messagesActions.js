@@ -1,16 +1,16 @@
 import uid from 'uid';
 
 import * as messagesTypes from './messagesTypes';
-import { updateQuery } from '../queries/queriesActions';
+import { refreshQuery } from '../queries/queriesActions';
 
 // Call a query action which will cause an associated
 // query to update itself
-export const doUpdateQuery = (id, dispatch) => {
-    dispatch(updateQuery(id));
+export const doRefreshQuery = (id, dispatch) => {
+    dispatch(refreshQuery(id));
 };
 
 export const lib = {
-    doUpdateQuery
+    doRefreshQuery
 };
 
 export const fetchMessagesRequest = () => {
@@ -114,7 +114,7 @@ export const sendMessage = ({ queryId, message }) => {
             .then((response) => response.json())
             .then((data) => {
                 // Repopulate the query metadata
-                lib.doUpdateQuery(data.query_id, dispatch);
+                lib.doRefreshQuery(data.query_id, dispatch);
                 // Update our messages state
                 return dispatch(sendMessageSuccess({ data, tempId }));
             })
@@ -175,7 +175,7 @@ export const deleteMessage = (message) => {
             })
             .then(() => {
                 // Repopulate the query metadata
-                lib.doUpdateQuery(message.query_id, dispatch);
+                lib.doRefreshQuery(message.query_id, dispatch);
                 // Update our messages state
                 return dispatch(deleteMessageSuccess({ id: message.id }));
             })
@@ -246,7 +246,7 @@ export const editMessage = (message) => {
             .then((response) => response.json())
             .then((data) => {
                 // Repopulate the query metadata
-                lib.doUpdateQuery(message.query_id, dispatch);
+                lib.doRefreshQuery(message.query_id, dispatch);
                 // Update our messages state
                 return dispatch(editMessageSuccess(data));
             })
@@ -354,7 +354,7 @@ export const uploadFile = (files, queryId) => {
             .then((response) => response.json())
             .then((data) => {
                 // Repopulate the query metadata
-                lib.doUpdateQuery(queryId, dispatch);
+                lib.doRefreshQuery(queryId, dispatch);
                 // Replace the temporary messages with actual ones
                 dispatch(
                     uploadFileSuccess({

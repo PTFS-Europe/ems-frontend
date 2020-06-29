@@ -20,62 +20,208 @@ const populatedState = {
 };
 
 describe('queriesReducer', () => {
-    test('returns the initial state', async () => {
-        expect(reducer(undefined, {})).toEqual(initialState);
-    });
-    test('should handle FETCH_QUERIES_REQUEST', () => {
-        expect(
-            reducer(initialState, { type: queriesTypes.FETCH_QUERIES_REQUEST })
-        ).toEqual({
-            loading: true,
-            queryList: [],
-            error: '',
-            search: '',
-            preserved: false
+    describe('init', () => {
+        test('returns the initial state', async () => {
+            expect(reducer(undefined, {})).toEqual(initialState);
         });
     });
-    test('should handle FETCH_QUERIES_SUCCESS', () => {
-        expect(
-            reducer(initialState, {
-                type: queriesTypes.FETCH_QUERIES_SUCCESS,
-                payload: { data: [{ test: 'test' }] }
-            })
-        ).toEqual({
-            loading: false,
-            queryList: [{ test: 'test' }],
-            error: '',
-            search: '',
-            preserved: false
+    describe('fetch', () => {
+        test('should handle FETCH_QUERIES_REQUEST', () => {
+            expect(
+                reducer(initialState, {
+                    type: queriesTypes.FETCH_QUERIES_REQUEST
+                })
+            ).toEqual({
+                loading: true,
+                queryList: [],
+                error: '',
+                search: '',
+                preserved: false
+            });
+        });
+        test('should handle FETCH_QUERIES_SUCCESS', () => {
+            expect(
+                reducer(initialState, {
+                    type: queriesTypes.FETCH_QUERIES_SUCCESS,
+                    payload: { data: [{ id: 1 }] }
+                })
+            ).toEqual({
+                loading: false,
+                queryList: [{ id: 1 }],
+                error: '',
+                search: '',
+                preserved: false
+            });
+        });
+        // If a query ID is passed, we should preserve that query in
+        // the queryList when we replace its contents
+        test('should handle FETCH_QUERIES_SUCCESS with queryId', () => {
+            expect(
+                reducer(populatedState, {
+                    type: queriesTypes.FETCH_QUERIES_SUCCESS,
+                    payload: { data: [{ id: 4 }], queryId: 2 }
+                })
+            ).toEqual({
+                loading: false,
+                queryList: [{ id: 4 }, { id: 2 }],
+                error: '',
+                search: '',
+                preserved: true
+            });
+        });
+        test('should handle FETCH_QUERIES_FAILURE', () => {
+            expect(
+                reducer(initialState, {
+                    type: queriesTypes.FETCH_QUERIES_FAILURE,
+                    payload: 'Thats not true, thats impossible'
+                })
+            ).toEqual({
+                loading: false,
+                queryList: [],
+                error: 'Thats not true, thats impossible',
+                search: '',
+                preserved: false
+            });
         });
     });
-    // If a query ID is passed, we should preserve that query in
-    // the queryList when we replace its contents
-    test('should handle FETCH_QUERIES_SUCCESS with queryId', () => {
-        expect(
-            reducer(populatedState, {
-                type: queriesTypes.FETCH_QUERIES_SUCCESS,
-                payload: { data: [{ id: 4 }], queryId: 2 }
-            })
-        ).toEqual({
-            loading: false,
-            queryList: [{ id: 4 }, { id: 2 }],
-            error: '',
-            search: '',
-            preserved: true
+    describe('update', () => {
+        test('should handle UPDATE_QUERY_REQUEST', () => {
+            const updateInitialState = {
+                ...initialState,
+                queryList: [
+                    {
+                        id: 1,
+                        title: 'C-3PO'
+                    },
+                    {
+                        id: 2,
+                        title: 'R5-D4'
+                    },
+                    {
+                        id: 3,
+                        title: 'U-3PO'
+                    }
+                ]
+            };
+            const updateUpdatedState = {
+                ...initialState,
+                error: '',
+                loading: false,
+                preserved: false,
+                queryList: [
+                    {
+                        id: 1,
+                        title: 'C-3PO'
+                    },
+                    {
+                        id: 2,
+                        title: 'R2-D2'
+                    },
+                    {
+                        id: 3,
+                        title: 'U-3PO'
+                    }
+                ]
+            };
+            expect(
+                reducer(updateInitialState, {
+                    type: queriesTypes.UPDATE_QUERY_REQUEST,
+                    payload: { id: 2, title: 'R2-D2' }
+                })
+            ).toEqual(updateUpdatedState);
         });
-    });
-    test('should handle FETCH_QUERIES_FAILURE', () => {
-        expect(
-            reducer(initialState, {
-                type: queriesTypes.FETCH_QUERIES_FAILURE,
-                payload: 'Oh no'
-            })
-        ).toEqual({
-            loading: false,
-            queryList: [],
-            error: 'Oh no',
-            search: '',
-            preserved: false
+        test('should handle UPDATE_QUERY_SUCCESS', () => {
+            const updateInitialState = {
+                ...initialState,
+                queryList: [
+                    {
+                        id: 1,
+                        title: 'C-3PO'
+                    },
+                    {
+                        id: 2,
+                        title: 'R5-D4'
+                    },
+                    {
+                        id: 3,
+                        title: 'U-3PO'
+                    }
+                ]
+            };
+            const updateUpdatedState = {
+                ...initialState,
+                error: '',
+                loading: false,
+                preserved: false,
+                queryList: [
+                    {
+                        id: 1,
+                        title: 'C-3PO'
+                    },
+                    {
+                        id: 2,
+                        title: 'R2-D2'
+                    },
+                    {
+                        id: 3,
+                        title: 'U-3PO'
+                    }
+                ]
+            };
+            expect(
+                reducer(updateInitialState, {
+                    type: queriesTypes.UPDATE_QUERY_SUCCESS,
+                    payload: { data: { id: 2, title: 'R2-D2' } }
+                })
+            ).toEqual(updateUpdatedState);
+        });
+        test('should handle UPDATE_QUERY_FAILURE', () => {
+            const updateInitialState = {
+                ...initialState,
+                queryList: [
+                    {
+                        id: 1,
+                        title: 'C-3PO'
+                    },
+                    {
+                        id: 2,
+                        title: 'R5-D4'
+                    },
+                    {
+                        id: 3,
+                        title: 'U-3PO'
+                    }
+                ]
+            };
+            const updateFailedState = {
+                ...initialState,
+                error: { message: 'Thats not true, thats impossible' },
+                loading: false,
+                preserved: false,
+                queryList: [
+                    {
+                        id: 1,
+                        title: 'C-3PO'
+                    },
+                    {
+                        id: 2,
+                        title: 'R5-D4'
+                    },
+                    {
+                        id: 3,
+                        title: 'U-3PO'
+                    }
+                ]
+            };
+            expect(
+                reducer(updateInitialState, {
+                    type: queriesTypes.UPDATE_QUERY_FAILURE,
+                    payload: {
+                        error: { message: 'Thats not true, thats impossible' },
+                        unmodifiedQuery: updateInitialState.queryList[1]
+                    }
+                })
+            ).toEqual(updateFailedState);
         });
     });
 });

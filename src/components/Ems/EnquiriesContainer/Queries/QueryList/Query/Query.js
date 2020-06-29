@@ -1,22 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Truncate from 'react-truncate';
 
 import UserIcon from '../../../../../UI/UserIcon/UserIcon';
+import QueryActionButton from '../../../../../UI/QueryActionButton/QueryActionButton';
 
 import styles from './Query.module.scss';
 
 const Query = ({ query }) => {
-    const isPending = query.pending ? styles.pending : '';
+    const isPending = query.pending ? styles.semiTrans : '';
+    const isDeleted = query.folder === 'COMPLETE' ? styles.semiTrans : '';
     const updatedAt = () => {
         return query.hasOwnProperty('latestMessage')
             ? query.latestMessage.updated_at
             : query.updated_at;
     };
     return (
-        <li className={`${styles.query} ${isPending}`}>
+        <li className={`${styles.query} ${isPending} ${isDeleted}`}>
             {query.latestMessage && (
                 <UserIcon userId={query.latestMessage.creator_id} />
             )}
@@ -35,9 +36,8 @@ const Query = ({ query }) => {
                 <div role="complementary" className={styles.timestamp}>
                     {moment(updatedAt()).fromNow()}
                 </div>
-                <button className={styles.queryActions}>
-                    <FontAwesomeIcon icon="ellipsis-h" />
-                </button>
+                <div className={styles.actionButtonPlaceholder}></div>
+                <QueryActionButton query={query} />
             </div>
         </li>
     );

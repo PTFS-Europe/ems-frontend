@@ -19,6 +19,8 @@ const resources = {
             'Enter a query title': 'Enter a query title',
             'File picker': 'File picker',
             'Your queries': 'Your queries',
+            'Change query folder': 'Change query folder',
+            'Remove from folder': 'Remove from folder',
             Folders: 'Folders',
             folderName_UNREAD: 'Unread',
             folderName_ALL_QUERIES: 'All queries',
@@ -27,8 +29,11 @@ const resources = {
             folderName_BIN: 'Bin',
             folderIcon_UNREAD: 'inbox',
             folderIcon_ALL_QUERIES: 'archive',
-            folderIcon_ESCALATED: 'exclamation-circle',
-            folderIcon_COMPLETE: 'check-circle',
+            folderIcon_ESCALATED: 'exclamation',
+            folderIcon_COMPLETE: 'check',
+            folderIcon_ESCALATED_CIRCLE: 'exclamation-circle',
+            folderIcon_COMPLETE_CIRCLE: 'check-circle',
+            folderIcon_BIN_CIRCLE: 'trash-alt',
             folderIcon_BIN: 'trash-alt'
         }
     }

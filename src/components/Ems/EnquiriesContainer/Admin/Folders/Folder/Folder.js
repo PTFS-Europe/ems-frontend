@@ -35,7 +35,7 @@ const Folder = ({ folder, stateFolders }) => {
             >
                 <FontAwesomeIcon
                     alt={t(`folderName_${folder.code}`)}
-                    icon={t(`folderIcon_${folder.code}`)}
+                    icon={t(`folderIcon_${folder.code}_CIRCLE`)}
                 />
             </div>
             <button

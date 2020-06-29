@@ -150,7 +150,7 @@ describe('empty', () => {
         // We should therefore have two headings
         // The "Your queries" one and "No queries one"
         const heading = ql.getAllByRole('heading');
-        expect(heading).toHaveLength(2);
+        expect(heading).toHaveLength(1);
     });
 });
 
