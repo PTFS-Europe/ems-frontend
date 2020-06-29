@@ -214,7 +214,13 @@ export const editMessageFailure = (errorPayload) => {
 
 // Our action creator for editing a message
 export const editMessage = (message) => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        // Make a copy of the message we're about to edit in case we
+        // need to rollback
+        const toEdit = getState().messages.messageList.find(
+            (iterMessage) => iterMessage.id === message.id
+        );
+        const unmodifiedMessage = JSON.parse(JSON.stringify(toEdit));
         // Update our state to reflect that we've sent the request
         // This will be updated again once we have confirmation from
         // the API that the message was edited
@@ -253,7 +259,10 @@ export const editMessage = (message) => {
             .catch((error) =>
                 // Update our error state
                 dispatch(
-                    editMessageFailure({ error: error.message, id: message.id })
+                    editMessageFailure({
+                        error: error.message,
+                        unmodifiedMessage
+                    })
                 )
             );
     };

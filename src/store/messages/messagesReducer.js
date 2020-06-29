@@ -144,16 +144,12 @@ const reducer = (state = initialState, action) => {
                 error: ''
             };
         case messagesTypes.EDIT_MESSAGE_FAILURE:
-            // The edit probably didn't get accepted by the API,
-            // so just update the pending status for the message
+            // The edit probably didn't get accepted by the API
             // TODO: Add some UI feedback as to what is happening
-            const updatedMessagesEditFailure = state.messageList.map((msg) => {
-                if (msg.id !== action.payload.id) {
-                    return msg;
-                }
-                delete msg.pending;
-                return msg;
-            });
+            const unmodified = action.payload.unmodifiedMessage;
+            const updatedMessagesEditFailure = state.messageList.map((msg) =>
+                msg.id !== unmodified.id ? msg : unmodified
+            );
             return {
                 ...state,
                 loading: false,
