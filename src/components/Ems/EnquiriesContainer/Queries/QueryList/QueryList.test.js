@@ -47,7 +47,7 @@ const mockState = {
         queryList: [
             {
                 created_at: '2020-04-30 10:08:58.348203+01',
-                folder_id: null,
+                folder: null,
                 id: 31,
                 initiator: 1,
                 participants: [1, 2, 4],
@@ -56,7 +56,7 @@ const mockState = {
             },
             {
                 created_at: '2020-04-30 10:09:58.348203+01',
-                folder_id: null,
+                folder: null,
                 id: 32,
                 initiator: 6,
                 participants: [1, 2, 5],

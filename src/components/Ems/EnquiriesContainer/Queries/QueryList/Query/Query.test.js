@@ -21,7 +21,7 @@ let q;
 
 const query = {
     created_at: '2020-04-30 10:08:58.348203+01',
-    folder_id: null,
+    folder: null,
     id: 31,
     title: 'Do you sell curry?',
     latestMessage: {
