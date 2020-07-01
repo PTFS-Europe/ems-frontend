@@ -1,0 +1,69 @@
+.container {
+    display: flex;
+}
+
+.label {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    padding: 5px;
+    background: #eee;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    color: #4f4f4f;
+    margin-left: 4px;
+    padding-right: 12px;
+    transition: background 0.5s;
+}
+
+.label:hover {
+    background: #e6e6e6;
+}
+
+.label.activeFilter {
+    background: #ccc;
+}
+
+.indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+}
+
+.labelName {
+    display: none;
+    margin-left: 5px;
+    flex: 1;
+}
+
+// Cause stacking labels to stack
+.label.stack {
+    margin-left: -8px;
+}
+
+.label:first-child,
+.label.stack:first-child {
+    margin-left: 0;
+}
+
+// The label to the right of the
+// highlighted one
+.label.highlighted + .label {
+    margin-left: 2px;
+}
+
+// Our artifically increased right padding should
+// not apply when it's the last label, or the labels
+// are not stacking, or if the label is highlighted
+.label:last-child,
+.label.stack:last-child,
+.label.noStack,
+.label.highlighted {
+    padding-right: 5px;
+}
+
+// Only display the label if appropriate
+.label.highlighted .labelName,
+.label:not(.stack) .labelName {
+    display: block;
+}

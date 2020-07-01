@@ -17,6 +17,13 @@ jest.mock('../../../../../UI/QueryActionButton/QueryActionButton', () => {
     };
 });
 
+jest.mock('../../../../../UI/QueryLabels/QueryLabels', () => {
+    return {
+        __esModule: true,
+        default: () => <div data-testid="querylabels">QueryLabels</div>
+    };
+});
+
 let q;
 
 const query = {
@@ -69,6 +76,11 @@ describe('Query', () => {
 
     test('displays the action button', () => {
         const button = q.getByRole('button');
+        expect(button).toBeTruthy();
+    });
+
+    test('displays the query labels', () => {
+        const button = q.getByTestId('querylabels');
         expect(button).toBeTruthy();
     });
 });

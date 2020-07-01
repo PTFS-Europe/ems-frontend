@@ -5,6 +5,7 @@ import Truncate from 'react-truncate';
 
 import UserIcon from '../../../../../UI/UserIcon/UserIcon';
 import QueryActionButton from '../../../../../UI/QueryActionButton/QueryActionButton';
+import QueryLabels from '../../../../../UI/QueryLabels/QueryLabels';
 
 import styles from './Query.module.scss';
 
@@ -31,6 +32,9 @@ const Query = ({ query }) => {
                         </Truncate>
                     </div>
                 )}
+                <div className={styles.queryLabels}>
+                    <QueryLabels labels={query.labels} />
+                </div>
             </div>
             <div className={styles.metaActions}>
                 <div role="complementary" className={styles.timestamp}>
