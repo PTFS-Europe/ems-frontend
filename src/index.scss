@@ -29,6 +29,7 @@ ul, ol {
 // achieves that
 a.active > li {
     background: $query-list-query-background-active;
+    transition: background 0.5s;
 }
 
 #root {
