@@ -182,21 +182,23 @@ describe('messagesActions', () => {
         });
         test('dispatches EDIT_MESSAGE_REQUEST & EDIT_MESSAGE_SUCCESS', () => {
             fetchMock.putOnce(`${process.env.REACT_APP_API_URL}/messages/1`, {
-                body: { id: 1, content: 'Hello' }
+                body: { id: 1, content: 'R5-D4' }
             });
-            const store = mockStore();
+            const store = mockStore({
+                messages: { messageList: [{ id: 1, content: 'R2-D2' }] }
+            });
             return store
                 .dispatch(
                     actions.editMessage({
                         id: 1,
-                        content: 'Hello'
+                        content: 'R5-D4'
                     })
                 )
                 .then(() => {
                     const [requestResp, successResp] = store.getActions();
-                    expect(requestResp.payload.content).toEqual('Hello');
+                    expect(requestResp.payload.content).toEqual('R5-D4');
                     expect(requestResp.payload.id).toEqual(1);
-                    expect(successResp.payload.content).toEqual('Hello');
+                    expect(successResp.payload.content).toEqual('R5-D4');
                     expect(successResp.payload.id).toEqual(1);
                 });
         });
