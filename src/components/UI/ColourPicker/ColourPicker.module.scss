@@ -1,0 +1,22 @@
+.swatchContainer {
+    font-size: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.swatch {
+    padding: 5px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    cursor: pointer;
+}
+.swatch:first-child {
+    margin-left: 0;
+}
+.swatch:last-child {
+    margin-right: 0;
+}
+.popover {
+    width: 150px;
+}
