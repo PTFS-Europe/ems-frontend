@@ -21,10 +21,6 @@ describe('ColourPicker', () => {
             ></ColourPicker>
         );
     });
-    test('wrapping popover is rendered', () => {
-        const popover = q.getByRole('dialog');
-        expect(popover).toBeInTheDocument();
-    });
     test('one button for each colour is rendered', () => {
         const buttons = q.getAllByRole('button');
         expect(buttons).toHaveLength(10);

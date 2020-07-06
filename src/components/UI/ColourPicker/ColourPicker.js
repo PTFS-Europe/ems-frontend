@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Popover from '../Popover/Popover';
-
 import styles from './ColourPicker.module.scss';
 
 const colours = [
@@ -20,19 +18,17 @@ const colours = [
 
 const ColourPicker = ({ updateColour, icon }) => {
     return (
-        <Popover instanceStyles={styles.popover}>
-            <div className={styles.swatchContainer}>
-                {colours.map((colour) => (
-                    <button
-                        key={colour}
-                        onClick={() => updateColour({ colour })}
-                        className={styles.swatch}
-                    >
-                        {icon(colour)}
-                    </button>
-                ))}
-            </div>
-        </Popover>
+        <div className={styles.swatchContainer}>
+            {colours.map((colour) => (
+                <button
+                    key={colour}
+                    onClick={() => updateColour({ colour })}
+                    className={styles.swatch}
+                >
+                    {icon(colour)}
+                </button>
+            ))}
+        </div>
     );
 };
 
