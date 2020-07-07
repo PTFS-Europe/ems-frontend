@@ -18,7 +18,9 @@ import {
     faExclamationCircle,
     faCheckCircle,
     faExclamation,
-    faTag
+    faTag,
+    faPenSquare,
+    faCheckSquare
 } from '@fortawesome/free-solid-svg-icons';
 
 import Ems from './Ems/Ems';
@@ -40,7 +42,9 @@ library.add(
     faExclamationCircle,
     faCheckCircle,
     faExclamation,
-    faTag
+    faTag,
+    faPenSquare,
+    faCheckSquare
 );
 
 const App = () => {

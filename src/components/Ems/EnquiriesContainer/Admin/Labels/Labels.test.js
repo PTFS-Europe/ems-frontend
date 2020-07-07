@@ -17,10 +17,16 @@ jest.mock('react-redux', () => ({
     useDispatch: () => mockDispatch
 }));
 
+jest.mock('@fortawesome/react-fontawesome', () => ({
+    FontAwesomeIcon: (props) => {
+        return <i className="fa" alt={props.alt} />;
+    }
+}));
+
 jest.mock('./Label/Label', () => {
     return {
         __esModule: true,
-        default: (props) => <li>{props.label.position}</li>
+        default: (props) => <li>{props.label.id}</li>
     };
 });
 
@@ -39,9 +45,9 @@ const mockLabelsLoaded = {
     labels: {
         loading: false,
         labelList: [
-            { id: 3, position: 2 },
-            { id: 1, position: 0 },
-            { id: 2, position: 1 }
+            { id: 3, name: 'a' },
+            { id: 1, name: 'c' },
+            { id: 2, name: 'b' }
         ],
         error: '',
         filter: null
@@ -55,10 +61,6 @@ describe('Labels display', () => {
                 return callback(mockLabelsLoading);
             });
             m = render(<Labels />);
-        });
-        test('displays heading', () => {
-            const element = m.getByRole('heading');
-            expect(element).toBeTruthy();
         });
         test('displays loading spinner', () => {
             const element = m.getByRole('alert');
@@ -80,12 +82,12 @@ describe('Labels display', () => {
             const element = m.getByRole('list');
             expect(element).toBeTruthy();
         });
-        test('sorts labels by ascending position', () => {
+        test('sorts labels by ascending name', () => {
             const element = m.getAllByRole('listitem');
             expect(element.length).toEqual(3);
-            expect(element[0].textContent).toEqual('0');
-            expect(element[1].textContent).toEqual('1');
-            expect(element[2].textContent).toEqual('2');
+            expect(element[0].textContent).toEqual('3');
+            expect(element[1].textContent).toEqual('2');
+            expect(element[2].textContent).toEqual('1');
         });
     });
 });

@@ -9,6 +9,7 @@
     border-radius: 0 50px 50px 0;
     background: transparent;
     transition: background 0.5s;
+    cursor: pointer;
 }
 .label.selected {
     background: #ddd;
@@ -20,7 +21,6 @@
     font-weight: bold;
     outline: none;
     color: #4d4f5C;
-    cursor: pointer;
     margin-left: 20px;
     flex: 1;
 }

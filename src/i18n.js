@@ -34,7 +34,11 @@ const resources = {
             folderIcon_ESCALATED_CIRCLE: 'exclamation-circle',
             folderIcon_COMPLETE_CIRCLE: 'check-circle',
             folderIcon_BIN_CIRCLE: 'trash-alt',
-            folderIcon_BIN: 'trash-alt'
+            folderIcon_BIN: 'trash-alt',
+            'Edit labels': 'Edit labels',
+            'Finish editing': 'Finish editing',
+            'New label': 'New label',
+            'No labels defined': 'No labels defined'
         }
     }
 };

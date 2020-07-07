@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,21 +24,22 @@ const Label = ({ label, stateLabels }) => {
 
     return (
         <li
+            onClick={() => setFilter(label.id)}
             key={label.id}
             className={`${styles.label} ${isSelected(label.id)}`}
         >
             <div style={{ color: label.colour }} data-testid="labelIcon">
                 <FontAwesomeIcon alt={label.name} icon={'tag'} />
             </div>
-            <button
-                onClick={() => setFilter(label.id)}
-                className={styles.labelName}
-            >
-                {label.name}
-            </button>
-            <span className={styles.labelCount}>{label.count}</span>
+            <button className={styles.labelName}>{label.name}</button>
+            <span className={styles.labelCount}>{label.count || 0}</span>
         </li>
     );
+};
+
+Label.propTypes = {
+    label: PropTypes.object.isRequired,
+    stateLabels: PropTypes.object.isRequired
 };
 
 export default Label;

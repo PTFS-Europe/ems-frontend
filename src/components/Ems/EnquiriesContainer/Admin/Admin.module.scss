@@ -20,6 +20,9 @@
     background: #f7f7f7;
     flex: 1;
     border-radius: 0 0 0 12px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
 }
 
 .rightColumn {

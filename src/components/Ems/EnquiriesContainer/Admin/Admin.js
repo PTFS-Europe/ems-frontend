@@ -16,12 +16,8 @@ const Admin = ({ children }) => {
                     <ActiveUser />
                 </div>
                 <div className={styles.foldersLabelsContainer}>
-                    <div className={styles.folders}>
-                        <Folders />
-                    </div>
-                    <div className={styles.labels}>
-                        <Labels />
-                    </div>
+                    <Folders />
+                    <Labels />
                 </div>
             </div>
             <div className={styles.rightColumn}>
