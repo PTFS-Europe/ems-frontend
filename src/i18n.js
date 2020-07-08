@@ -38,7 +38,9 @@ const resources = {
             'Edit labels': 'Edit labels',
             'Finish editing': 'Finish editing',
             'New label': 'New label',
-            'No labels defined': 'No labels defined'
+            'No labels defined': 'No labels defined',
+            'Confirm action': 'Confirm action',
+            'Cancel action': 'Cancel action'
         }
     }
 };

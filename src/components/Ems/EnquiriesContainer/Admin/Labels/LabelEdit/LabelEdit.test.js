@@ -83,10 +83,5 @@ describe('Label interactivity', () => {
             fireEvent.click(buttons[1]);
             expect(setActiveColourPicker).toBeCalled();
         });
-        test('clicking delete button calls dispatch', () => {
-            const buttons = m.getAllByRole('button');
-            fireEvent.click(buttons[0]);
-            expect(mockDispatch).toHaveBeenCalled();
-        });
     });
 });

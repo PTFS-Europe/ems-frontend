@@ -1,0 +1,24 @@
+@import '../../../variables.scss';
+
+.container {
+    padding: 10px;
+    display: flex;
+    background: #eee; 
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.button {
+    outline: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.confirm {
+    color: $green;
+}
+
+.cancel {
+    color: $red;
+}

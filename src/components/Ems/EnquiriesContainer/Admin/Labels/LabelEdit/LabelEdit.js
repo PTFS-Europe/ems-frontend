@@ -13,6 +13,7 @@ import {
     deleteLabel
 } from '../../../../../../store/labels/labelsActions';
 import ColourPicker from '../../../../../UI/ColourPicker/ColourPicker';
+import ConfirmAction from '../../../../../UI/ConfirmAction/ConfirmAction';
 import styles from './LabelEdit.module.scss';
 
 const LabelEdit = ({
@@ -21,6 +22,8 @@ const LabelEdit = ({
     setActiveColourPicker
 }) => {
     const [labelName, setLabelName] = useState(label.name);
+    const [confirmOpen, setConfirmOpen] = useState(false);
+
     // Enable us to dispatch
     const dispatch = useDispatch();
 
@@ -104,13 +107,20 @@ const LabelEdit = ({
 
     return (
         <li key={label.id} className={`${styles.label} ${isPending}`}>
-            <button
-                type="button"
-                onClick={dispatchDelete}
-                className={`${styles.deleteButton} ${canDelete}`}
+            <ConfirmAction
+                setOpen={setConfirmOpen}
+                open={confirmOpen}
+                onConfirm={dispatchDelete}
+                onCancel={() => setConfirmOpen(false)}
             >
-                <FontAwesomeIcon alt={label.name} icon={'times'} />
-            </button>
+                <button
+                    type="button"
+                    onClick={() => setConfirmOpen(true)}
+                    className={`${styles.deleteButton} ${canDelete}`}
+                >
+                    <FontAwesomeIcon alt={label.name} icon={'times'} />
+                </button>
+            </ConfirmAction>
             <Popover
                 role="dialog"
                 isOpen={activeColourPicker === label.id}
