@@ -1,10 +1,20 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { useSelector } from 'react-redux';
 
 import QueryLabels from './QueryLabels';
 
 const mockDispatch = jest.fn().mockImplementation(() => {});
+
+jest.mock('@fortawesome/react-fontawesome', () => ({
+    FontAwesomeIcon: (props) => {
+        return <i className="fa" alt={props.alt} />;
+    }
+}));
+
+jest.mock('react-i18next', () => ({
+    useTranslation: () => ({ t: (key) => key })
+}));
 
 jest.mock('react-redux', () => ({
     // Mock useSelector
@@ -42,6 +52,10 @@ const mockStateLabels = {
     }
 };
 
+const mockQuery = {
+    labels: [1, 2, 3]
+};
+
 let qe;
 
 describe('QueryLabels', () => {
@@ -49,9 +63,11 @@ describe('QueryLabels', () => {
         useSelector.mockImplementation((callback) => {
             return callback(mockStateLabels);
         });
-        qe = render(<QueryLabels labels={[1, 3]} />);
     });
     describe('initialisation', () => {
+        beforeEach(() => {
+            qe = render(<QueryLabels query={{ labels: [1, 2] }} />);
+        });
         test('displays the component', () => {
             const comp = qe.getByRole('list');
             expect(comp).toBeTruthy();
@@ -65,23 +81,33 @@ describe('QueryLabels', () => {
             expect(indicators[0]).toHaveStyle('background: #f00');
         });
     });
-    describe('label stacking', () => {
+    describe('label stacking - 2 labels', () => {
+        beforeEach(() => {
+            qe = render(<QueryLabels query={{ labels: [1, 2] }} />);
+        });
         test('two labels are not stacked', () => {
+            qe = render(<QueryLabels query={{ labels: [1, 2] }} />);
             const buttons = qe.getAllByRole('listitem');
             expect(buttons[0]).toHaveClass('noStack');
         });
+    });
+    describe('label stacking - 3 labels', () => {
+        beforeEach(() => {
+            qe = render(<QueryLabels query={{ labels: [1, 2, 3] }} />);
+        });
         test('three labels are stacked', () => {
-            qe.rerender(<QueryLabels labels={[1, 2, 3]} />);
             const buttons = qe.getAllByRole('listitem');
             expect(buttons[0]).toHaveClass('stack');
         });
         test('stacked labels have the last label highlighted by default', () => {
-            qe.rerender(<QueryLabels labels={[1, 2, 3]} />);
             const buttons = qe.getAllByRole('listitem');
             expect(buttons[2]).toHaveClass('highlighted');
         });
     });
     describe('interactivity', () => {
+        beforeEach(() => {
+            qe = render(<QueryLabels query={{ labels: [1, 2, 3] }} />);
+        });
         test('clicking a label dispatches SET_LABELS_FILTER action', () => {
             const buttons = qe.getAllByRole('listitem');
             fireEvent.click(buttons[0]);

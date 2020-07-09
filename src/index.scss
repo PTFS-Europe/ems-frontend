@@ -32,6 +32,11 @@ a.active > li {
     transition: background 0.5s;
 }
 
+// The react-tiny-popover should appear above everything else
+.react-tiny-popover-container {
+    z-index: 999 !important;
+}
+
 #root {
     display: flex;
     padding: 20px;

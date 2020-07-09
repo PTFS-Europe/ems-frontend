@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { setLabelsFilter } from '../../../store/labels/labelsActions';
+import LabelPicker from '../../Ems/EnquiriesContainer/Admin/Labels/LabelPicker/LabelPicker';
 
 import styles from './QueryLabels.module.scss';
 
-const QueryLabels = ({ labels }) => {
+const QueryLabels = ({ query }) => {
     const [highlighted, setHighlighted] = useState();
     const [stacking, setStacking] = useState(false);
+
+    const labels = query.labels;
 
     // Enable us to dispatch
     const dispatch = useDispatch();
@@ -53,6 +56,12 @@ const QueryLabels = ({ labels }) => {
             : '';
     };
 
+    // Should we be displaying the edit labels button
+    const labelAddRemoveShow = () =>
+        !query.labels || query.labels.length === 0
+            ? styles.labelAddRemoveShow
+            : '';
+
     const Label = ({ label }) => {
         const fullLabel = findLabel(label);
         return (
@@ -73,11 +82,16 @@ const QueryLabels = ({ labels }) => {
         );
     };
     return (
-        <ul className={styles.container}>
-            {labels &&
-                labels.length > 0 &&
-                labels.map((label) => <Label key={label} label={label} />)}
-        </ul>
+        <div className={styles.container}>
+            <ul className={styles.labelList}>
+                {labels &&
+                    labels.length > 0 &&
+                    labels.map((label) => <Label key={label} label={label} />)}
+            </ul>
+            <div className={`${styles.labelAddRemove} ${labelAddRemoveShow()}`}>
+                <LabelPicker query={query} />
+            </div>
+        </div>
     );
 };
 

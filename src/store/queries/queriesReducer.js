@@ -154,6 +154,26 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 search: action.payload
             };
+        case queriesTypes.TOGGLE_LABEL_REQUEST:
+            const { query, labelId } = action.payload;
+            const operation = query.labels.includes(labelId) ? 'remove' : 'add';
+            const modifiedQueryList = state.queryList.map((iQuery) => {
+                if (iQuery.id === query.id) {
+                    if (operation === 'remove') {
+                        iQuery.labels = iQuery.labels.filter(
+                            (iLabel) => iLabel !== labelId
+                        );
+                    } else {
+                        iQuery.labels = [...iQuery.labels, labelId];
+                    }
+                }
+                return iQuery;
+            });
+
+            return {
+                ...state,
+                queryList: modifiedQueryList
+            };
         default:
             return state;
     }

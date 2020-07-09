@@ -185,4 +185,50 @@ describe('queriesActions', () => {
             );
         });
     });
+    describe('toggle label', () => {
+        test('toggleLabelRequest', async () => {
+            const expected = {
+                type: queriesTypes.TOGGLE_LABEL_REQUEST,
+                payload: { baddie: 'Snoke' }
+            };
+            expect(actions.toggleLabelRequest({ baddie: 'Snoke' })).toEqual(
+                expected
+            );
+        });
+        test('dispatches TOGGLE_LABEL_REQUEST & UPDATE_QUERY_SUCCESS', () => {
+            fetchMock.getOnce(`${process.env.REACT_APP_API_URL}/queries/1/`, {
+                body: { queries: [{ id: 1, labels: [1, 2] }] }
+            });
+            fetchMock.postOnce(
+                `${process.env.REACT_APP_API_URL}/queries/1/label/2`,
+                {
+                    body: { id: 1, labels: [1, 2] }
+                }
+            );
+            const store = mockStore({
+                queries: { queryList: [{ id: 1, labels: [1] }] }
+            });
+
+            return store
+                .dispatch(
+                    actions.toggleLabel({
+                        query: { id: 1, labels: [1] },
+                        labelId: 2
+                    })
+                )
+                .then(() => {
+                    const [requestResp, successResp] = store.getActions();
+                    const expectedRequestResp = {
+                        type: 'TOGGLE_LABEL_REQUEST',
+                        payload: { query: { id: 1, labels: [1] }, labelId: 2 }
+                    };
+                    const expectedSuccessResp = {
+                        type: 'UPDATE_QUERY_SUCCESS',
+                        payload: { data: { id: 1, labels: [1, 2] } }
+                    };
+                    expect(requestResp).toEqual(expectedRequestResp);
+                    expect(successResp).toEqual(expectedSuccessResp);
+                });
+        });
+    });
 });

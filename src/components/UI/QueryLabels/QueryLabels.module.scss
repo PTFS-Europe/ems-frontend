@@ -1,6 +1,22 @@
 .container {
     display: flex;
+    align-items: center;
 }
+
+.labelList {
+    display: flex;
+}
+
+.labelAddRemove {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.container:hover .labelAddRemove,
+.labelAddRemoveShow {
+    opacity: 1;
+}
+
 
 .label {
     display: flex;

@@ -224,4 +224,62 @@ describe('queriesReducer', () => {
             ).toEqual(updateFailedState);
         });
     });
+    describe('toggle label', () => {
+        test('should handle TOGGLE_LABEL_REQUEST - adding a label', () => {
+            const toggleInitialState = {
+                ...initialState,
+                queryList: [
+                    {
+                        id: 1,
+                        title: 'BB-8',
+                        labels: [1]
+                    }
+                ]
+            };
+            const toggleUpdatedState = {
+                ...initialState,
+                queryList: [
+                    {
+                        id: 1,
+                        title: 'BB-8',
+                        labels: [1, 2]
+                    }
+                ]
+            };
+            expect(
+                reducer(toggleInitialState, {
+                    type: queriesTypes.TOGGLE_LABEL_REQUEST,
+                    payload: { labelId: 2, query: { id: 1, labels: [1] } }
+                })
+            ).toEqual(toggleUpdatedState);
+        });
+        test('should handle TOGGLE_LABEL_REQUEST - removing a label', () => {
+            const toggleInitialState = {
+                ...initialState,
+                queryList: [
+                    {
+                        id: 1,
+                        title: 'BB-8',
+                        labels: [1, 2]
+                    }
+                ]
+            };
+            const toggleUpdatedState = {
+                ...initialState,
+                queryList: [
+                    {
+                        id: 1,
+                        title: 'BB-8',
+                        labels: [1]
+                    }
+                ]
+            };
+            expect(
+                reducer(toggleInitialState, {
+                    type: queriesTypes.TOGGLE_LABEL_REQUEST,
+                    payload: { labelId: 2, query: { id: 1, labels: [1, 2] } }
+                })
+            ).toEqual(toggleUpdatedState);
+        });
+    });
 });

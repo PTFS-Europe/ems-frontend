@@ -258,3 +258,63 @@ export const setQuerySearch = ({ search }) => {
         payload: search
     };
 };
+
+export const toggleLabelRequest = (payload) => {
+    return {
+        type: queriesTypes.TOGGLE_LABEL_REQUEST,
+        payload
+    };
+};
+
+export const toggleLabel = (payload) => {
+    return (dispatch, getState) => {
+        // Find the query we're modifying
+        const toUpdate = getState().queries.queryList.find(
+            (query) => query.id === payload.query.id
+        );
+        // Make a copy of the query we're about to update in case we
+        // need to rollback
+        const unmodifiedQuery = JSON.parse(JSON.stringify(toUpdate));
+        // Dispatch the update request
+        dispatch(toggleLabelRequest(payload));
+        // Make the request
+        // Determine what we're doing, if the label we're working with is already attached
+        // to the query, we need the API method to be DELETE otherwise it's POST
+        const method = unmodifiedQuery.labels.includes(payload.labelId)
+            ? 'DELETE'
+            : 'POST';
+        return fetch(
+            `${process.env.REACT_APP_API_URL}/queries/${payload.query.id}/label/${payload.labelId}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors',
+                method
+            }
+        )
+            .then((response) => {
+                // Fetch will not reject if we encounter an HTTP error
+                // so we need to manually reject in that case
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                } else {
+                    return response;
+                }
+            })
+            .then((response) => response.json())
+            .then((data) =>
+                // Update our queries state
+                dispatch(updateQuerySuccess({ data }))
+            )
+            .catch((error) =>
+                // Update our error state
+                dispatch(
+                    updateQueryFailure({
+                        error: error.message,
+                        unmodifiedQuery
+                    })
+                )
+            );
+    };
+};

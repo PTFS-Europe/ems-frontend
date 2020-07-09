@@ -38,6 +38,7 @@ const resources = {
             'Edit labels': 'Edit labels',
             'Finish editing': 'Finish editing',
             'New label': 'New label',
+            'Add labels': 'Add labels',
             'No labels defined': 'No labels defined',
             'Confirm action': 'Confirm action',
             'Cancel action': 'Cancel action'

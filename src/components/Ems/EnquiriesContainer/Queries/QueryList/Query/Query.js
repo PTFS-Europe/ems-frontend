@@ -33,7 +33,7 @@ const Query = ({ query }) => {
                     </div>
                 )}
                 <div className={styles.queryLabels}>
-                    <QueryLabels labels={query.labels} />
+                    <QueryLabels query={query} />
                 </div>
             </div>
             <div className={styles.metaActions}>
