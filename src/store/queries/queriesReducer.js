@@ -1,4 +1,5 @@
 import * as queriesTypes from './queriesTypes';
+import * as labelsTypes from '../labels/labelsTypes';
 
 const initialState = {
     loading: false,
@@ -173,6 +174,18 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 queryList: modifiedQueryList
+            };
+        // If a label is deleted, we need to modify our state to remove
+        // that label from any queries that use it
+        case labelsTypes.DELETE_LABEL_SUCCESS:
+            const { id: labelToRemove } = action.payload;
+            const modifiedQueries = state.queryList.map((query) => ({
+                ...query,
+                labels: query.labels.filter((label) => label !== labelToRemove)
+            }));
+            return {
+                ...state,
+                queryList: modifiedQueries
             };
         default:
             return state;

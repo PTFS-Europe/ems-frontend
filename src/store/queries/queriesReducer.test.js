@@ -1,5 +1,6 @@
 import reducer from './queriesReducer';
 import * as queriesTypes from './queriesTypes';
+import * as labelsTypes from '../labels/labelsTypes';
 
 // TODO: Write tests for the other reducers we have here
 
@@ -280,6 +281,44 @@ describe('queriesReducer', () => {
                     payload: { labelId: 2, query: { id: 1, labels: [1, 2] } }
                 })
             ).toEqual(toggleUpdatedState);
+        });
+        test('should handle DELETE_LABEL_SUCCESS', () => {
+            const delInitialState = {
+                ...initialState,
+                queryList: [
+                    {
+                        id: 1,
+                        title: 'Gonk',
+                        labels: [1, 2]
+                    },
+                    {
+                        id: 2,
+                        title: 'R5-D4',
+                        labels: [3, 4]
+                    }
+                ]
+            };
+            const delUpdatedState = {
+                ...initialState,
+                queryList: [
+                    {
+                        id: 1,
+                        title: 'Gonk',
+                        labels: [1]
+                    },
+                    {
+                        id: 2,
+                        title: 'R5-D4',
+                        labels: [3, 4]
+                    }
+                ]
+            };
+            expect(
+                reducer(delInitialState, {
+                    type: labelsTypes.DELETE_LABEL_SUCCESS,
+                    payload: { id: 2 }
+                })
+            ).toEqual(delUpdatedState);
         });
     });
 });

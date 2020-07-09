@@ -39,7 +39,7 @@ const QueryLabels = ({ query }) => {
     const findLabel = (toFind) =>
         stateLabels && stateLabels.labelList.length > 0 && toFind
             ? stateLabels.labelList.find((label) => label.id === toFind)
-            : {};
+            : null;
 
     // Are we stacking the labels
     const isStacking = stacking ? styles.stack : styles.noStack;
