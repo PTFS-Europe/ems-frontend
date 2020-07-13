@@ -9,7 +9,7 @@ const Option = ({ option, isSelected, onChoose }) => {
     const optionIsSelected = isSelected ? styles.selected : '';
     return (
         <button
-            onClick={() => onChoose(option.id)}
+            onClick={(e) => onChoose(e, option.id)}
             className={`${styles.option} ${optionIsSelected}`}
         >
             <div
@@ -49,11 +49,29 @@ const OptionPicker = ({
 
     // We might want to close when an option is selected, so do that
     // if appropriate
-    const callOnChoose = (args) => {
+    const callOnChoose = (e, args) => {
+        // Stop the click event from propogating further up, if we don't
+        // it can trigger click events in elements of which we might be
+        // descendants
+        // We may be a descendant of a NavLink, if we don't preventDefault
+        // we may cause the link to be clicked
+        e.preventDefault();
+        e.stopPropagation();
         onChoose(args);
         if (shouldClose) {
             setOpen(false);
         }
+    };
+
+    // Stop the click event from propogating further up, if we don't
+    // it can trigger click events in elements of which we might be
+    // descendants
+    // We may be a descendant of a NavLink, if we don't preventDefault
+    // we may cause the link to be clicked
+    const handleOpen = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setOpen(true);
     };
 
     return (
@@ -69,7 +87,7 @@ const OptionPicker = ({
             }
             onClickOutside={() => setOpen(false)}
         >
-            <button onClick={() => setOpen(true)} className={styles.button}>
+            <button onClick={handleOpen} className={styles.button}>
                 {selected.length === 0 && (
                     <div className={styles.promptText}>{promptText}</div>
                 )}
