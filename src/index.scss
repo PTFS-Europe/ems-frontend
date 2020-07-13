@@ -32,9 +32,13 @@ a.active > li {
     transition: background 0.5s;
 }
 
-// The react-tiny-popover should appear above everything else
+// The react-tiny-popover should appear above everything else,
+// be rounded, and have a drop shadow
 .react-tiny-popover-container {
     z-index: 999 !important;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.2);
+
 }
 
 #root {
