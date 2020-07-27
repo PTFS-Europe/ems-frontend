@@ -36,7 +36,8 @@ const mockStateLoading = {
         queryList: [],
         loading: true,
         error: '',
-        search: ''
+        search: '',
+        selected: []
     },
     ...mockStateFolders,
     ...mockStateLabels
@@ -52,7 +53,8 @@ const mockState = {
                 initiator: 1,
                 participants: [1, 2, 4],
                 title: 'Do you sell curry?',
-                updated_at: '2020-04-30 10:08:58.348203+01'
+                updated_at: '2020-04-30 10:08:58.348203+01',
+                labels: []
             },
             {
                 created_at: '2020-04-30 10:09:58.348203+01',
@@ -61,12 +63,14 @@ const mockState = {
                 initiator: 6,
                 participants: [1, 2, 5],
                 title: 'Do you sell chinese?',
-                updated_at: '2020-04-30 10:09:58.348203+01'
+                updated_at: '2020-04-30 10:09:58.348203+01',
+                labels: []
             }
         ],
         loading: false,
         error: '',
-        search: ''
+        search: '',
+        selected: []
     },
     ...mockStateFolders,
     ...mockStateLabels
@@ -77,7 +81,8 @@ const mockStateEmpty = {
         queryList: [],
         loading: false,
         error: '',
-        search: 'abc'
+        search: 'abc',
+        selected: []
     },
     ...mockStateFolders,
     ...mockStateLabels
@@ -165,13 +170,15 @@ describe('displays "Start new query" button correctly', () => {
                     {
                         id: 33,
                         initiator: 1,
-                        participants: [1, 2]
+                        participants: [1, 2],
+                        labels: []
                     }
                 ],
                 loading: false,
                 error: '',
                 search: 'abc',
-                preserved: false
+                preserved: false,
+                selected: []
             },
             ...mockStateFolders,
             ...mockStateLabels
@@ -195,13 +202,15 @@ describe('displays "Start new query" button correctly', () => {
                     {
                         id: 34,
                         initiator: 1,
-                        participants: [1, 2]
+                        participants: [1, 2],
+                        labels: []
                     }
                 ],
                 loading: false,
                 error: '',
                 search: 'abc',
-                preserved: false
+                preserved: false,
+                selected: []
             },
             ...mockStateFolders,
             ...mockStateLabels
@@ -224,7 +233,8 @@ describe('displays "Start new query" button correctly', () => {
                 loading: false,
                 error: '',
                 search: 'abc',
-                preserved: false
+                preserved: false,
+                selected: []
             },
             ...mockStateFolders,
             ...mockStateLabels
@@ -245,13 +255,15 @@ describe('displays "Start new query" button correctly', () => {
                         id: 1,
                         folder: 'UNREAD',
                         initiator: 1,
-                        participants: [1, 2]
+                        participants: [1, 2],
+                        labels: []
                     }
                 ],
                 loading: false,
                 error: '',
                 search: '',
-                preserved: false
+                preserved: false,
+                selected: []
             },
             folders: {
                 ...mockStateFolders.folders,
@@ -274,7 +286,8 @@ describe('displays "Start new query" button correctly', () => {
                 loading: false,
                 error: '',
                 search: '',
-                preserved: false
+                preserved: false,
+                selected: []
             },
             folders: {
                 ...mockStateFolders.folders,
@@ -298,13 +311,15 @@ describe('displays "Start new query" button correctly', () => {
                         id: 1,
                         folder: 'UNREAD',
                         initiator: 1,
-                        participants: [1, 2]
+                        participants: [1, 2],
+                        labels: []
                     }
                 ],
                 loading: false,
                 error: '',
                 search: '',
-                preserved: false
+                preserved: false,
+                selected: []
             },
             ...mockStateFolders,
             labels: {
@@ -327,7 +342,8 @@ describe('displays "Start new query" button correctly', () => {
                 loading: false,
                 error: '',
                 search: '',
-                preserved: false
+                preserved: false,
+                selected: []
             },
             ...mockStateFolders,
             labels: {

@@ -10,11 +10,22 @@ import { fetchUsers } from '../../../../../store/users/usersActions';
 import Query from './Query/Query';
 import LoadingSpinner from '../../../../UI/LoadingSpinner/LoadingSpinner';
 import StartNewQuery from '../../../../UI/StartNewQuery/StartNewQuery';
+import QueryBulk from '../QueryBulk/QueryBulk';
+import useFilters from '../../../../../hooks/useFilters';
 
 import styles from './QueryList.module.scss';
 
 const QueryList = ({ match }) => {
     const { t } = useTranslation();
+
+    // Enable us to check on the status of the various filters which
+    // might affect what we're displaying
+    const {
+        search: activeSearch,
+        folders: activeFolder,
+        labels: activeLabel,
+        isActiveFilter
+    } = useFilters();
 
     // The number of characters that must be present before a
     // search will trigger
@@ -36,8 +47,6 @@ const QueryList = ({ match }) => {
 
     // Make the state we need available
     const stateQueries = useSelector((state) => state.queries);
-    const stateFolders = useSelector((state) => state.folders);
-    const stateLabels = useSelector((state) => state.labels);
 
     // Enable us to dispatch
     const dispatch = useDispatch();
@@ -83,21 +92,23 @@ const QueryList = ({ match }) => {
             let params = {};
             const debDispatch = debouncedDispatchRef.current;
 
-            if (stateFolders.filter) {
-                params.folder = stateFolders.filter;
+            if (activeFolder) {
+                params.folder = activeFolder;
             }
-            if (stateLabels.filter) {
-                params.label = stateLabels.filter;
+            if (activeLabel) {
+                params.label = activeLabel;
             }
-            const search = stateQueries.search;
-            if (search.length >= minSearchLength || search.length === 0) {
+            if (
+                activeSearch.length >= minSearchLength ||
+                activeSearch.length === 0
+            ) {
                 if (queryId) {
                     params.search = { queryId };
                 }
-                if (stateQueries.search.length > 0) {
+                if (activeSearch.length > 0) {
                     params.search = {
                         ...params.search,
-                        title: stateQueries.search
+                        title: activeSearch
                     };
                 }
             }
@@ -109,16 +120,12 @@ const QueryList = ({ match }) => {
         // add dispatch as a dependency, but we don't want to be
         // triggered by that, we have a separate hook for that
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [stateQueries.search, stateFolders.filter, stateLabels.filter]);
+    }, [activeSearch, activeFolder, activeLabel]);
 
     // Should we display the "Start new query" button
     const shouldDisplayNewQuery = () => {
         // If there is an active search or selected folder
-        if (
-            stateQueries.search.length > 0 ||
-            stateFolders.filter ||
-            stateLabels.filter
-        ) {
+        if (isActiveFilter) {
             // The valid length of queryList varies according to whether
             // we have an active query or not
             if (
@@ -153,7 +160,7 @@ const QueryList = ({ match }) => {
     return (
         <nav className={styles.queryListContainer}>
             <div className={styles.header}>
-                <input type="checkbox" className={styles.checkbox} />
+                <QueryBulk />
             </div>
             {stateQueries.loading && <LoadingSpinner />}
             <ol role="directory" className={styles.queryList}>

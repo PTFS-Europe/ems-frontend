@@ -64,7 +64,7 @@ const QueryLabels = ({ query }) => {
 
     const Label = ({ label }) => {
         const fullLabel = findLabel(label);
-        return (
+        return fullLabel ? (
             <li
                 onClick={() => setFilter(label)}
                 onMouseOver={() => setHighlighted(label)}
@@ -75,11 +75,13 @@ const QueryLabels = ({ query }) => {
                 <div
                     data-testid="labelindicator"
                     className={styles.indicator}
-                    style={{ background: fullLabel.colour }}
+                    style={{
+                        background: fullLabel ? fullLabel.colour : '#ccc'
+                    }}
                 ></div>
                 <div className={styles.labelName}>{fullLabel.name}</div>
             </li>
-        );
+        ) : null;
     };
     return (
         <div className={styles.container}>

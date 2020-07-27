@@ -171,7 +171,7 @@ export const createQuery = ({ query }) => {
             );
     };
 };
-
+/* DEPRECATED
 export const updateQueryRequest = (requestBody) => {
     return {
         type: queriesTypes.UPDATE_QUERY_REQUEST,
@@ -251,7 +251,90 @@ export const updateQuery = (updatedProps) => {
             );
     };
 };
+*/
 
+export const updateQueryBulkRequest = (requestBody) => {
+    return {
+        type: queriesTypes.UPDATE_QUERY_BULK_REQUEST,
+        payload: requestBody
+    };
+};
+
+export const updateQueryBulkSuccess = (query) => {
+    return {
+        type: queriesTypes.UPDATE_QUERY_BULK_SUCCESS,
+        payload: query
+    };
+};
+
+export const updateQueryBulkFailure = (payload) => {
+    return {
+        type: queriesTypes.UPDATE_QUERY_BULK_FAILURE,
+        payload
+    };
+};
+
+// Our action creator for bulk updating queries
+export const updateQueryBulk = (updatedQueries) => {
+    return (dispatch, getState) => {
+        // Find the queries we're updating
+        const updatedQueryIds = updatedQueries.map(
+            (updatedQuery) => updatedQuery.id
+        );
+        // Get an array of full query objects that need to be updated
+        let toUpdate = getState().queries.queryList.filter((query) =>
+            updatedQueryIds.includes(query.id)
+        );
+        // Make a copy of the queries we're about to update in case we
+        // need to rollback
+        const unmodifiedQueries = JSON.parse(JSON.stringify(toUpdate));
+        // We update our state with the updated query here, it is then
+        // replaced once we receive a response
+        // For each of the queries to be updated, find the associated query in the updated
+        // queries we were passed and replace any changed properties
+        // What we get back is an array of updated query objects we can send to the API
+        const updateObj = toUpdate.map((updateMe) => {
+            // Get the object containing the updated properties for this query
+            const updateWith = updatedQueries.find(
+                (updateMeWith) => updateMeWith.id === updateMe.id
+            );
+            return { ...updateMe, ...updateWith };
+        });
+        dispatch(updateQueryBulkRequest(updateObj));
+        // Make the request
+        return fetch(`${process.env.REACT_APP_API_URL}/queries`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors',
+            method: 'PUT',
+            body: JSON.stringify(updateObj)
+        })
+            .then((response) => {
+                // Fetch will not reject if we encounter an HTTP error
+                // so we need to manually reject in that case
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                } else {
+                    return response;
+                }
+            })
+            .then((response) => response.json())
+            .then((data) =>
+                // Update our queries state
+                dispatch(updateQueryBulkSuccess({ data }))
+            )
+            .catch((error) =>
+                // Update our error state
+                dispatch(
+                    updateQueryBulkFailure({
+                        error: error.message,
+                        unmodifiedQueries
+                    })
+                )
+            );
+    };
+};
 export const setQuerySearch = ({ search }) => {
     return {
         type: queriesTypes.SET_QUERY_SEARCH,
@@ -259,6 +342,20 @@ export const setQuerySearch = ({ search }) => {
     };
 };
 
+export const setQuerySelected = (id) => {
+    return {
+        type: queriesTypes.SET_QUERY_SELECTED,
+        payload: id
+    };
+};
+
+export const setQuerySelectedAll = (newState) => {
+    return {
+        type: queriesTypes.SET_QUERY_SELECTED_ALL,
+        payload: newState
+    };
+};
+/* DEPRECATED
 export const toggleLabelRequest = (payload) => {
     return {
         type: queriesTypes.TOGGLE_LABEL_REQUEST,
@@ -313,6 +410,73 @@ export const toggleLabel = (payload) => {
                     updateQueryFailure({
                         error: error.message,
                         unmodifiedQuery
+                    })
+                )
+            );
+    };
+};
+*/
+
+export const toggleLabelBulkRequest = (payload) => {
+    return {
+        type: queriesTypes.TOGGLE_LABEL_BULK_REQUEST,
+        payload
+    };
+};
+
+export const toggleLabelBulk = ({ labelId, isSelected, affectedQueries }) => {
+    return (dispatch, getState) => {
+        // Only proceed if we need to
+        if (affectedQueries.length === 0) {
+            return;
+        }
+        // Find the queries we're modifying
+        const toUpdate = getState().queries.queryList.filter((query) =>
+            affectedQueries.includes(query.id)
+        );
+        // Make a copy of the query we're about to update in case we
+        // need to rollback
+        const unmodifiedQueries = JSON.parse(JSON.stringify(toUpdate));
+        // Dispatch the update request
+        dispatch(
+            toggleLabelBulkRequest({ labelId, isSelected, affectedQueries })
+        );
+        // Make the request
+        // Determine what we're doing, if the label we're working with is already attached
+        // to the query (or all queries in the case of a bulk operation),
+        // we need the API method to be DELETE otherwise it's POST
+        const method = isSelected ? 'DELETE' : 'POST';
+        const joinedQueries = affectedQueries.join(',');
+        return fetch(
+            `${process.env.REACT_APP_API_URL}/queries/${joinedQueries}/label/${labelId}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors',
+                method
+            }
+        )
+            .then((response) => {
+                // Fetch will not reject if we encounter an HTTP error
+                // so we need to manually reject in that case
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                } else {
+                    return response;
+                }
+            })
+            .then((response) => response.json())
+            .then((data) =>
+                // Update our queries state
+                dispatch(updateQueryBulkSuccess({ data }))
+            )
+            .catch((error) =>
+                // Update our error state
+                dispatch(
+                    updateQueryBulkFailure({
+                        error: error.message,
+                        unmodifiedQueries
                     })
                 )
             );

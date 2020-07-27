@@ -24,15 +24,7 @@ const UserIcon = ({ userId }) => {
     return (
         <figure className={styles.userIcon}>
             <ConfigProvider
-                colors={[
-                    '#e2875d',
-                    '#586e84',
-                    '#50c650',
-                    '#c65050',
-                    '#50c6a6',
-                    '#b450c6',
-                    '#c68250'
-                ]}
+                colors={['#d33e43', '#9b7874', '#666370', '#1c1f33']}
             >
                 <Avatar round={true} size="40" name={name}></Avatar>
             </ConfigProvider>

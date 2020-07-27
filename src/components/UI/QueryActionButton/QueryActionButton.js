@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { updateQuery } from '../../../store/queries/queriesActions';
+import { updateQueryBulk } from '../../../store/queries/queriesActions';
 import styles from './QueryActionButton.module.scss';
 
 const QueryActionButton = ({ query }) => {
@@ -48,10 +48,12 @@ const QueryActionButton = ({ query }) => {
                 <button
                     onClick={() =>
                         dispatch(
-                            updateQuery({
-                                id: query.id,
-                                folder: null
-                            })
+                            updateQueryBulk([
+                                {
+                                    id: query.id,
+                                    folder: null
+                                }
+                            ])
                         )
                     }
                     className={`${styles.actionButton} ${styles.remove}`}
@@ -69,10 +71,12 @@ const QueryActionButton = ({ query }) => {
                         <button
                             onClick={() =>
                                 dispatch(
-                                    updateQuery({
-                                        id: query.id,
-                                        folder: folder.code
-                                    })
+                                    updateQueryBulk([
+                                        {
+                                            id: query.id,
+                                            folder: folder.code
+                                        }
+                                    ])
                                 )
                             }
                             key={folder.id}

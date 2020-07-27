@@ -36,6 +36,10 @@
     background: #e6e6e6;
 }
 
+.label:last-child {
+    margin-right: 10px;
+}
+
 .label.activeFilter {
     background: #ccc;
 }

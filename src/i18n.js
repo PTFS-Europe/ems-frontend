@@ -41,7 +41,11 @@ const resources = {
             'Add labels': 'Add labels',
             'No labels defined': 'No labels defined',
             'Confirm action': 'Confirm action',
-            'Cancel action': 'Cancel action'
+            'Cancel action': 'Cancel action',
+            'Move to bin': 'Move to bin',
+            'Add or remove labels': 'Add or remove labels',
+            'You must filter queries before selecting all':
+                'You must filter queries before selecting all'
         }
     }
 };

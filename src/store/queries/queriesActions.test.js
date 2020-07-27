@@ -123,36 +123,36 @@ describe('queriesActions', () => {
         });
     });
     describe('update', () => {
-        test('updateQueryRequest', async () => {
+        test('updateQueryBulkRequest', async () => {
             const expected = {
-                type: queriesTypes.UPDATE_QUERY_REQUEST,
+                type: queriesTypes.UPDATE_QUERY_BULK_REQUEST,
                 payload: { test: 'me' }
             };
-            expect(actions.updateQueryRequest({ test: 'me' })).toEqual(
+            expect(actions.updateQueryBulkRequest({ test: 'me' })).toEqual(
                 expected
             );
         });
-        test('updateQuerySuccess', async () => {
+        test('updateQueryBulkSuccess', async () => {
             const expected = {
-                type: queriesTypes.UPDATE_QUERY_SUCCESS,
+                type: queriesTypes.UPDATE_QUERY_BULK_SUCCESS,
                 payload: { test: 'me' }
             };
-            expect(actions.updateQuerySuccess({ test: 'me' })).toEqual(
+            expect(actions.updateQueryBulkSuccess({ test: 'me' })).toEqual(
                 expected
             );
         });
-        test('updateQueryFailure', async () => {
+        test('updateQueryBulkFailure', async () => {
             const expected = {
-                type: queriesTypes.UPDATE_QUERY_FAILURE,
+                type: queriesTypes.UPDATE_QUERY_BULK_FAILURE,
                 payload: { my: 'error' }
             };
-            expect(actions.updateQueryFailure({ my: 'error' })).toEqual(
+            expect(actions.updateQueryBulkFailure({ my: 'error' })).toEqual(
                 expected
             );
         });
-        test('dispatches UPDATE_QUERY_REQUEST & UPDATE_QUERY_SUCCESS', () => {
-            fetchMock.putOnce(`${process.env.REACT_APP_API_URL}/queries/1`, {
-                body: { id: 1, title: 'Hello' }
+        test('dispatches UPDATE_QUERY_BULK_REQUEST & UPDATE_QUERY_BULK_SUCCESS', () => {
+            fetchMock.putOnce(`${process.env.REACT_APP_API_URL}/queries`, {
+                body: [{ id: 1, title: 'Hello' }]
             });
             const store = mockStore({
                 queries: { queryList: [{ id: 1, title: 'Goodbye' }] }
@@ -160,17 +160,19 @@ describe('queriesActions', () => {
 
             return store
                 .dispatch(
-                    actions.updateQuery({
-                        id: 1,
-                        title: 'Hello'
-                    })
+                    actions.updateQueryBulk([
+                        {
+                            id: 1,
+                            title: 'Hello'
+                        }
+                    ])
                 )
                 .then(() => {
                     const [requestResp, successResp] = store.getActions();
-                    expect(requestResp.payload.title).toEqual('Hello');
-                    expect(requestResp.payload.id).toEqual(1);
-                    expect(successResp.payload.data.title).toEqual('Hello');
-                    expect(successResp.payload.data.id).toEqual(1);
+                    expect(requestResp.payload[0].title).toEqual('Hello');
+                    expect(requestResp.payload[0].id).toEqual(1);
+                    expect(successResp.payload.data[0].title).toEqual('Hello');
+                    expect(successResp.payload.data[0].id).toEqual(1);
                 });
         });
     });
@@ -186,19 +188,16 @@ describe('queriesActions', () => {
         });
     });
     describe('toggle label', () => {
-        test('toggleLabelRequest', async () => {
+        test('toggleLabelBulkRequest', async () => {
             const expected = {
-                type: queriesTypes.TOGGLE_LABEL_REQUEST,
+                type: queriesTypes.TOGGLE_LABEL_BULK_REQUEST,
                 payload: { baddie: 'Snoke' }
             };
-            expect(actions.toggleLabelRequest({ baddie: 'Snoke' })).toEqual(
+            expect(actions.toggleLabelBulkRequest({ baddie: 'Snoke' })).toEqual(
                 expected
             );
         });
-        test('dispatches TOGGLE_LABEL_REQUEST & UPDATE_QUERY_SUCCESS', () => {
-            fetchMock.getOnce(`${process.env.REACT_APP_API_URL}/queries/1/`, {
-                body: { queries: [{ id: 1, labels: [1, 2] }] }
-            });
+        test('toggle on - dispatches TOGGLE_LABEL_BULK_REQUEST & UPDATE_QUERY_BULK_SUCCESS', () => {
             fetchMock.postOnce(
                 `${process.env.REACT_APP_API_URL}/queries/1/label/2`,
                 {
@@ -209,26 +208,64 @@ describe('queriesActions', () => {
                 queries: { queryList: [{ id: 1, labels: [1] }] }
             });
 
-            return store
-                .dispatch(
-                    actions.toggleLabel({
-                        query: { id: 1, labels: [1] },
-                        labelId: 2
-                    })
-                )
-                .then(() => {
-                    const [requestResp, successResp] = store.getActions();
-                    const expectedRequestResp = {
-                        type: 'TOGGLE_LABEL_REQUEST',
-                        payload: { query: { id: 1, labels: [1] }, labelId: 2 }
-                    };
-                    const expectedSuccessResp = {
-                        type: 'UPDATE_QUERY_SUCCESS',
-                        payload: { data: { id: 1, labels: [1, 2] } }
-                    };
-                    expect(requestResp).toEqual(expectedRequestResp);
-                    expect(successResp).toEqual(expectedSuccessResp);
-                });
+            const payload = {
+                labelId: 2,
+                isSelected: false,
+                affectedQueries: [1]
+            };
+            return store.dispatch(actions.toggleLabelBulk(payload)).then(() => {
+                const [requestResp, successResp] = store.getActions();
+                const expectedRequestResp = {
+                    type: 'TOGGLE_LABEL_BULK_REQUEST',
+                    payload: payload
+                };
+                const expectedSuccessResp = {
+                    type: 'UPDATE_QUERY_BULK_SUCCESS',
+                    payload: {
+                        data: {
+                            id: 1,
+                            labels: [1, 2]
+                        }
+                    }
+                };
+                expect(requestResp).toEqual(expectedRequestResp);
+                expect(successResp).toEqual(expectedSuccessResp);
+            });
+        });
+        test('toggle off - dispatches TOGGLE_LABEL_BULK_REQUEST & UPDATE_QUERY_BULK_SUCCESS', () => {
+            fetchMock.deleteOnce(
+                `${process.env.REACT_APP_API_URL}/queries/1/label/2`,
+                {
+                    body: { id: 1, labels: [1] }
+                }
+            );
+            const store = mockStore({
+                queries: { queryList: [{ id: 1, labels: [1, 2] }] }
+            });
+
+            const payload = {
+                labelId: 2,
+                isSelected: true,
+                affectedQueries: [1]
+            };
+            return store.dispatch(actions.toggleLabelBulk(payload)).then(() => {
+                const [requestResp, successResp] = store.getActions();
+                const expectedRequestResp = {
+                    type: 'TOGGLE_LABEL_BULK_REQUEST',
+                    payload: payload
+                };
+                const expectedSuccessResp = {
+                    type: 'UPDATE_QUERY_BULK_SUCCESS',
+                    payload: {
+                        data: {
+                            id: 1,
+                            labels: [1]
+                        }
+                    }
+                };
+                expect(requestResp).toEqual(expectedRequestResp);
+                expect(successResp).toEqual(expectedSuccessResp);
+            });
         });
     });
 });

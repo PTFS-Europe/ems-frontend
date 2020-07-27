@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { toggleLabel } from '../../../../../../store/queries/queriesActions';
+import { toggleLabelBulk } from '../../../../../../store/queries/queriesActions';
 import OptionPicker from '../../../../../UI/OptionPicker/OptionPicker';
 
 const LabelPicker = ({ query }) => {
@@ -20,20 +20,25 @@ const LabelPicker = ({ query }) => {
     const { t } = useTranslation();
 
     const dispatchToggle = (labelId) => {
-        dispatch(toggleLabel({ query, labelId }));
+        dispatch(
+            toggleLabelBulk({
+                labelId,
+                isSelected: query.labels.includes(labelId),
+                affectedQueries: [query.id]
+            })
+        );
     };
 
     return (
         <OptionPicker
             button={{
                 label: t('Add or remove labels'),
-                icon: 'pencil-alt'
+                icon: 'tag'
             }}
-            promptText={t('Add labels')}
             selected={query.labels}
             options={options}
             shouldClose={false}
-            onChoose={(payload) => dispatchToggle(payload)}
+            onChoose={(labelId) => dispatchToggle(labelId)}
         ></OptionPicker>
     );
 };

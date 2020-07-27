@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { useSelector } from 'react-redux';
 
 import QueryLabels from './QueryLabels';
@@ -50,10 +50,6 @@ const mockStateLabels = {
         ],
         filter: null
     }
-};
-
-const mockQuery = {
-    labels: [1, 2, 3]
 };
 
 let qe;

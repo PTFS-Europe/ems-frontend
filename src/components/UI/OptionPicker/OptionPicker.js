@@ -71,8 +71,12 @@ const OptionPicker = ({
     const handleOpen = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        setOpen(true);
+        if (!button.disabled) {
+            setOpen(true);
+        }
     };
+
+    const buttonAdditionalStyles = button.disabled ? styles.disabled : '';
 
     return (
         <Popover
@@ -87,13 +91,14 @@ const OptionPicker = ({
             }
             onClickOutside={() => setOpen(false)}
         >
-            <button onClick={handleOpen} className={styles.button}>
-                {selected.length === 0 && (
+            <button
+                onClick={handleOpen}
+                className={`${styles.button} ${buttonAdditionalStyles}`}
+            >
+                {selected.length === 0 && promptText && (
                     <div className={styles.promptText}>{promptText}</div>
                 )}
-                <div className={styles.buttonIcon}>
-                    <FontAwesomeIcon alt={button.label} icon={button.icon} />
-                </div>
+                <FontAwesomeIcon alt={button.label} icon={button.icon} />
             </button>
         </Popover>
     );
@@ -116,7 +121,7 @@ OptionPicker.propTypes = {
     button: PropTypes.object.isRequired,
     selected: PropTypes.array.isRequired,
     shouldClose: PropTypes.bool,
-    promptText: PropTypes.string.isRequired
+    promptText: PropTypes.string
 };
 
 export default OptionPicker;

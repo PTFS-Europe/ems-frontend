@@ -6,7 +6,8 @@ const initialState = {
     queryList: [],
     error: '',
     search: '',
-    preserved: false
+    preserved: false,
+    selected: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -92,47 +93,60 @@ const reducer = (state = initialState, action) => {
                 queryList: filteredQueries,
                 error: action.payload
             };
-        case queriesTypes.UPDATE_QUERY_REQUEST:
-            // Update the just updated query in our state, it will
+        case queriesTypes.UPDATE_QUERY_BULK_REQUEST:
+            // Update the just updated queries in our state, it will
             // be replaced if/when a response arrives
-            const updatedQueriesPending = state.queryList.map((query) =>
-                query.id === action.payload.id
-                    ? { ...query, ...action.payload }
-                    : query
-            );
+            //
+            // Iterate all queries and for each see if it needs updating,
+            // return all queries with the ones that need updating updated
+            const updatedQueryList = state.queryList.map((maybeUpdate) => {
+                // Is this query in our array of updated ones, if so get it
+                const updated = action.payload.find(
+                    (iterUpdated) => iterUpdated.id === maybeUpdate.id
+                );
+                return updated ? updated : maybeUpdate;
+            });
             return {
                 ...state,
                 // We don't set loading to true here as we do not want
                 // the loading spinner to be displayed
                 loading: false,
-                queryList: updatedQueriesPending
+                queryList: updatedQueryList
             };
-        case queriesTypes.UPDATE_QUERY_SUCCESS:
-            // Find and replace the query that we've just received
+        case queriesTypes.UPDATE_QUERY_BULK_SUCCESS:
+            // Find and replace the queries that we've just received
             // from the API
-            const updatedQueriesSuccess = state.queryList.map((query) =>
-                query.id === action.payload.data.id
-                    ? action.payload.data
-                    : query
+            const updatedQueriesBulkSuccess = state.queryList.map(
+                (originalQuery) => {
+                    const updated = action.payload.data.find(
+                        (iterUpdated) => iterUpdated.id === originalQuery.id
+                    );
+                    return updated ? updated : originalQuery;
+                }
             );
             return {
                 ...state,
                 loading: false,
-                queryList: updatedQueriesSuccess,
+                queryList: updatedQueriesBulkSuccess,
                 error: ''
             };
-        case queriesTypes.UPDATE_QUERY_FAILURE:
-            // The query probably didn't get accepted by the API
+        case queriesTypes.UPDATE_QUERY_BULK_FAILURE:
+            // One or more updpated queries probably didn't get accepted
+            // by the API, so replace the failed queries in our state with
+            // their original unmodified counterparts
             // TODO: We should announce to the user that something
             // went wrong
-            const unmodified = action.payload.unmodifiedQuery;
-            const queriesFailure = state.queryList.map((query) =>
-                query.id === unmodified.id ? unmodified : query
-            );
+            const unmodifiedQueries = action.payload.unmodifiedQueries;
+            const queriesBulkFailure = state.queryList.map((query) => {
+                const unmodified = unmodifiedQueries.find(
+                    (iterUnmodified) => iterUnmodified.id === query.id
+                );
+                return unmodified ? unmodified : query;
+            });
             return {
                 ...state,
                 loading: false,
-                queryList: queriesFailure,
+                queryList: queriesBulkFailure,
                 error: action.payload.error
             };
         case queriesTypes.REFRESH_QUERY_SUCCESS:
@@ -155,17 +169,54 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 search: action.payload
             };
-        case queriesTypes.TOGGLE_LABEL_REQUEST:
-            const { query, labelId } = action.payload;
-            const operation = query.labels.includes(labelId) ? 'remove' : 'add';
-            const modifiedQueryList = state.queryList.map((iQuery) => {
-                if (iQuery.id === query.id) {
-                    if (operation === 'remove') {
+        case queriesTypes.SET_QUERY_SELECTED:
+            const selectedIndex = state.selected.findIndex(
+                (s) => s === action.payload
+            );
+            const out = JSON.parse(JSON.stringify(state.selected));
+            if (selectedIndex > -1) {
+                out.splice(selectedIndex, 1);
+            } else {
+                out.push(action.payload);
+            }
+            return {
+                ...state,
+                selected: out
+            };
+        case queriesTypes.SET_QUERY_SELECTED_ALL:
+            // We receive a bool indicating whether the "Select all"
+            // is checked or not
+            if (!action.payload) {
+                return {
+                    ...state,
+                    selected: []
+                };
+            }
+            // "selected" should be the IDs of all loaded queries
+            return {
+                ...state,
+                selected: state.queryList.map((query) => query.id)
+            };
+        case queriesTypes.TOGGLE_LABEL_BULK_REQUEST:
+            const {
+                labelId: toggledLabelId,
+                isSelected,
+                affectedQueries
+            } = action.payload;
+
+            const modifiedBulkQueryList = state.queryList.map((iQuery) => {
+                // Is this query one we need to modify
+                if (affectedQueries.includes(iQuery.id)) {
+                    // If the label being toggled is already selected
+                    if (isSelected) {
                         iQuery.labels = iQuery.labels.filter(
-                            (iLabel) => iLabel !== labelId
+                            (iLabel) => iLabel !== toggledLabelId
                         );
                     } else {
-                        iQuery.labels = [...iQuery.labels, labelId];
+                        // Ensure we don't add the same label twice
+                        if (!iQuery.labels.includes(toggledLabelId)) {
+                            iQuery.labels = [...iQuery.labels, toggledLabelId];
+                        }
                     }
                 }
                 return iQuery;
@@ -173,7 +224,7 @@ const reducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                queryList: modifiedQueryList
+                queryList: modifiedBulkQueryList
             };
         // If a label is deleted, we need to modify our state to remove
         // that label from any queries that use it
