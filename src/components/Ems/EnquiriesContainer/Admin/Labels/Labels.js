@@ -90,9 +90,10 @@ const Labels = () => {
                 <div className={styles.noLabels}>{t('No labels defined')}</div>
             )}
             <div className={styles.listContainer}>
-                {labelList && labelList.length > 0 && (
-                    <ul className={styles.labelList}>
-                        {labelList.map((label) => {
+                <ul className={styles.labelList}>
+                    {labelList &&
+                        labelList.length > 0 &&
+                        labelList.map((label) => {
                             return editing ? (
                                 <LabelEdit
                                     activeColourPicker={activeColourPicker}
@@ -110,14 +111,13 @@ const Labels = () => {
                                 />
                             );
                         })}
-                        {editing && (
-                            <LabelEdit
-                                activeColourPicker={activeColourPicker}
-                                setActiveColourPicker={setActiveColourPicker}
-                            />
-                        )}
-                    </ul>
-                )}
+                    {editing && (
+                        <LabelEdit
+                            activeColourPicker={activeColourPicker}
+                            setActiveColourPicker={setActiveColourPicker}
+                        />
+                    )}
+                </ul>
             </div>
         </aside>
     );
