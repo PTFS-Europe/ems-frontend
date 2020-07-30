@@ -25,7 +25,8 @@ const QueryLabels = ({ query }) => {
         // Are the labels stacked
         setStacking(labels && labels.length > stackOver ? true : false);
         // If we don't already have a highlighted label, set it to the last one
-        setHighlighted(highlighted ? highlighted : labels[labels.length - 1]);
+        const lastLabel = labels ? labels[labels.length - 1] : null;
+        setHighlighted(highlighted ? highlighted : lastLabel);
         // Sigh, nonsensical dependency requirements again
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [labels]);

@@ -35,7 +35,7 @@ const LabelPicker = ({ query }) => {
                 label: t('Add or remove labels'),
                 icon: 'tag'
             }}
-            selected={query.labels}
+            selected={query.labels || []}
             options={options}
             shouldClose={false}
             onChoose={(labelId) => dispatchToggle(labelId)}
