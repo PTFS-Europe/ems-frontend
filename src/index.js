@@ -7,6 +7,11 @@ import * as serviceWorker from './serviceWorker';
 
 import './index.scss';
 import { store } from './store';
+import api from './util/EmsApi';
+
+// Initialise our API request and response interceptors
+api.requestInterceptor();
+api.responseInterceptor();
 
 ReactDOM.render(
     <React.StrictMode>

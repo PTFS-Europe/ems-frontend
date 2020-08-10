@@ -1,0 +1,22 @@
+.loginContainer {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin: 25vh 25vw;
+    border-radius: 12px;
+    box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.1);
+    background: #e8e8e8;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.authType {
+    font-size: 30px;
+}
+
+a,
+a:visited,
+a:hover {
+    color: rgba(0,0,0,0.6);
+}

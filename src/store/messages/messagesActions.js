@@ -2,6 +2,7 @@ import uid from 'uid';
 
 import * as messagesTypes from './messagesTypes';
 import { refreshQuery } from '../queries/queriesActions';
+import api from '../../util/EmsApi';
 
 // Call a query action which will cause an associated
 // query to update itself
@@ -40,8 +41,9 @@ export const fetchMessages = (args) => {
         dispatch(fetchMessagesRequest());
         // Make the request
         const params = args.queryId ? `?query_id=${args.queryId}` : '';
-        return fetch(`${process.env.REACT_APP_API_URL}/messages${params}`)
-            .then((response) => response.json())
+        return api
+            .makeRequest(`messages${params}`, {})
+            .then((response) => response.data)
             .then((data) => {
                 // Update our messages state
                 dispatch(fetchMessagesSuccess(data));
@@ -94,24 +96,20 @@ export const sendMessage = ({ queryId, message }) => {
         // replaced once we receive a response
         dispatch(sendMessageRequest({ ...sendObj, id: tempId, pending: true }));
         // Make the request
-        return fetch(`${process.env.REACT_APP_API_URL}/messages`, {
+        const options = {
             headers: {
                 'Content-Type': 'application/json'
             },
-            mode: 'cors',
             method: 'POST',
-            body: JSON.stringify(sendObj)
-        })
-            .then((response) => {
-                // Fetch will not reject if we encounter an HTTP error
-                // so we need to manually reject in that case
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                } else {
-                    return response;
-                }
-            })
-            .then((response) => response.json())
+            data: JSON.stringify(sendObj)
+        };
+        // If we're in dev mode we want to enable CORS mode
+        if (process.env.NODE_ENV === 'development') {
+            options.mode = 'cors';
+        }
+        return api
+            .makeRequest(`messages`, options)
+            .then((response) => response.data)
             .then((data) => {
                 // Repopulate the query metadata
                 lib.doRefreshQuery(data.query_id, dispatch);
@@ -154,25 +152,18 @@ export const deleteMessage = (message) => {
         // message at the API
         dispatch(deleteMessageRequest({ id: message.id }));
         // Make the request
-        return fetch(
-            `${process.env.REACT_APP_API_URL}/messages/${message.id}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                mode: 'cors',
-                method: 'DELETE'
-            }
-        )
-            .then((response) => {
-                // Fetch will not reject if we encounter an HTTP error
-                // so we need to manually reject in that case
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                } else {
-                    return response;
-                }
-            })
+        const options = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'DELETE'
+        };
+        // If we're in dev mode we want to enable CORS mode
+        if (process.env.NODE_ENV === 'development') {
+            options.mode = 'cors';
+        }
+        return api
+            .makeRequest(`messages/${message.id}`, options)
             .then(() => {
                 // Repopulate the query metadata
                 lib.doRefreshQuery(message.query_id, dispatch);
@@ -229,27 +220,20 @@ export const editMessage = (message) => {
             content: message.content
         };
         // Make the request
-        return fetch(
-            `${process.env.REACT_APP_API_URL}/messages/${message.id}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                mode: 'cors',
-                method: 'PUT',
-                body: JSON.stringify(sendObj)
-            }
-        )
-            .then((response) => {
-                // Fetch will not reject if we encounter an HTTP error
-                // so we need to manually reject in that case
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                } else {
-                    return response;
-                }
-            })
-            .then((response) => response.json())
+        const options = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PUT',
+            data: JSON.stringify(sendObj)
+        };
+        // If we're in dev mode we want to enable CORS mode
+        if (process.env.NODE_ENV === 'development') {
+            options.mode = 'cors';
+        }
+        return api
+            .makeRequest(`messages/${message.id}`, options)
+            .then((response) => response.data)
             .then((data) => {
                 // Repopulate the query metadata
                 lib.doRefreshQuery(message.query_id, dispatch);
@@ -347,20 +331,13 @@ export const uploadFile = (files, queryId) => {
         formData.append('userId', userDetails.id);
 
         // Make the request
-        return fetch(`${process.env.REACT_APP_API_URL}/upload`, {
+        const options = {
             method: 'POST',
-            body: formData
-        })
-            .then((response) => {
-                // Fetch will not reject if we encounter an HTTP error
-                // so we need to manually reject in that case
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                } else {
-                    return response;
-                }
-            })
-            .then((response) => response.json())
+            data: formData
+        };
+        return api
+            .makeRequest(`upload`, options)
+            .then((response) => response.data)
             .then((data) => {
                 // Repopulate the query metadata
                 lib.doRefreshQuery(queryId, dispatch);

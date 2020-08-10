@@ -1,18 +1,26 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import fetchMock from 'fetch-mock';
 
 import * as actions from './queriesActions';
 import * as queriesTypes from './queriesTypes';
+
+import api from '../../util/EmsApi';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 describe('queriesActions', () => {
-    afterEach(() => {
-        fetchMock.restore();
-    });
     describe('fetch', () => {
+        beforeEach(() => {
+            api.makeRequest = () => {
+                return new Promise((resolve) => {
+                    return resolve({
+                        data: { queries: ['something'] },
+                        queryId: null
+                    });
+                });
+            };
+        });
         test('fetchQueriesRequest', async () => {
             const expected = {
                 type: queriesTypes.FETCH_QUERIES_REQUEST
@@ -39,9 +47,6 @@ describe('queriesActions', () => {
         });
         test('dispatches FETCH_QUERIES_REQUEST & FETCH_QUERIES_SUCCESS with no queryId', () => {
             const store = mockStore();
-            fetchMock.getOnce(`${process.env.REACT_APP_API_URL}/queries`, {
-                body: { queries: ['something'] }
-            });
             const expectedActions = [
                 { type: queriesTypes.FETCH_QUERIES_REQUEST },
                 {
@@ -55,9 +60,6 @@ describe('queriesActions', () => {
         });
         test('dispatches FETCH_QUERIES_REQUEST & FETCH_QUERIES_SUCCESS with queryId', () => {
             const store = mockStore();
-            fetchMock.getOnce(`${process.env.REACT_APP_API_URL}/queries`, {
-                body: { queries: ['something'] }
-            });
             const expectedActions = [
                 { type: queriesTypes.FETCH_QUERIES_REQUEST },
                 {
@@ -73,12 +75,6 @@ describe('queriesActions', () => {
         });
         test('makes API request with passed parameters', () => {
             const store = mockStore();
-            fetchMock.getOnce(
-                `${process.env.REACT_APP_API_URL}/queries?title=Mos%20Eisley%20Spaceport&folder=UNREAD&label=1`,
-                {
-                    body: { queries: ['something'] }
-                }
-            );
             const expectedActions = [
                 { type: queriesTypes.FETCH_QUERIES_REQUEST },
                 {
@@ -102,9 +98,6 @@ describe('queriesActions', () => {
         });
         test('does not dispatch FETCH_QUERIES_REQUEST if showLoading is falsy', () => {
             const store = mockStore();
-            fetchMock.getOnce(`${process.env.REACT_APP_API_URL}/queries`, {
-                body: { queries: ['something'] }
-            });
             const expectedActions = [
                 {
                     type: queriesTypes.FETCH_QUERIES_SUCCESS,
@@ -151,9 +144,18 @@ describe('queriesActions', () => {
             );
         });
         test('dispatches UPDATE_QUERY_BULK_REQUEST & UPDATE_QUERY_BULK_SUCCESS', () => {
-            fetchMock.putOnce(`${process.env.REACT_APP_API_URL}/queries`, {
-                body: [{ id: 1, title: 'Hello' }]
-            });
+            api.makeRequest = () => {
+                return new Promise((resolve) => {
+                    return resolve({
+                        data: [
+                            {
+                                id: 1,
+                                title: 'Hello'
+                            }
+                        ]
+                    });
+                });
+            };
             const store = mockStore({
                 queries: { queryList: [{ id: 1, title: 'Goodbye' }] }
             });
@@ -198,12 +200,16 @@ describe('queriesActions', () => {
             );
         });
         test('toggle on - dispatches TOGGLE_LABEL_BULK_REQUEST & UPDATE_QUERY_BULK_SUCCESS', () => {
-            fetchMock.postOnce(
-                `${process.env.REACT_APP_API_URL}/queries/1/label/2`,
-                {
-                    body: { id: 1, labels: [1, 2] }
-                }
-            );
+            api.makeRequest = () => {
+                return new Promise((resolve) => {
+                    return resolve({
+                        data: {
+                            id: 1,
+                            labels: [1, 2]
+                        }
+                    });
+                });
+            };
             const store = mockStore({
                 queries: { queryList: [{ id: 1, labels: [1] }] }
             });
@@ -233,12 +239,16 @@ describe('queriesActions', () => {
             });
         });
         test('toggle off - dispatches TOGGLE_LABEL_BULK_REQUEST & UPDATE_QUERY_BULK_SUCCESS', () => {
-            fetchMock.deleteOnce(
-                `${process.env.REACT_APP_API_URL}/queries/1/label/2`,
-                {
-                    body: { id: 1, labels: [1] }
-                }
-            );
+            api.makeRequest = () => {
+                return new Promise((resolve) => {
+                    return resolve({
+                        data: {
+                            id: 1,
+                            labels: [1]
+                        }
+                    });
+                });
+            };
             const store = mockStore({
                 queries: { queryList: [{ id: 1, labels: [1, 2] }] }
             });

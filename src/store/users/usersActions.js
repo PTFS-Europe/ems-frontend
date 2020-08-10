@@ -1,4 +1,5 @@
 import * as usersTypes from './usersTypes';
+import api from '../../util/EmsApi';
 
 export const fetchUsersRequest = (ids) => {
     return {
@@ -29,7 +30,7 @@ export const fetchUsers = (args) => {
     const user_ids =
         args && args.hasOwnProperty('user_ids') ? args.user_ids : [];
     return (dispatch, getState) => {
-        let url = `${process.env.REACT_APP_API_URL}/users`;
+        let url = 'users';
 
         // Only retrieve new users if we need to
         // First check that the users we've been asked
@@ -52,8 +53,9 @@ export const fetchUsers = (args) => {
                 // Set our loading state to the IDs we're fetching
                 dispatch(fetchUsersRequest(usersToGet));
                 // Make the request
-                return fetch(url)
-                    .then((response) => response.json())
+                return api
+                    .makeRequest(url, {})
+                    .then((response) => response.data)
                     .then((data) => {
                         // Update our users state
                         dispatch(fetchUsersSuccess(data));

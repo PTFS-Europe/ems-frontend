@@ -1,30 +1,32 @@
-import * as activeUserTypes from './activeUserTypes';
+import * as rolesTypes from './rolesTypes';
 
+// Our initial state
 const initialState = {
-    userDetails: {},
-    loading: false,
+    loading: [],
+    rolesList: [],
     error: ''
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case activeUserTypes.FETCH_ACTIVE_USER_REQUEST:
+        case rolesTypes.FETCH_ROLES_REQUEST:
             return {
                 ...state,
                 loading: true
             };
-        case activeUserTypes.FETCH_ACTIVE_USER_SUCCESS:
+        case rolesTypes.FETCH_ROLES_SUCCESS:
             return {
                 ...state,
                 loading: false,
-                userDetails: {
-                    id: action.payload.id
-                }
+                rolesList: action.payload,
+                error: ''
             };
-        case activeUserTypes.FETCH_ACTIVE_USER_FAILURE:
+        case rolesTypes.FETCH_ROLES_FAILURE:
             return {
                 ...state,
-                loading: false,
+                // We don't modify the loading state because we don't
+                // know what failed, so can't meaningfully update it
+                usersList: [],
                 error: action.payload
             };
         default:

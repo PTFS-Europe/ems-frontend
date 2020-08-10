@@ -1,4 +1,5 @@
 import * as queriesTypes from './queriesTypes';
+import api from '../../util/EmsApi';
 
 // TODO: Write tests for the other actions we have here
 
@@ -47,8 +48,9 @@ export const fetchQueries = ({
         }
         const appendStr = append.length > 0 ? '?' + append.join('&') : '';
         // Make the request
-        return fetch(`${process.env.REACT_APP_API_URL}/queries${appendStr}`)
-            .then((response) => response.json())
+        return api
+            .makeRequest(`queries${appendStr}`, {})
+            .then((response) => response.data)
             .then((data) => {
                 // Update our queries state
                 const queryId =
@@ -80,8 +82,9 @@ export const refreshQueryFailure = (error) => {
 export const refreshQuery = (id) => {
     return (dispatch) => {
         // Make the request
-        return fetch(`${process.env.REACT_APP_API_URL}/queries/${id}`)
-            .then((response) => response.json())
+        return api
+            .makeRequest(`queries/${id}`, {})
+            .then((response) => response.data)
             .then((data) => {
                 // Update our queries state
                 dispatch(refreshQuerySuccess(data));
@@ -143,24 +146,22 @@ export const createQuery = ({ query }) => {
             })
         );
         // Make the request
-        return fetch(`${process.env.REACT_APP_API_URL}/queries`, {
+        const options = {
             headers: {
                 'Content-Type': 'application/json'
             },
-            mode: 'cors',
             method: 'POST',
-            body: JSON.stringify(sendObj)
-        })
-            .then((response) => {
-                // Fetch will not reject if we encounter an HTTP error
-                // so we need to manually reject in that case
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                } else {
-                    return response;
-                }
-            })
-            .then((response) => response.json())
+            data: JSON.stringify(sendObj)
+        };
+        // If we're in dev mode we want to enable CORS mode
+        if (process.env.NODE_ENV === 'development') {
+            options.mode = 'cors';
+        }
+        console.log('**************');
+        console.log(process.env.NODE_ENV);
+        return api
+            .makeRequest('queries', options)
+            .then((response) => response.data)
             .then((data) =>
                 // Update our queries state
                 dispatch(createQuerySuccess({ data, tempId }))
@@ -171,87 +172,6 @@ export const createQuery = ({ query }) => {
             );
     };
 };
-/* DEPRECATED
-export const updateQueryRequest = (requestBody) => {
-    return {
-        type: queriesTypes.UPDATE_QUERY_REQUEST,
-        payload: requestBody
-    };
-};
-
-export const updateQuerySuccess = (query) => {
-    return {
-        type: queriesTypes.UPDATE_QUERY_SUCCESS,
-        payload: query
-    };
-};
-
-export const updateQueryFailure = (payload) => {
-    return {
-        type: queriesTypes.UPDATE_QUERY_FAILURE,
-        payload
-    };
-};
-
-// Our action creator for updating a query
-export const updateQuery = (updatedProps) => {
-    return (dispatch, getState) => {
-        // Find the query we're updating
-        let toUpdate = getState().queries.queryList.find(
-            (query) => query.id === updatedProps.id
-        );
-        // Make a copy of the query we're about to update in case we
-        // need to rollback
-        const unmodifiedQuery = JSON.parse(JSON.stringify(toUpdate));
-        // Update our state to reflect that we've sent the request
-        // We update our state with the updated query here, it is then
-        // replaced once we receive a response
-        const updateObj = {
-            id: toUpdate.id,
-            folder: toUpdate.folder,
-            title: toUpdate.title,
-            initiator: toUpdate.initiator,
-            ...updatedProps
-        };
-        dispatch(updateQueryRequest(updateObj));
-        // Make the request
-        return fetch(
-            `${process.env.REACT_APP_API_URL}/queries/${toUpdate.id}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                mode: 'cors',
-                method: 'PUT',
-                body: JSON.stringify(updateObj)
-            }
-        )
-            .then((response) => {
-                // Fetch will not reject if we encounter an HTTP error
-                // so we need to manually reject in that case
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                } else {
-                    return response;
-                }
-            })
-            .then((response) => response.json())
-            .then((data) =>
-                // Update our queries state
-                dispatch(updateQuerySuccess({ data }))
-            )
-            .catch((error) =>
-                // Update our error state
-                dispatch(
-                    updateQueryFailure({
-                        error: error.message,
-                        unmodifiedQuery
-                    })
-                )
-            );
-    };
-};
-*/
 
 export const updateQueryBulkRequest = (requestBody) => {
     return {
@@ -302,24 +222,20 @@ export const updateQueryBulk = (updatedQueries) => {
         });
         dispatch(updateQueryBulkRequest(updateObj));
         // Make the request
-        return fetch(`${process.env.REACT_APP_API_URL}/queries`, {
+        const options = {
             headers: {
                 'Content-Type': 'application/json'
             },
-            mode: 'cors',
             method: 'PUT',
-            body: JSON.stringify(updateObj)
-        })
-            .then((response) => {
-                // Fetch will not reject if we encounter an HTTP error
-                // so we need to manually reject in that case
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                } else {
-                    return response;
-                }
-            })
-            .then((response) => response.json())
+            data: JSON.stringify(updateObj)
+        };
+        // If we're in dev mode we want to enable CORS mode
+        if (process.env.NODE_ENV === 'development') {
+            options.mode = 'cors';
+        }
+        return api
+            .makeRequest('queries', options)
+            .then((response) => response.data)
             .then((data) =>
                 // Update our queries state
                 dispatch(updateQueryBulkSuccess({ data }))
@@ -355,67 +271,6 @@ export const setQuerySelectedAll = (newState) => {
         payload: newState
     };
 };
-/* DEPRECATED
-export const toggleLabelRequest = (payload) => {
-    return {
-        type: queriesTypes.TOGGLE_LABEL_REQUEST,
-        payload
-    };
-};
-
-export const toggleLabel = (payload) => {
-    return (dispatch, getState) => {
-        // Find the query we're modifying
-        const toUpdate = getState().queries.queryList.find(
-            (query) => query.id === payload.query.id
-        );
-        // Make a copy of the query we're about to update in case we
-        // need to rollback
-        const unmodifiedQuery = JSON.parse(JSON.stringify(toUpdate));
-        // Dispatch the update request
-        dispatch(toggleLabelRequest(payload));
-        // Make the request
-        // Determine what we're doing, if the label we're working with is already attached
-        // to the query, we need the API method to be DELETE otherwise it's POST
-        const method = unmodifiedQuery.labels.includes(payload.labelId)
-            ? 'DELETE'
-            : 'POST';
-        return fetch(
-            `${process.env.REACT_APP_API_URL}/queries/${payload.query.id}/label/${payload.labelId}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                mode: 'cors',
-                method
-            }
-        )
-            .then((response) => {
-                // Fetch will not reject if we encounter an HTTP error
-                // so we need to manually reject in that case
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                } else {
-                    return response;
-                }
-            })
-            .then((response) => response.json())
-            .then((data) =>
-                // Update our queries state
-                dispatch(updateQuerySuccess({ data }))
-            )
-            .catch((error) =>
-                // Update our error state
-                dispatch(
-                    updateQueryFailure({
-                        error: error.message,
-                        unmodifiedQuery
-                    })
-                )
-            );
-    };
-};
-*/
 
 export const toggleLabelBulkRequest = (payload) => {
     return {
@@ -447,26 +302,19 @@ export const toggleLabelBulk = ({ labelId, isSelected, affectedQueries }) => {
         // we need the API method to be DELETE otherwise it's POST
         const method = isSelected ? 'DELETE' : 'POST';
         const joinedQueries = affectedQueries.join(',');
-        return fetch(
-            `${process.env.REACT_APP_API_URL}/queries/${joinedQueries}/label/${labelId}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                mode: 'cors',
-                method
-            }
-        )
-            .then((response) => {
-                // Fetch will not reject if we encounter an HTTP error
-                // so we need to manually reject in that case
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                } else {
-                    return response;
-                }
-            })
-            .then((response) => response.json())
+        const options = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method
+        };
+        // If we're in dev mode we want to enable CORS mode
+        if (process.env.NODE_ENV === 'development') {
+            options.mode = 'cors';
+        }
+        return api
+            .makeRequest(`queries/${joinedQueries}/label/${labelId}`, options)
+            .then((response) => response.data)
             .then((data) =>
                 // Update our queries state
                 dispatch(updateQueryBulkSuccess({ data }))

@@ -1,17 +1,15 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import fetchMock from 'fetch-mock';
 
 import * as actions from './labelsActions';
 import * as labelsTypes from './labelsTypes';
+
+import api from '../../util/EmsApi';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 describe('labelsActions', () => {
-    afterEach(() => {
-        fetchMock.restore();
-    });
     describe('fetch', () => {
         test('fetchLabelsRequest', async () => {
             const expected = {
@@ -51,9 +49,13 @@ describe('labelsActions', () => {
                     { id: 2, name: 'All queries', colour: '#0f0', position: 1 }
                 ]
             };
-            fetchMock.getOnce(`${process.env.REACT_APP_API_URL}/labels`, {
-                body: expectedBody
-            });
+            api.makeRequest = () => {
+                return new Promise((resolve) => {
+                    return resolve({
+                        data: expectedBody
+                    });
+                });
+            };
             const expectedActions = [
                 { type: labelsTypes.FETCH_LABELS_REQUEST },
                 {
@@ -95,9 +97,13 @@ describe('labelsActions', () => {
             );
         });
         test('dispatches CREATE_LABEL_REQUEST & CREATE_LABEL_SUCCESS', () => {
-            fetchMock.postOnce(`${process.env.REACT_APP_API_URL}/labels`, {
-                body: { name: 'Kashyyyk', colour: '#f00' }
-            });
+            api.makeRequest = () => {
+                return new Promise((resolve) => {
+                    return resolve({
+                        data: { name: 'Kashyyyk', colour: '#f00' }
+                    });
+                });
+            };
             const store = mockStore({
                 labels: {
                     labelList: [],
@@ -154,9 +160,13 @@ describe('labelsActions', () => {
             ).toEqual(expected);
         });
         test('dispatches UPDATE_LABEL_REQUEST & UPDATE_LABEL_SUCCESS', () => {
-            fetchMock.putOnce(`${process.env.REACT_APP_API_URL}/labels/1`, {
-                body: { id: 1, name: 'Empty space' }
-            });
+            api.makeRequest = () => {
+                return new Promise((resolve) => {
+                    return resolve({
+                        data: { id: 1, name: 'Empty space' }
+                    });
+                });
+            };
             const store = mockStore({
                 labels: { labelList: [{ id: 1, name: 'Alderaan' }] }
             });
@@ -203,10 +213,13 @@ describe('labelsActions', () => {
             ).toEqual(expected);
         });
         test('dispatches DELETE_LABEL_REQUEST & DELETE_LABEL_SUCCESS', () => {
-            fetchMock.deleteOnce(
-                `${process.env.REACT_APP_API_URL}/labels/1`,
-                {}
-            );
+            api.makeRequest = () => {
+                return new Promise((resolve) => {
+                    return resolve({
+                        data: {}
+                    });
+                });
+            };
             const store = mockStore();
             return store.dispatch(actions.deleteLabel({ id: 1 })).then(() => {
                 const [requestResp, successResp] = store.getActions();

@@ -9,7 +9,7 @@ import Avatar, { ConfigProvider } from 'react-avatar';
 import styles from './UserIcon.module.scss';
 
 const UserIcon = ({ userId }) => {
-    const [name, setName] = useState('');
+    const [user, setUser] = useState('');
 
     // Get hold of the userList state
     const stateUsers = useSelector((state) => state.users);
@@ -17,19 +17,24 @@ const UserIcon = ({ userId }) => {
     useEffect(() => {
         const user = stateUsers.usersList.find((user) => user.id === userId);
         if (user) {
-            setName(user.name);
+            setUser(user);
         }
     }, [userId, stateUsers.usersList]);
 
-    return (
-        <figure className={styles.userIcon}>
+    return user ? (
+        <figure>
             <ConfigProvider
                 colors={['#d33e43', '#9b7874', '#666370', '#1c1f33']}
             >
-                <Avatar round={true} size="40" name={name}></Avatar>
+                <Avatar
+                    round={true}
+                    size="40"
+                    name={user.name}
+                    src={user.avatar}
+                ></Avatar>
             </ConfigProvider>
         </figure>
-    );
+    ) : null;
 };
 
 UserIcon.propTypes = {

@@ -1,17 +1,15 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import fetchMock from 'fetch-mock';
 
 import * as actions from './usersActions';
 import * as usersTypes from './usersTypes';
+
+import api from '../../util/EmsApi';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 describe('usersActions', () => {
-    afterEach(() => {
-        fetchMock.restore();
-    });
     test('fetchUsersRequest', async () => {
         const expected = {
             type: usersTypes.FETCH_USERS_REQUEST
@@ -53,10 +51,11 @@ describe('usersActions', () => {
                 { id: 2, name: 'Jane Bloggs' }
             ]
         };
-        fetchMock.getOnce(
-            `${process.env.REACT_APP_API_URL}/users?user_ids=1_2`,
-            { body: expectedBody }
-        );
+        api.makeRequest = () => {
+            return new Promise((resolve) => {
+                return resolve({ data: expectedBody });
+            });
+        };
         // We should only make a request if user_ids are passed
         // If we do make a request, the FETCH_USERS_REQUEST action
         // should pass the IDs of the users we're requesting so

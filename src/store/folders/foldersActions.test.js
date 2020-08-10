@@ -1,17 +1,15 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import fetchMock from 'fetch-mock';
 
 import * as actions from './foldersActions';
 import * as foldersTypes from './foldersTypes';
+
+import api from '../../util/EmsApi';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 describe('foldersActions', () => {
-    afterEach(() => {
-        fetchMock.restore();
-    });
     test('fetchFoldersRequest', async () => {
         const expected = {
             type: foldersTypes.FETCH_FOLDERS_REQUEST
@@ -33,21 +31,23 @@ describe('foldersActions', () => {
         expect(actions.fetchFoldersFailure({ my: 'error' })).toEqual(expected);
     });
     test('dispatches FETCH_FOLDERS_REQUEST & FETCH_FOLDERS_SUCCESS', () => {
-        const store = mockStore({
-            folders: {
-                loading: [],
-                foldersList: [],
-                error: ''
-            }
-        });
         const expectedBody = {
             folders: [
                 { id: 1, name: 'Unread', code: 'UNREAD', position: 0 },
                 { id: 2, name: 'All queries', code: 'ALL_QUERIES', position: 1 }
             ]
         };
-        fetchMock.getOnce(`${process.env.REACT_APP_API_URL}/folders`, {
-            body: expectedBody
+        api.makeRequest = () => {
+            return new Promise((resolve) => {
+                return resolve({ data: expectedBody });
+            });
+        };
+        const store = mockStore({
+            folders: {
+                loading: [],
+                foldersList: [],
+                error: ''
+            }
         });
         const expectedActions = [
             { type: foldersTypes.FETCH_FOLDERS_REQUEST },

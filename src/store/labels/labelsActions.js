@@ -1,6 +1,7 @@
 import uid from 'uid';
 
 import * as labelsTypes from './labelsTypes';
+import api from '../../util/EmsApi';
 
 export const fetchLabelsRequest = () => {
     return {
@@ -30,13 +31,14 @@ export const setLabelsFilter = (payload) => {
 };
 
 // Our action creator for fetching labels
-export const fetchLabels = (params) => {
+export const fetchLabels = () => {
     return (dispatch) => {
         // Set our loading state to true
         dispatch(fetchLabelsRequest());
         // Make the request
-        return fetch(`${process.env.REACT_APP_API_URL}/labels`)
-            .then((response) => response.json())
+        return api
+            .makeRequest('labels', {})
+            .then((response) => response.data)
             .then((data) => {
                 // Update our labels state
                 dispatch(fetchLabelsSuccess({ data }));
@@ -73,29 +75,25 @@ export const createLabelFailure = (errorPayload) => {
 // The label we are passed may be incomplete, so we just
 // pass what we've got, plus a temporary ID
 export const createLabel = (label) => {
-    return (dispatch, getState) => {
+    return (dispatch) => {
         // Our temporary ID
         const tempId = uid();
         dispatch(createLabelRequest({ ...label, id: tempId }));
         // Make the request
-        return fetch(`${process.env.REACT_APP_API_URL}/labels`, {
+        const options = {
             headers: {
                 'Content-Type': 'application/json'
             },
-            mode: 'cors',
             method: 'POST',
-            body: JSON.stringify(label)
-        })
-            .then((response) => {
-                // Fetch will not reject if we encounter an HTTP error
-                // so we need to manually reject in that case
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                } else {
-                    return response;
-                }
-            })
-            .then((response) => response.json())
+            data: JSON.stringify(label)
+        };
+        // If we're in dev mode we want to enable CORS mode
+        if (process.env.NODE_ENV === 'development') {
+            options.mode = 'cors';
+        }
+        return api
+            .makeRequest('labels', options)
+            .then((response) => response.data)
             .then((data) => {
                 // Update our labels state
                 return dispatch(createLabelSuccess({ data, tempId }));
@@ -155,24 +153,20 @@ export const updateLabel = (label) => {
         };
         dispatch(updateLabelRequest(sendObj));
         // Make the request
-        return fetch(`${process.env.REACT_APP_API_URL}/labels/${sendObj.id}`, {
+        const options = {
             headers: {
                 'Content-Type': 'application/json'
             },
-            mode: 'cors',
             method: 'PUT',
-            body: JSON.stringify(sendObj)
-        })
-            .then((response) => {
-                // Fetch will not reject if we encounter an HTTP error
-                // so we need to manually reject in that case
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                } else {
-                    return response;
-                }
-            })
-            .then((response) => response.json())
+            data: JSON.stringify(sendObj)
+        };
+        // If we're in dev mode we want to enable CORS mode
+        if (process.env.NODE_ENV === 'development') {
+            options.mode = 'cors';
+        }
+        return api
+            .makeRequest(`labels/${sendObj.id}`, options)
+            .then((response) => response.data)
             .then((data) => {
                 // Update our labels state
                 return dispatch(updateLabelSuccess(data));
@@ -218,22 +212,18 @@ export const deleteLabel = (label) => {
         // label at the API
         dispatch(deleteLabelRequest({ id: label.id }));
         // Make the request
-        return fetch(`${process.env.REACT_APP_API_URL}/labels/${label.id}`, {
+        const options = {
             headers: {
                 'Content-Type': 'application/json'
             },
-            mode: 'cors',
             method: 'DELETE'
-        })
-            .then((response) => {
-                // Fetch will not reject if we encounter an HTTP error
-                // so we need to manually reject in that case
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                } else {
-                    return response;
-                }
-            })
+        };
+        // If we're in dev mode we want to enable CORS mode
+        if (process.env.NODE_ENV === 'development') {
+            options.mode = 'cors';
+        }
+        return api
+            .makeRequest(`labels/${label.id}`, options)
             .then(() => {
                 // Update our messages state
                 return dispatch(deleteLabelSuccess({ id: label.id }));

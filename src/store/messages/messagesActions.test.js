@@ -1,9 +1,10 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import fetchMock from 'fetch-mock';
 
 import * as actions from './messagesActions';
 import * as messagesTypes from './messagesTypes';
+
+import api from '../../util/EmsApi';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -11,9 +12,6 @@ const mockStore = configureMockStore(middlewares);
 actions.lib.doRefreshQuery = jest.fn(() => Promise.resolve());
 
 describe('messagesActions', () => {
-    afterEach(() => {
-        fetchMock.restore();
-    });
     describe('fetch', () => {
         test('fetchMessagesRequest', async () => {
             const expected = {
@@ -40,12 +38,13 @@ describe('messagesActions', () => {
             );
         });
         test('dispatches FETCH_MESSAGES_REQUEST & FETCH_MESSAGES_SUCCESS', () => {
-            fetchMock.getOnce(
-                `${process.env.REACT_APP_API_URL}/messages?query_id=1`,
-                {
-                    body: { messages: ['something'] }
-                }
-            );
+            api.makeRequest = () => {
+                return new Promise((resolve) => {
+                    return resolve({
+                        data: { messages: ['something'] }
+                    });
+                });
+            };
             const expectedActions = [
                 { type: messagesTypes.FETCH_MESSAGES_REQUEST },
                 {
@@ -90,9 +89,13 @@ describe('messagesActions', () => {
             );
         });
         test('dispatches SEND_MESSAGE_REQUEST & SEND_MESSAGE_SUCCESS', () => {
-            fetchMock.postOnce(`${process.env.REACT_APP_API_URL}/messages`, {
-                body: { content: 'Hello', query_id: 1 }
-            });
+            api.makeRequest = () => {
+                return new Promise((resolve) => {
+                    return resolve({
+                        data: { content: 'Hello', query_id: 1 }
+                    });
+                });
+            };
             const store = mockStore({ activeUser: { userDetails: { id: 1 } } });
             return store
                 .dispatch(
@@ -140,10 +143,13 @@ describe('messagesActions', () => {
             );
         });
         test('dispatches DELETE_MESSAGE_REQUEST & DELETE_MESSAGE_SUCCESS', () => {
-            fetchMock.deleteOnce(
-                `${process.env.REACT_APP_API_URL}/messages/1`,
-                {}
-            );
+            api.makeRequest = () => {
+                return new Promise((resolve) => {
+                    return resolve({
+                        data: {}
+                    });
+                });
+            };
             const store = mockStore();
             return store.dispatch(actions.deleteMessage({ id: 1 })).then(() => {
                 const [requestResp, successResp] = store.getActions();
@@ -181,9 +187,13 @@ describe('messagesActions', () => {
             );
         });
         test('dispatches EDIT_MESSAGE_REQUEST & EDIT_MESSAGE_SUCCESS', () => {
-            fetchMock.putOnce(`${process.env.REACT_APP_API_URL}/messages/1`, {
-                body: { id: 1, content: 'R5-D4' }
-            });
+            api.makeRequest = () => {
+                return new Promise((resolve) => {
+                    return resolve({
+                        data: { id: 1, content: 'R5-D4' }
+                    });
+                });
+            };
             const store = mockStore({
                 messages: { messageList: [{ id: 1, content: 'R2-D2' }] }
             });
@@ -226,9 +236,13 @@ describe('messagesActions', () => {
             expect(actions.uploadFileFailure({ test: 'me' })).toEqual(expected);
         });
         test('dispatches UPLOAD_FILE_REQUEST & UPLOAD_FILE_SUCCESS', () => {
-            fetchMock.postOnce(`${process.env.REACT_APP_API_URL}/upload`, {
-                body: { id: 1, originalname: 'myfile.txt' }
-            });
+            api.makeRequest = () => {
+                return new Promise((resolve) => {
+                    return resolve({
+                        data: { id: 1, originalname: 'myfile.txt' }
+                    });
+                });
+            };
             const store = mockStore({ activeUser: { userDetails: { id: 1 } } });
             return store
                 .dispatch(actions.uploadFile([{ name: 'myfile.txt' }], 3))

@@ -1,56 +1,19 @@
 import React from 'react';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-    faEllipsisH,
-    faSearch,
-    faPaperclip,
-    faPaperPlane,
-    faTrashAlt,
-    faPencilAlt,
-    faCheck,
-    faTimes,
-    faPlusCircle,
-    faChevronCircleRight,
-    faDownload,
-    faInbox,
-    faArchive,
-    faExclamationCircle,
-    faCheckCircle,
-    faTimesCircle,
-    faExclamation,
-    faTag,
-    faPenSquare,
-    faCheckSquare
-} from '@fortawesome/free-solid-svg-icons';
-
+import addIcons from '../util/fontawesome';
 import Ems from './Ems/Ems';
-
-library.add(
-    faEllipsisH,
-    faSearch,
-    faPaperclip,
-    faPaperPlane,
-    faTrashAlt,
-    faPencilAlt,
-    faCheck,
-    faTimes,
-    faPlusCircle,
-    faChevronCircleRight,
-    faDownload,
-    faInbox,
-    faArchive,
-    faExclamationCircle,
-    faCheckCircle,
-    faTimesCircle,
-    faExclamation,
-    faTag,
-    faPenSquare,
-    faCheckSquare
-);
+import useMountable from '../hooks/useMountable';
 
 const App = () => {
-    return <Ems></Ems>;
+    // We may block the mounting of the app until we have tried to
+    // obtain a token. We render regardless or whether we got one
+    // or not
+    const complete = useMountable();
+
+    // Add the Font Awesome icons we need
+    addIcons();
+
+    return complete ? <Ems></Ems> : null;
 };
 
 export default App;

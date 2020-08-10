@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchMessages } from '../../../../store/messages/messagesActions';
 import MessageCollection from './MessageCollection/MessageCollection';
 import LoadingSpinner from '../../../UI/LoadingSpinner/LoadingSpinner';
+import useActiveUser from '../../../../hooks/useActiveUser';
 import { debounce } from '../../../../util/ui';
 
 import messageCollections from '../../../../util/messages';
@@ -24,7 +25,7 @@ const MessageList = ({ match, updateMessage }) => {
     // Make the state we need available
     const stateMessages = useSelector((state) => state.messages);
     const stateQueries = useSelector((state) => state.queries);
-    const activeUser = useSelector((state) => state.activeUser);
+    const [activeUser] = useActiveUser();
 
     // The ID of the query currently being viewed
     const queryId = parseInt(match.params.queryId);
@@ -69,7 +70,7 @@ const MessageList = ({ match, updateMessage }) => {
         // been able to find a way to mock it in the test, so have
         // resorted to preventing it being called in the test :-(
         if (!scrollPosition && myRef.current.scrollIntoView) {
-            myRef.current.scrollIntoView({ behavior: 'smooth' });
+            myRef.current.scrollIntoView();
         }
     }, [stateMessages.messageList, scrollPosition]);
 
@@ -121,7 +122,7 @@ const MessageList = ({ match, updateMessage }) => {
                             initiator={initiator}
                             key={collection.id}
                             collection={collection}
-                            activeUser={activeUser.userDetails}
+                            activeUser={activeUser}
                             usersList={stateUsers.usersList}
                         ></MessageCollection>
                     ))}

@@ -3,10 +3,17 @@
 .activeUser {
     display: flex;
     align-items: center;
+    flex-direction: column;
 }
 
 h1.userName {
     font-size: 20px;
     color: $active-user-text;
     font-weight: 500;
+}
+
+.logout {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
 }

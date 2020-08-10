@@ -1,4 +1,5 @@
 import * as foldersTypes from './foldersTypes';
+import api from '../../util/EmsApi';
 
 export const fetchFoldersRequest = () => {
     return {
@@ -28,13 +29,14 @@ export const setFoldersFilter = (payload) => {
 };
 
 // Our action creator for fetching folders
-export const fetchFolders = (params) => {
+export const fetchFolders = () => {
     return (dispatch) => {
         // Set our loading state to true
         dispatch(fetchFoldersRequest());
         // Make the request
-        return fetch(`${process.env.REACT_APP_API_URL}/folders`)
-            .then((response) => response.json())
+        return api
+            .makeRequest('folders', {})
+            .then((response) => response.data)
             .then((data) => {
                 // Update our folders state
                 dispatch(fetchFoldersSuccess({ data }));
