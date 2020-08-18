@@ -330,3 +330,10 @@ export const toggleLabelBulk = ({ labelId, isSelected, affectedQueries }) => {
             );
     };
 };
+
+export const updateActiveQuery = (payload) => {
+    return {
+        type: queriesTypes.UPDATE_ACTIVE_QUERY,
+        payload
+    };
+};

@@ -7,7 +7,8 @@ const initialState = {
     error: '',
     search: '',
     preserved: false,
-    selected: []
+    selected: [],
+    activeQuery: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -238,6 +239,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 queryList: modifiedQueries
             };
+        case queriesTypes.UPDATE_ACTIVE_QUERY:
+            return {
+                ...state,
+                activeQuery: action.payload
+            }
         default:
             return state;
     }
