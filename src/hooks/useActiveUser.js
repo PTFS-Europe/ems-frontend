@@ -26,12 +26,12 @@ export default () => {
 
     // Make sure we're returning up to date data
     useEffect(() => {
-        if (activeUser.userDetails.id && usersList.length > 0) {
+        if (!activeUser.userDetails.id || usersList.length === 0) {
+            setUser({});
+        } else if (!user.id) {
             setUser(
                 usersList.find((user) => user.id === activeUser.userDetails.id)
             );
-        } else {
-            setUser({});
         }
     }, [activeUser, usersList]);
 
