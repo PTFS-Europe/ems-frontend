@@ -27,7 +27,7 @@ const messageCollections = (messages = []) => {
         if (currentCollection.timestamp) {
             return (
                 moment(message.created_at) -
-                    moment(currentCollection.timestamp) <
+                moment(currentCollection.timestamp) <
                 groupPeriod * 1000
             );
         } else {
@@ -50,9 +50,6 @@ const messageCollections = (messages = []) => {
     messages.forEach((message) => {
         const sender = message.creator_id;
         const timestamp = message.created_at;
-        // We create a nonsensical ID, this is purely so the display
-        // component can have a key for its iterator
-        const id = sender + Math.floor(Math.random() * 100000);
         // If this message should not be part of the current collection,
         // store the old one and create a new one
         if (
@@ -64,9 +61,20 @@ const messageCollections = (messages = []) => {
             currentCollection = JSON.parse(JSON.stringify(emptyCollection));
         }
         currentCollection.messages.push(message);
-        currentCollection.id = id;
         currentCollection.timestamp = timestamp;
         currentCollection.sender = sender;
+        // Create an ID for this collection based on its content
+        // This cannot be random otherwise React will re-render every
+        // time the collections are calculated
+        if (!currentCollection.id) {
+            const id =
+                currentCollection.messages.length +
+                '_' +
+                currentCollection.messages[0].creator_id +
+                '_' +
+                currentCollection.messages[0].created_at
+            currentCollection.id = id;
+        }
     });
     collections.push(currentCollection);
     return collections;
