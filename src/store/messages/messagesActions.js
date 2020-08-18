@@ -1,18 +1,7 @@
 import uid from 'uid';
 
 import * as messagesTypes from './messagesTypes';
-import { refreshQuery } from '../queries/queriesActions';
 import api from '../../util/EmsApi';
-
-// Call a query action which will cause an associated
-// query to update itself
-export const doRefreshQuery = (id, dispatch) => {
-    dispatch(refreshQuery(id));
-};
-
-export const lib = {
-    doRefreshQuery
-};
 
 export const fetchMessagesRequest = () => {
     return {
@@ -111,8 +100,6 @@ export const sendMessage = ({ queryId, message }) => {
             .makeRequest(`messages`, options)
             .then((response) => response.data)
             .then((data) => {
-                // Repopulate the query metadata
-                lib.doRefreshQuery(data.query_id, dispatch);
                 // Update our messages state
                 return dispatch(sendMessageSuccess({ data, tempId }));
             })
@@ -165,8 +152,6 @@ export const deleteMessage = (message) => {
         return api
             .makeRequest(`messages/${message.id}`, options)
             .then(() => {
-                // Repopulate the query metadata
-                lib.doRefreshQuery(message.query_id, dispatch);
                 // Update our messages state
                 return dispatch(deleteMessageSuccess({ id: message.id }));
             })
@@ -235,8 +220,6 @@ export const editMessage = (message) => {
             .makeRequest(`messages/${message.id}`, options)
             .then((response) => response.data)
             .then((data) => {
-                // Repopulate the query metadata
-                lib.doRefreshQuery(message.query_id, dispatch);
                 // Update our messages state
                 return dispatch(editMessageSuccess(data));
             })
@@ -339,8 +322,6 @@ export const uploadFile = (files, queryId) => {
             .makeRequest(`upload`, options)
             .then((response) => response.data)
             .then((data) => {
-                // Repopulate the query metadata
-                lib.doRefreshQuery(queryId, dispatch);
                 // Replace the temporary messages with actual ones
                 dispatch(
                     uploadFileSuccess({
@@ -359,3 +340,29 @@ export const uploadFile = (files, queryId) => {
             );
     };
 };
+
+export const receiveCreatedMessage = (message) => {
+    return {
+        type: messagesTypes.RECEIVE_CREATED_MESSAGE,
+        payload: message
+    };
+};
+
+export const receiveUploadedFiles = (files) => {
+    return {
+        type: messagesTypes.RECEIVE_UPLOADED_FILES,
+        payload: files
+    };
+};
+
+// A generic action creator that will dispatch the supplied action
+// with the supplied payload if the supplied ID matches the active
+// query ID
+export const dispatchIfActiveQuery = (action, id) => {
+    return (dispatch, getState) => {
+        const activeQuery = getState().queries.activeQuery;
+        if (id === activeQuery) {
+            dispatch(action());
+        }
+    };
+}

@@ -224,6 +224,30 @@ const reducer = (state = initialState, action) => {
                 messageList: filtered.reverse(),
                 error: action.payload.error
             };
+        case messagesTypes.RECEIVE_CREATED_MESSAGE:
+            // A message has arrived (via a websocket)
+            // Add it to our message list
+            const withNewMessage = [
+                ...state.messageList,
+                action.payload
+            ];
+            return {
+                ...state,
+                messageList: withNewMessage
+            };
+        case messagesTypes.RECEIVE_UPLOADED_FILES:
+            // An array of file upload messages have arrived
+            // (via a websocket)
+            // Add them to our message list
+            const withNewFiles = [
+                ...state.messageList,
+                ...action.payload
+            ];
+            return {
+                ...state,
+                messageList: withNewFiles
+            };
+
         default:
             return state;
     }

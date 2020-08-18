@@ -9,8 +9,6 @@ import api from '../../util/EmsApi';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-actions.lib.doRefreshQuery = jest.fn(() => Promise.resolve());
-
 describe('messagesActions', () => {
     describe('fetch', () => {
         test('fetchMessagesRequest', async () => {

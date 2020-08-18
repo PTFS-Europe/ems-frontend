@@ -150,21 +150,6 @@ const reducer = (state = initialState, action) => {
                 queryList: queriesBulkFailure,
                 error: action.payload.error
             };
-        case queriesTypes.REFRESH_QUERY_SUCCESS:
-            // Receive an refreshed query and update our state
-            const refreshedQueries = state.queryList.map((query) => {
-                if (query.id !== action.payload.id) {
-                    return query;
-                } else {
-                    return action.payload;
-                }
-            });
-            return {
-                ...state,
-                loading: false,
-                queryList: refreshedQueries,
-                error: ''
-            };
         case queriesTypes.SET_QUERY_SEARCH:
             return {
                 ...state,

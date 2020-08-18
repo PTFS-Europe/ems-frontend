@@ -64,38 +64,6 @@ export const fetchQueries = ({
     };
 };
 
-export const refreshQuerySuccess = (query) => {
-    return {
-        type: queriesTypes.REFRESH_QUERY_SUCCESS,
-        payload: query
-    };
-};
-
-export const refreshQueryFailure = (error) => {
-    return {
-        type: queriesTypes.REFRESH_QUERY_FAILURE,
-        payload: error
-    };
-};
-
-// Our action creator for refreshing a query in our store
-export const refreshQuery = (id) => {
-    return (dispatch) => {
-        // Make the request
-        return api
-            .makeRequest(`queries/${id}`, {})
-            .then((response) => response.data)
-            .then((data) => {
-                // Update our queries state
-                dispatch(refreshQuerySuccess(data));
-            })
-            .catch((error) => {
-                // Update our error state
-                dispatch(refreshQueryFailure(error.message));
-            });
-    };
-};
-
 export const createQueryRequest = (requestBody) => {
     return {
         type: queriesTypes.CREATE_QUERY_REQUEST,
@@ -157,8 +125,6 @@ export const createQuery = ({ query }) => {
         if (process.env.NODE_ENV === 'development') {
             options.mode = 'cors';
         }
-        console.log('**************');
-        console.log(process.env.NODE_ENV);
         return api
             .makeRequest('queries', options)
             .then((response) => response.data)
