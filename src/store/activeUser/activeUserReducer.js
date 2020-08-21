@@ -18,7 +18,8 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 userDetails: {
-                    id: action.payload.id
+                    id: action.payload.id,
+                    role: action.payload.role_code
                 }
             };
         case activeUserTypes.FETCH_ACTIVE_USER_FAILURE:
