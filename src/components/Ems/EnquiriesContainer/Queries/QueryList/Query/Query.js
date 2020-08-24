@@ -4,6 +4,7 @@ import moment from 'moment';
 import Truncate from 'react-truncate';
 import { useSelector, useDispatch } from 'react-redux';
 
+import useActiveUser from '../../../../../../hooks/useActiveUser';
 import { setQuerySelected } from '../../../../../../store/queries/queriesActions';
 import UserIcon from '../../../../../UI/UserIcon/UserIcon';
 import QueryActionButton from '../../../../../UI/QueryActionButton/QueryActionButton';
@@ -13,6 +14,7 @@ import styles from './Query.module.scss';
 
 const Query = ({ query }) => {
     const [selected, setSelected] = useState(false);
+    const [activeUser] = useActiveUser();
 
     const stateSelected = useSelector((state) => state.queries.selected);
     const dispatch = useDispatch();
@@ -39,12 +41,14 @@ const Query = ({ query }) => {
 
     return (
         <li className={`${styles.query} ${isPending} ${isDeleted}`}>
-            <input
-                type="checkbox"
-                checked={selected}
-                onChange={dispatchSelect}
-                className={styles.checkbox}
-            />
+            {activeUser.role_code === 'STAFF' && (
+                <input
+                    type="checkbox"
+                    checked={selected}
+                    onChange={dispatchSelect}
+                    className={styles.checkbox}
+                />
+            )}
             {query.latestMessage && (
                 <UserIcon userId={query.latestMessage.creator_id} />
             )}

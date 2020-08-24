@@ -5,14 +5,15 @@ import styles from './EnquiriesContainer.module.scss';
 import Admin from './Admin/Admin';
 import Queries from './Queries/Queries';
 import ActiveQuery from './Queries/ActiveQuery/ActiveQuery';
+import useActiveUser from '../../../hooks/useActiveUser';
 
-const EnquiriesContainer = (props) => {
+const EnquiriesContainer = () => {
+    const [activeUser] = useActiveUser();
     return (
         <div className={styles.queriesContainer}>
-            <Admin>
-                <Queries></Queries>
-                <ActiveQuery></ActiveQuery>
-            </Admin>
+            {activeUser.role_code === 'STAFF' && <Admin />}
+            <Queries />
+            <ActiveQuery />
         </div>
     );
 };

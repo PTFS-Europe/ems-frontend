@@ -1,9 +1,19 @@
 @import '../../../../../variables.scss';
 
-.activeUser {
+.activeUserStaff {
     display: flex;
     align-items: center;
     flex-direction: column;
+}
+
+.activeUserCustomer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.activeUserCustomer h1 {
+    padding-left: 10px;
 }
 
 h1.userName {
@@ -12,8 +22,26 @@ h1.userName {
     font-weight: 500;
 }
 
-.logout {
+.iconName {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.logoutStaff {
+    border: 0;
+    background: none;
+    outline: none;
     font-size: 10px;
-    color: rgba(255,255,255,0.5);
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+}
+
+.logoutCustomer {
+    border: 0;
+    background: none;
+    outline: none;
+    font-size: 10px;
+    color: rgba(0, 0, 0, 0.5);
     cursor: pointer;
 }

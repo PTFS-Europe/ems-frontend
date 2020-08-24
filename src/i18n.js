@@ -10,6 +10,7 @@ const resources = {
             'No queries found': 'No queries found',
             'Search or start new query': 'Search or start new query',
             'Search icon': 'Search icon',
+            'Search queries': 'Search queries',
             'No messages found': 'No messages found',
             You: 'You',
             'Create an attachment': 'Create an attachment',

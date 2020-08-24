@@ -45,22 +45,52 @@ const ActiveUser = ({ colour = '#fff' }) => {
             window.location = logoutUrl;
         }
     };
+
+    const getLayout = () =>
+        activeUser.role_code === 'STAFF' ? (
+            <aside className={styles.activeUserStaff}>
+                <UserIcon userId={activeUser.id} />
+                <h1 className={styles.userName} style={{ color: colour }}>
+                    {activeUser.name}
+                </h1>
+                <button
+                    onClick={logoutUser}
+                    className={
+                        activeUser.role_code === 'STAFF'
+                            ? styles.logoutStaff
+                            : styles.logoutCustomer
+                    }
+                >
+                    Log out
+                </button>
+            </aside>
+        ) : (
+                <aside className={styles.activeUserCustomer}>
+                    <div className={styles.iconName}>
+                        <UserIcon userId={activeUser.id} />
+                        <h1 className={styles.userName} style={{ color: colour }}>
+                            {activeUser.name}
+                        </h1>
+                    </div>
+                    <button
+                        onClick={logoutUser}
+                        className={
+                            activeUser.role_code === 'STAFF'
+                                ? styles.logoutStaff
+                                : styles.logoutCustomer
+                        }
+                    >
+                        Log out
+                </button>
+                </aside>
+            );
+
     if (redirect) {
         return <Redirect to="/login" />;
     } else if (!activeUser.id) {
         return null;
     } else {
-        return (
-            <aside className={styles.activeUser}>
-                <UserIcon userId={activeUser.id} />
-                <h1 className={styles.userName} style={{ color: colour }}>
-                    {activeUser.name}
-                </h1>
-                <div onClick={logoutUser} className={styles.logout} role="link">
-                    Log out
-                </div>
-            </aside>
-        );
+        return getLayout();
     }
 };
 

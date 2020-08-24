@@ -32,7 +32,7 @@ const ActiveQuery = ({ match }) => {
 
     return (
         <main className={styles.activeQuery}>
-            {/* <QueryHeader /> */}
+            <QueryHeader />
             {!queryId && <NewQuery />}
             {queryId && <MessageList updateMessage={updateMessage} />}
             {queryId && (

@@ -10,8 +10,8 @@ import { fetchUsers } from '../../../../../store/users/usersActions';
 import Query from './Query/Query';
 import LoadingSpinner from '../../../../UI/LoadingSpinner/LoadingSpinner';
 import StartNewQuery from '../../../../UI/StartNewQuery/StartNewQuery';
-import QueryBulk from '../QueryBulk/QueryBulk';
 import useFilters from '../../../../../hooks/useFilters';
+import useActiveUser from '../../../../../hooks/useActiveUser';
 
 import styles from './QueryList.module.scss';
 
@@ -26,6 +26,8 @@ const QueryList = ({ match }) => {
         labels: activeLabel,
         isActiveFilter
     } = useFilters();
+
+    const [activeUser] = useActiveUser();
 
     // The number of characters that must be present before a
     // search will trigger
@@ -44,6 +46,11 @@ const QueryList = ({ match }) => {
     const debouncedDispatchRef = useRef();
 
     const queryId = match.params.queryId;
+
+    const queryListContainerStyle =
+        activeUser.role_code === 'STAFF'
+            ? styles.queryListContainerStaff
+            : styles.queryListContainerCustomer;
 
     // Make the state we need available
     const stateQueries = useSelector((state) => state.queries);
@@ -158,10 +165,7 @@ const QueryList = ({ match }) => {
     }, [stateQueries.queryList, dispatch]);
 
     return (
-        <nav className={styles.queryListContainer}>
-            <div className={styles.header}>
-                <QueryBulk />
-            </div>
+        <nav className={queryListContainerStyle}>
             {stateQueries.loading && <LoadingSpinner />}
             <ol role="directory" className={styles.queryList}>
                 {stateQueries.queryList &&

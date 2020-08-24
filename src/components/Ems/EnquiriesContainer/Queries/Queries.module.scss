@@ -4,27 +4,42 @@
     display: flex;
     flex-direction: column;
     width: 500px;
-    background: $query-header-background;
 }
 
 .activeUserContainer {
     display: flex;
-    align-items: center;
-    padding: 15px 20px;
-    background: $active-user-background;
-    border-radius: 12px 0px 0px 0px;
-    max-height: 66px;
-}
-
-.querySearch {
+    flex-direction: column;
     padding: 20px;
-    background: $query-search-background;
-    box-shadow: 0px 4px 2px 0px rgba(0,0,0,0.1);
-    z-index: 999;
-    max-height: 66px;
-    padding: 16px 20px;
+    background: $active-user-background;
+    border-radius: 12px 0 0 0;
 }
 
+.adminSearch {
+    background: $admin-query-search-background;
+    z-index: 999;
+    height: 66px;
+    display: flex;
+    align-items: center;
+}
+
+.headerContainer {
+    background: $query-header-background;
+}
+
+.header {
+    border-radius: 12px 0 0 0;
+    background: #fff;
+    display: flex;
+    height: 84px;
+    padding: 10px;
+}
+
+.yourQueries {
+    background: #fff;
+    padding: 20px 30px;
+    font-size: 20px;
+    color: #aaa;
+}
 
 @media (max-width: 768px) {
     .queries {
