@@ -1,5 +1,6 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
+import isEqual from 'lodash.isequal';
 
 class EmsApi {
     constructor() {
@@ -12,12 +13,35 @@ class EmsApi {
             baseURL: process.env.REACT_APP_API_URL,
             withCredentials: true
         });
+        this._inProgress = [];
+    }
+    requester(payload) {
+        return this._client.request(payload)
+            .finally(() => {
+                // Remove this request from our in progress
+                // list
+                const index = this.findRequest(payload);
+                this._inProgress.splice(index, 1);
+            });
     }
     makeRequest(path, options = {}) {
-        return this._client.request({
+        const payload = {
             ...options,
             url: path
-        });
+        };
+        if (!this.isInProgress(payload)) {
+            this._inProgress.push(payload);
+            return this.requester(payload);
+        } else {
+            return Promise.resolve();
+        }
+    }
+    findRequest(request) {
+        return this._inProgress.findIndex((req) => isEqual(request, req));
+    }
+    isInProgress(request) {
+        const index = this.findRequest(request);
+        return index !== -1 ? true : false;
     }
     set token(newToken) {
         this._token = newToken;
