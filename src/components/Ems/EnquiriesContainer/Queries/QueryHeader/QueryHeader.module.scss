@@ -1,6 +1,7 @@
 @import '../../../../../variables.scss';
 
 .queryHeader {
+    min-height: 66px;
     height: 66px;
     background: $query-header-background;
     color: $query-header-text;
