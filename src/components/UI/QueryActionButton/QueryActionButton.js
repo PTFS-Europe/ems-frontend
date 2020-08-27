@@ -13,6 +13,7 @@ const QueryActionButton = ({ query }) => {
     const dispatch = useDispatch();
 
     const stateFolders = useSelector((state) => state.folders);
+    const stateUnseen = useSelector((state) => state.queries.unseenCounts);
 
     const [currentState, setCurrentState] = useState({
         class: ['actionButton'],
@@ -20,9 +21,16 @@ const QueryActionButton = ({ query }) => {
         alt: t('Change query folder')
     });
 
-    // When the query folder changes, update our state
-    useEffect(() => {
-        setCurrentState({
+    // Derive the display state of this query's action button
+    const deriveNewState = () => {
+        // If this query has unread message, that takes precedent
+        if (stateUnseen.hasOwnProperty(query.id) && stateUnseen[query.id] > 0) {
+            return {
+                class: [styles.actionButton, styles.unseenCount],
+                alt: t('Query has unread messages', { unread: stateUnseen[query.id] })
+            };
+        }
+        return {
             icon: query.folder ? t(`folderIcon_${query.folder}`) : 'ellipsis-h',
             class: query.folder
                 ? [styles.actionButton, styles[`folder_${query.folder}`]]
@@ -30,20 +38,33 @@ const QueryActionButton = ({ query }) => {
             alt: query.folder
                 ? t(`folderName_${query.folder}`)
                 : t('Change query folder')
-        });
+        };
+    };
+
+    // When the query folder changes, update our state
+    useEffect(() => {
+        const newState = deriveNewState();
+        setCurrentState(newState);
         // Disable liniting below, once again we are being prompted
         // to add dependencies that don't make sense
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [query.folder]);
+    }, [query.folder, stateUnseen]);
 
     return (
         <div className={styles.container} role="group">
-            <button className={currentState.class.join(' ')}>
-                <FontAwesomeIcon
-                    alt={currentState.alt}
-                    icon={currentState.icon}
-                />
-            </button>
+            {currentState.icon && (
+                <button className={currentState.class.join(' ')}>
+                    <FontAwesomeIcon
+                        alt={currentState.alt}
+                        icon={currentState.icon}
+                    />
+                </button>
+            )}
+            {!currentState.icon && (
+                <button alt={currentState.alt} className={currentState.class.join(' ')}>
+                    <span className={styles.unseenNumber}>{stateUnseen[query.id]}</span>
+                </button>
+            )}
             {query.folder && (
                 <button
                     onClick={() =>
@@ -80,9 +101,8 @@ const QueryActionButton = ({ query }) => {
                                 )
                             }
                             key={folder.id}
-                            className={`${styles.actionButton} ${
-                                styles[folder.code]
-                            }`}
+                            className={`${styles.actionButton} ${styles[folder.code]
+                                }`}
                         >
                             <FontAwesomeIcon
                                 icon={t(`folderIcon_${folder.code}`)}

@@ -46,7 +46,8 @@ const resources = {
             'Move to bin': 'Move to bin',
             'Add or remove labels': 'Add or remove labels',
             'You must filter queries before selecting all':
-                'You must filter queries before selecting all'
+                'You must filter queries before selecting all',
+            'Query has unread messages': 'Query has {{unread}} unread messages'
         }
     }
 };

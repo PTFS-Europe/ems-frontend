@@ -41,7 +41,7 @@
     background: #fff;
     color: $query_actions;
     margin-left: -41px;
-    transition: margin-left 0.5s, opacity  0.5s;
+    transition: margin-left 0.5s, opacity 0.5s;
 }
 
 .ESCALATED {
@@ -50,7 +50,7 @@
     background: $folder-escalated-color;
     color: #fff;
     margin-left: -41px;
-    transition: margin-left 0.5s, opacity  0.5s;
+    transition: margin-left 0.5s, opacity 0.5s;
 }
 
 .COMPLETE {
@@ -59,7 +59,7 @@
     background: $folder-complete-color;
     color: #fff;
     margin-left: -41px;
-    transition: margin-left 0.5s, opacity  0.5s;
+    transition: margin-left 0.5s, opacity 0.5s;
 }
 
 .BIN {
@@ -68,7 +68,7 @@
     background: $folder-bin-color;
     color: #fff;
     margin-left: -41px;
-    transition: margin-left 0.5s, opacity  0.5s;
+    transition: margin-left 0.5s, opacity 0.5s;
 }
 
 .folder_NONE {
@@ -97,4 +97,17 @@
     background: $folder-bin-color;
     color: #fff;
     z-index: 2;
+}
+
+.unseenCount {
+    border: 4px solid $folder-unread-color;
+    background: $folder-unread-color;
+    color: #fff;
+    z-index: 2;
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
 }

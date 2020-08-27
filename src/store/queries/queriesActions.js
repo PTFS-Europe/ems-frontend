@@ -303,3 +303,10 @@ export const updateActiveQuery = (payload) => {
         payload
     };
 };
+
+export const updateUnseenCounts = (payload) => {
+    return {
+        type: queriesTypes.UPDATE_UNSEEN_COUNTS,
+        payload
+    };
+};

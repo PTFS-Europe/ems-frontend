@@ -3,10 +3,11 @@ import {
     editMessageSuccess,
     deleteMessageSuccess,
     dispatchIfActiveQuery,
-    receiveUploadedFiles
+    receiveUploadedFiles,
 } from '../store/messages/messagesActions';
 import {
-    updateQueryBulkSuccess
+    updateQueryBulkSuccess,
+    updateUnseenCounts
 } from '../store/queries/queriesActions';
 import api from './EmsApi';
 
@@ -66,6 +67,10 @@ class WebSocketClient {
                             payload[0].query_id
                         )
                     );
+                }
+            case 'unseenCount':
+                if (action === 'update') {
+                    this.dispatch(updateUnseenCounts(payload));
                 }
             default:
                 return;
