@@ -8,8 +8,7 @@ const initialState = {
     search: '',
     preserved: false,
     selected: [],
-    activeQuery: null,
-    unseenCounts: {}
+    activeQuery: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -230,14 +229,6 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 activeQuery: action.payload
             }
-        case queriesTypes.UPDATE_UNSEEN_COUNTS:
-            return {
-                ...state,
-                unseenCounts: {
-                    ...state.unseenCounts,
-                    ...action.payload
-                }
-            };
         default:
             return state;
     }

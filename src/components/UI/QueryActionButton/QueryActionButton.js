@@ -13,7 +13,7 @@ const QueryActionButton = ({ query }) => {
     const dispatch = useDispatch();
 
     const stateFolders = useSelector((state) => state.folders);
-    const stateUnseen = useSelector((state) => state.queries.unseenCounts);
+    const stateUnseen = useSelector((state) => state.unseen.unseenCounts);
 
     const [currentState, setCurrentState] = useState({
         class: ['actionButton'],
