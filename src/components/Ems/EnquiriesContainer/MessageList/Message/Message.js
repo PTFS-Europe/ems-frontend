@@ -9,11 +9,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { deleteMessage } from '../../../../../store/messages/messagesActions';
 import MessageActions from '../MessageActions/MessageActions';
 import LoadingSpinner from '../../../../UI/LoadingSpinner/LoadingSpinner';
+import useMostRecentSeen from '../../../../../hooks/useMostRecentSeen';
 
 import styles from './Message.module.scss';
 
 const Message = ({ message, css, isSender, updateMessage }) => {
     const { t } = useTranslation();
+
+    const [ref] = useMostRecentSeen(message);
 
     const dispatch = useDispatch();
 
@@ -78,7 +81,7 @@ const Message = ({ message, css, isSender, updateMessage }) => {
     };
 
     return (
-        <li className={finalStyles}>
+        <li ref={ref} className={finalStyles}>
             <div className={styles.messageText}>
                 <div>
                     {/* ^^^ Do not remove this div, it preserves the vertical-ness of the text & "edited" */}

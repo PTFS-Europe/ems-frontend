@@ -7,8 +7,11 @@ import {
 } from '../store/messages/messagesActions';
 import {
     updateQueryBulkSuccess,
-    updateUnseenCounts
 } from '../store/queries/queriesActions';
+import {
+    updateUnseenCounts,
+    updateMostRecentSeenSuccess
+} from '../store/unseen/unseenActions';
 import api from './EmsApi';
 
 class WebSocketClient {
@@ -59,6 +62,7 @@ class WebSocketClient {
                 if (action === 'update') {
                     this.dispatch(updateQueryBulkSuccess({ data: payload }));
                 }
+                break;
             case 'upload':
                 if (action === 'create') {
                     this.dispatch(
@@ -68,10 +72,17 @@ class WebSocketClient {
                         )
                     );
                 }
+                break;
             case 'unseenCount':
                 if (action === 'update') {
                     this.dispatch(updateUnseenCounts(payload));
                 }
+                break;
+            case 'mostRecentSeen':
+                if (action === 'update') {
+                    this.dispatch(updateMostRecentSeenSuccess(payload));
+                }
+                break;
             default:
                 return;
         }
