@@ -12,8 +12,7 @@ const MessageCollection = ({
     collection,
     activeUser,
     initiator,
-    usersList,
-    updateMessage
+    usersList
 }) => {
     const [display, setDisplay] = useState({});
     const { t } = useTranslation();
@@ -56,7 +55,6 @@ const MessageCollection = ({
                 <ol className={styles.messages}>
                     {collection.messages.map((message) => (
                         <Message
-                            updateMessage={updateMessage}
                             isSender={display.isSender}
                             css={display.messageCss}
                             key={message.id}

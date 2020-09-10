@@ -10,6 +10,7 @@ import usersReducer from './users/usersReducer';
 import foldersReducer from './folders/foldersReducer';
 import labelsReducer from './labels/labelsReducer';
 import unseenReducer from './unseen/unseenReducer';
+import activeMessageReducer from './activeMessage/activeMessageReducer';
 
 const appReducer = combineReducers({
     queries: queriesReducer,
@@ -18,7 +19,8 @@ const appReducer = combineReducers({
     users: usersReducer,
     folders: foldersReducer,
     labels: labelsReducer,
-    unseen: unseenReducer
+    unseen: unseenReducer,
+    activeMessage: activeMessageReducer
 });
 
 // Our root reducer catches the USER_LOGOUT action and

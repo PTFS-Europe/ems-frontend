@@ -6,6 +6,10 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import {
+    setActiveMessageId,
+    setActiveMessageText
+} from '../../../../../store/activeMessage/activeMessageActions';
 import { deleteMessage } from '../../../../../store/messages/messagesActions';
 import MessageActions from '../MessageActions/MessageActions';
 import LoadingSpinner from '../../../../UI/LoadingSpinner/LoadingSpinner';
@@ -13,7 +17,7 @@ import useMostRecentSeen from '../../../../../hooks/useMostRecentSeen';
 
 import styles from './Message.module.scss';
 
-const Message = ({ message, css, isSender, updateMessage }) => {
+const Message = ({ message, css, isSender }) => {
     const { t } = useTranslation();
 
     const [ref] = useMostRecentSeen(message);
@@ -32,7 +36,8 @@ const Message = ({ message, css, isSender, updateMessage }) => {
     };
 
     const editMess = () => {
-        updateMessage(message);
+        dispatch(setActiveMessageId(message.id));
+        dispatch(setActiveMessageText(message.content));
     };
 
     // Determine the valid actions for this message

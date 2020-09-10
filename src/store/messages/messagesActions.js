@@ -74,7 +74,7 @@ export const sendMessage = ({ queryId, message }) => {
         let sendObj = {
             creator_id: userDetails.id,
             query_id: queryId,
-            content: message.content
+            content: message
         };
         // Generate a temporary ID for this message, it will enable
         // us to find this message when we get a response and need to
@@ -189,20 +189,20 @@ export const editMessageFailure = (errorPayload) => {
 };
 
 // Our action creator for editing a message
-export const editMessage = (message) => {
+export const editMessage = ({ id, text }) => {
     return (dispatch, getState) => {
         // Make a copy of the message we're about to edit in case we
         // need to rollback
         const toEdit = getState().messages.messageList.find(
-            (iterMessage) => iterMessage.id === message.id
+            (iterMessage) => iterMessage.id === id
         );
         const unmodifiedMessage = JSON.parse(JSON.stringify(toEdit));
         // Update our state to reflect that we've sent the request
         // This will be updated again once we have confirmation from
         // the API that the message was edited
-        dispatch(editMessageRequest(message));
+        dispatch(editMessageRequest({ id }));
         const sendObj = {
-            content: message.content
+            content: text
         };
         // Make the request
         const options = {
@@ -217,7 +217,7 @@ export const editMessage = (message) => {
             options.mode = 'cors';
         }
         return api
-            .makeRequest(`messages/${message.id}`, options)
+            .makeRequest(`messages/${id}`, options)
             .then((response) => response.data)
             .then((data) => {
                 // Update our messages state

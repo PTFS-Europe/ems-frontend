@@ -14,7 +14,7 @@ import messageCollections from '../../../../util/messages';
 
 import styles from './MessageList.module.scss';
 
-const MessageList = ({ match, updateMessage }) => {
+const MessageList = ({ match }) => {
     const { t } = useTranslation();
 
     const [initiator, setInitiator] = useState(0);
@@ -92,7 +92,6 @@ const MessageList = ({ match, updateMessage }) => {
             newScrollPosition === data.clientHeight ? null : data;
         setScrollPosition(newScrollValue);
     }, 500);
-
     return (
         <section
             className={styles.messages}
@@ -118,7 +117,6 @@ const MessageList = ({ match, updateMessage }) => {
                     // rather than the message list
                     memMessages.map((collection) => (
                         <MessageCollection
-                            updateMessage={updateMessage}
                             initiator={initiator}
                             key={collection.id}
                             collection={collection}

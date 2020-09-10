@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,23 +11,24 @@ import {
     editMessage,
     uploadFile
 } from '../../../../../store/messages/messagesActions';
+import {
+    setActiveMessageId,
+    setActiveMessageText
+} from '../../../../../store/activeMessage/activeMessageActions';
 
 import styles from './QueryEntry.module.scss';
 
-const QueryEntry = ({ match, message, updateMessage }) => {
+const QueryEntry = ({ match }) => {
     const { t } = useTranslation();
-
-    const [edit, setEdit] = useState('');
 
     const dispatch = useDispatch();
     const stateMessages = useSelector((state) => state.messages);
+    const stateActiveMessage = useSelector((state) => state.activeMessage);
 
     // The ID of the query currently being viewed
     const queryId = parseInt(match.params.queryId);
 
-    useEffect(() => {
-        setEdit(message.id ? styles.edit : '');
-    }, [message]);
+    const getStyle = () => stateActiveMessage.id ? styles.edit : '';
 
     // Call the redux action for sending the message to the API
     const dispatchSendAction = () => {
@@ -38,7 +39,7 @@ const QueryEntry = ({ match, message, updateMessage }) => {
         dispatch(
             sendMessage({
                 queryId,
-                message: message
+                message: stateActiveMessage.text
             })
         ).then((data) => {
             // The call to sendMessage may have returned an error, so we
@@ -52,7 +53,9 @@ const QueryEntry = ({ match, message, updateMessage }) => {
 
     // Call the redux action for sending the edited message to the API
     const dispatchEditAction = () => {
-        dispatch(editMessage(message)).then((data) => {
+        dispatch(editMessage(
+            { id: stateActiveMessage.id, text: stateActiveMessage.text }
+        )).then((data) => {
             // The call to editMessage may have returned an error, so we
             // need to check for that
             if (data.type === messagesTypes.EDIT_MESSAGE_SUCCESS) {
@@ -64,7 +67,8 @@ const QueryEntry = ({ match, message, updateMessage }) => {
 
     // Reset the entry box
     const resetEntry = () => {
-        updateMessage({ content: '' });
+        dispatch(setActiveMessageText(''))
+        dispatch(setActiveMessageId(null));
     };
 
     // Catch the enter key being pressed
@@ -72,7 +76,7 @@ const QueryEntry = ({ match, message, updateMessage }) => {
         if (e.key === 'Enter') {
             // Prevent the newline from being added
             e.preventDefault();
-            if (message.id) {
+            if (stateActiveMessage.id) {
                 dispatchEditAction();
             } else {
                 dispatchSendAction();
@@ -83,7 +87,7 @@ const QueryEntry = ({ match, message, updateMessage }) => {
     // Should the file upload be disabled, if so return
     // the appropriate style
     const uploadDisabled = () => {
-        return message.content.length > 0 || stateMessages.loading
+        return stateActiveMessage.text.length > 0 || stateMessages.loading
             ? styles.fileLabelDisabled
             : '';
     };
@@ -95,23 +99,24 @@ const QueryEntry = ({ match, message, updateMessage }) => {
     return (
         <form className={styles.entryContainer}>
             <TextareaAutosize
-                value={message.content}
+                value={stateActiveMessage.text}
                 onInput={(e) =>
-                    updateMessage({ ...message, content: e.target.value })
+                    dispatch(
+                        setActiveMessageText(e.target.value)
+                    )
                 }
                 onKeyPress={keyIsPressed}
                 maxRows={10}
                 placeholder={t('Type your message')}
-                className={`${styles.entryBox} ${edit}`}
+                className={`${styles.entryBox} ${getStyle()}`}
             ></TextareaAutosize>
-            <div className={`${styles.entryIconsContainer} ${edit}`}>
-                {!message.hasOwnProperty('id') && (
+            <div className={`${styles.entryIconsContainer} ${getStyle()}`}>
+                {!stateActiveMessage.id && (
                     <div className={styles.entryIcons}>
                         <label
                             data-testid="fileattachlabel"
-                            className={`${
-                                styles.fileLabel
-                            } ${uploadDisabled()}`}
+                            className={`${styles.fileLabel
+                                } ${uploadDisabled()}`}
                         >
                             <FontAwesomeIcon
                                 alt={t('Create an attachment')}
@@ -122,7 +127,7 @@ const QueryEntry = ({ match, message, updateMessage }) => {
                                 data-testid="fileattach"
                                 onChange={handleUpload}
                                 disabled={
-                                    message.content.length > 0 ||
+                                    stateActiveMessage.text.length > 0 ||
                                     stateMessages.loading
                                 }
                                 type="file"
@@ -135,7 +140,7 @@ const QueryEntry = ({ match, message, updateMessage }) => {
                             className={styles.entryButton}
                             onClick={dispatchSendAction}
                             disabled={
-                                message.content.length === 0 ||
+                                stateActiveMessage.text.length === 0 ||
                                 stateMessages.loading
                             }
                         >
@@ -146,7 +151,7 @@ const QueryEntry = ({ match, message, updateMessage }) => {
                         </button>
                     </div>
                 )}
-                {message.hasOwnProperty('id') && (
+                {stateActiveMessage.id && (
                     <div className={styles.entryIcons}>
                         <button
                             type="button"
@@ -162,7 +167,7 @@ const QueryEntry = ({ match, message, updateMessage }) => {
                             type="button"
                             className={styles.entryButton}
                             onClick={dispatchEditAction}
-                            disabled={message.content.length === 0}
+                            disabled={stateActiveMessage.text.length === 0}
                         >
                             <FontAwesomeIcon
                                 alt={t('Save changes')}
@@ -172,7 +177,7 @@ const QueryEntry = ({ match, message, updateMessage }) => {
                     </div>
                 )}
             </div>
-        </form>
+        </form >
     );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -11,8 +11,6 @@ import { updateActiveQuery } from '../../../../../store/queries/queriesActions';
 import styles from './ActiveQuery.module.scss';
 
 const ActiveQuery = ({ match }) => {
-    const [message, setMessage] = useState({ content: '' });
-
     const dispatch = useDispatch();
 
     const queryId = match.params.queryId;
@@ -26,21 +24,13 @@ const ActiveQuery = ({ match }) => {
         }
     }, [queryId]);
 
-    const updateMessage = (updatedMessage) => {
-        setMessage(updatedMessage);
-    };
-
     return (
         <main className={styles.activeQuery}>
             <QueryHeader />
             {!queryId && <NewQuery />}
-            {queryId && <MessageList updateMessage={updateMessage} />}
+            {queryId && <MessageList />}
             {queryId && (
-                <QueryEntry
-                    className={styles.queryEntry}
-                    message={message}
-                    updateMessage={(msg) => updateMessage(msg)}
-                />
+                <QueryEntry className={styles.queryEntry} />
             )}
         </main>
     );
