@@ -13,6 +13,9 @@ import {
     setFoldersCounts,
 } from '../store/folders/foldersActions';
 import {
+    setLabelsCounts,
+} from '../store/labels/labelsActions';
+import {
     updateUnseenCounts,
     updateMostRecentSeenSuccess
 } from '../store/unseen/unseenActions';
@@ -92,6 +95,11 @@ class WebSocketClient {
             case 'folderCount':
                 if (action === 'update') {
                     this.dispatch(setFoldersCounts(payload));
+                }
+                break;
+            case 'labelCount':
+                if (action === 'update') {
+                    this.dispatch(setLabelsCounts(payload));
                 }
                 break;
             default:

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -11,6 +11,9 @@ import styles from './Label.module.scss';
 const Label = ({ label, stateLabels }) => {
     // Enable us to dispatch
     const dispatch = useDispatch();
+
+    // Make the state we need available
+    const stateLabelsCounts = useSelector((state) => state.labels.labelsCounts);
 
     // Set the active filter
     const setFilter = (id) => {
@@ -32,7 +35,7 @@ const Label = ({ label, stateLabels }) => {
                 <FontAwesomeIcon alt={label.name} icon={'tag'} />
             </div>
             <button className={styles.labelName}>{label.name}</button>
-            <span className={styles.labelCount}>{label.count || 0}</span>
+            <span className={styles.labelCount}>{stateLabelsCounts[label.id]}</span>
         </li>
     );
 };
