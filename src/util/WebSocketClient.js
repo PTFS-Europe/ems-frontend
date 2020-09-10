@@ -9,6 +9,9 @@ import {
     updateQueryBulkSuccess,
 } from '../store/queries/queriesActions';
 import {
+    setFoldersCounts,
+} from '../store/folders/foldersActions';
+import {
     updateUnseenCounts,
     updateMostRecentSeenSuccess
 } from '../store/unseen/unseenActions';
@@ -81,6 +84,11 @@ class WebSocketClient {
             case 'mostRecentSeen':
                 if (action === 'update') {
                     this.dispatch(updateMostRecentSeenSuccess(payload));
+                }
+                break;
+            case 'folderCount':
+                if (action === 'update') {
+                    this.dispatch(setFoldersCounts(payload));
                 }
                 break;
             default:

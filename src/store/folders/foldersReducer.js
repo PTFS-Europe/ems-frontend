@@ -3,6 +3,7 @@ import * as foldersTypes from './foldersTypes';
 const initialState = {
     loading: false,
     folderList: [],
+    foldersCounts: {},
     error: '',
     filter: null
 };
@@ -33,6 +34,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 filter: state.filter !== action.payload ? action.payload : null
+            };
+        case foldersTypes.SET_FOLDERS_COUNTS:
+            return {
+                ...state,
+                foldersCounts: action.payload
             };
         default:
             return state;

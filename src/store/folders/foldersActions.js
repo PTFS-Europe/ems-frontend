@@ -28,6 +28,13 @@ export const setFoldersFilter = (payload) => {
     };
 };
 
+export const setFoldersCounts = (payload) => {
+    return {
+        type: foldersTypes.SET_FOLDERS_COUNTS,
+        payload
+    };
+};
+
 // Our action creator for fetching folders
 export const fetchFolders = () => {
     return (dispatch) => {
