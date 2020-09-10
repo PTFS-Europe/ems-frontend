@@ -246,3 +246,12 @@ export const deleteLabel = (label) => {
             );
     };
 };
+
+export const receiveCreatedLabel = (label) => {
+    return {
+        type: labelsTypes.RECEIVE_CREATED_LABEL,
+        payload: label
+    };
+};
+
+

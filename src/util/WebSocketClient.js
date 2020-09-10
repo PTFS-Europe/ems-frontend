@@ -14,6 +14,9 @@ import {
 } from '../store/folders/foldersActions';
 import {
     setLabelsCounts,
+    receiveCreatedLabel,
+    updateLabelSuccess,
+    deleteLabelSuccess
 } from '../store/labels/labelsActions';
 import {
     updateUnseenCounts,
@@ -79,6 +82,19 @@ class WebSocketClient {
                             () => receiveUploadedFiles(payload),
                             payload[0].query_id
                         )
+                    );
+                }
+                break;
+            case 'label':
+                if (action === 'create') {
+                    this.dispatch(receiveCreatedLabel(payload));
+                } else if (action === 'update') {
+                    this.dispatch(
+                        updateLabelSuccess(payload)
+                    );
+                } else if (action === 'delete') {
+                    this.dispatch(
+                        deleteLabelSuccess(payload),
                     );
                 }
                 break;

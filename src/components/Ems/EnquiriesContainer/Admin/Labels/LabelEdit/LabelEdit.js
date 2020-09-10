@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Popover from 'react-tiny-popover';
 
@@ -26,6 +26,9 @@ const LabelEdit = ({
 
     // Enable us to dispatch
     const dispatch = useDispatch();
+
+    // Make the state we need available
+    const stateLabelsCounts = useSelector((state) => state.labels.labelsCounts);
 
     // We create a ref containing a debounced dispatch. Just creating a
     // debounced dispatch, without storing it in a ref seemed to break the
@@ -156,7 +159,7 @@ const LabelEdit = ({
                 type="text"
                 className={styles.labelName}
             />
-            <span className={styles.labelCount}>{label.count || 0}</span>
+            <span className={styles.labelCount}>{stateLabelsCounts[label.id] || 0}</span>
         </li>
     );
 };
