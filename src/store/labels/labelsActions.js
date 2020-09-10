@@ -30,6 +30,13 @@ export const setLabelsFilter = (payload) => {
     };
 };
 
+export const setLabelsCounts = (payload) => {
+    return {
+        type: labelsTypes.SET_LABELS_COUNTS,
+        payload
+    };
+};
+
 // Our action creator for fetching labels
 export const fetchLabels = () => {
     return (dispatch) => {

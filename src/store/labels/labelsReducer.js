@@ -4,7 +4,8 @@ const initialState = {
     loading: false,
     labelList: [],
     error: '',
-    filter: null
+    filter: null,
+    labelsCounts: {}
 };
 
 const reducer = (state = initialState, action) => {
@@ -142,6 +143,11 @@ const reducer = (state = initialState, action) => {
                 loading: false,
                 labelList: updatedLabelsDelFailure,
                 error: failedError
+            };
+        case labelsTypes.SET_LABELS_COUNTS:
+            return {
+                ...state,
+                labelsCounts: action.payload
             };
         default:
             return state;
