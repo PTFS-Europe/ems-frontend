@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,6 +13,9 @@ const Folder = ({ folder, stateFolders }) => {
 
     // Enable us to dispatch
     const dispatch = useDispatch();
+
+    // Make the state we need available
+    const stateFoldersCounts = useSelector((state) => state.folders.foldersCounts);
 
     // Set the active filter
     const setFilter = (code) => {
@@ -44,7 +47,7 @@ const Folder = ({ folder, stateFolders }) => {
             >
                 {t(`folderName_${folder.code}`)}
             </button>
-            <span className={styles.folderCount}>{folder.count}</span>
+            <span className={styles.folderCount}>{stateFoldersCounts[folder.id]}</span>
         </li>
     );
 };

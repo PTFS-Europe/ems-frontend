@@ -34,7 +34,7 @@ const Folders = () => {
         <aside className={styles.container}>
             <h1 className={styles.heading}>{t('Folders')}</h1>
             <ul className={styles.folderList}>
-                <CalculatedFolders />
+                <CalculatedFolders stateFolders={stateFolders} />
             </ul>
             {stateFolders && stateFolders.loading && (
                 <div className={styles.loading}>
