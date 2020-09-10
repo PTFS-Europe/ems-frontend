@@ -66,14 +66,23 @@ const reducer = (state = initialState, action) => {
                 queryList: [...state.queryList, action.payload]
             };
         case queriesTypes.CREATE_QUERY_SUCCESS:
-            // Find and replace the query that we've just received
-            // from the API
-            const updatedQueries = state.queryList.map((query) => {
-                if (query.id !== action.payload.tempId) {
-                    return query;
-                }
-                return action.payload.data;
-            });
+            // We may be replacing a query that has a temporary ID
+            let updatedQueries = [];
+            if (action.payload.tempId) {
+                // Find and replace the query that we've just received
+                // from the API
+                updatedQueries = state.queryList.map((query) => {
+                    if (query.id !== action.payload.tempId) {
+                        return query;
+                    }
+                    return action.payload.data;
+                });
+            } else {
+                updatedQueries = [
+                    ...state.queryList,
+                    action.payload.data
+                ];
+            }
             return {
                 ...state,
                 loading: false,

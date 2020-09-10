@@ -6,6 +6,7 @@ import {
     receiveUploadedFiles,
 } from '../store/messages/messagesActions';
 import {
+    createQuerySuccess,
     updateQueryBulkSuccess,
 } from '../store/queries/queriesActions';
 import {
@@ -64,6 +65,8 @@ class WebSocketClient {
             case 'query':
                 if (action === 'update') {
                     this.dispatch(updateQueryBulkSuccess({ data: payload }));
+                } else if (action === 'create') {
+                    this.dispatch(createQuerySuccess({ data: payload }));
                 }
                 break;
             case 'upload':
