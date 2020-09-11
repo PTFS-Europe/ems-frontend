@@ -1,40 +1,22 @@
 @import '../../../variables.scss';
 
-.container {
-}
-
-
-.startButton {
-    display: flex;
-    background: $query-header-background;
-    align-items: center;
-    border-radius: 20px;
-    padding: 10px 20px;
-    color: #fff;
-    font-weight: 700;
-    border: 0;
-    outline: none;
-    cursor: pointer;
-}
-
-.startIcon {
-    margin-right: 10px;
+.entryContainer {
+    width: 80%;
 }
 
 .setTitle {
-    display: flex;
-    align-items: center;
+    width: 80%;
     padding: 10px 20px;
-    color: #fff;
+    color: #4f4f4f;
     outline: none;
-    background-color: #1e2c3c;
-    border-radius: 25px;
-    font-size: 20px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 25px 25px 25px 8px;
+    font-size: 18px;
+    margin-bottom: 5px;
 }
 
 .queryTitle {
-    width: 20em;
-    color: #fff;
+    width: 100%;
     padding: 0;
     border: 0;
     outline: none;
@@ -42,15 +24,57 @@
 }
 
 .queryTitle::placeholder {
-    color: #fff;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+/* Styles that will override MessageEntry defaults */
+.entryBox {
+    flex: 1;
+    font-size: 18px;
+    color: #4f4f4f;
+    background: rgba(0, 0, 0, 0.1);
+    resize: none;
+    border: 0;
+    border-radius: 8px 0 0 25px;
+    padding: 17px 23px;
+    outline: none;
+    line-height: 25px;
+    transition: background 0.3s;
+}
+
+.entryIconsContainer {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 0 25px 25px 0;
+    min-width: 93px;
+    color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 13px;
+    transition: background 0.3s;
 }
 
 .entryButton {
-    color: #fff;
+    color: rgba(0, 0, 0, 0.4);
+    font-size: 24px;
     border: 0;
     background: inherit;
     cursor: pointer;
     outline: none;
-    margin-left: 10px;
-    padding: 0;
+}
+
+.entryButton:disabled {
+    color: #aaa;
+}
+
+.fileLabel {
+    color: rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    font-size: 30px;
+    background: inherit;
+    margin-right: 15px;
+}
+
+.fileLabelDisabled {
+    color: #aaa;
 }

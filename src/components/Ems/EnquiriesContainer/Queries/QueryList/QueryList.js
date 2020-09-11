@@ -9,7 +9,7 @@ import { fetchQueries } from '../../../../../store/queries/queriesActions';
 import { fetchUsers } from '../../../../../store/users/usersActions';
 import Query from './Query/Query';
 import LoadingSpinner from '../../../../UI/LoadingSpinner/LoadingSpinner';
-import StartNewQuery from '../../../../UI/StartNewQuery/StartNewQuery';
+import StartButton from '../../../../UI/StartNewQuery/StartButton';
 import useFilters from '../../../../../hooks/useFilters';
 import useActiveUser from '../../../../../hooks/useActiveUser';
 
@@ -181,7 +181,7 @@ const QueryList = ({ match }) => {
                         {t('No queries found')}
                     </h1>
                     <div className={styles.startNewQuery}>
-                        <StartNewQuery />
+                        <StartButton />
                     </div>
                 </div>
             )}

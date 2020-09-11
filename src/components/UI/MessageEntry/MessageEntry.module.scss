@@ -1,0 +1,71 @@
+.messageEntryContainer {
+    display: flex;
+}
+
+.entryBox {
+    flex: 1;
+    font-size: 18px;
+    font-weight: 700;
+    color: #aaa;
+    background: #fff;
+    resize: none;
+    border: 0;
+    border-radius: 24px 0 0 24px;
+    padding: 17px 23px;
+    outline: none;
+    line-height: 25px;
+    transition: background 0.3s;
+}
+
+.entryBox::placeholder {
+    font-weight: 700;
+}
+
+.entryIconsContainer {
+    background: #fff;
+    border-radius: 0 24px 24px 0;
+    min-width: 93px;
+    color: #aaa;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 13px;
+    transition: background 0.3s;
+}
+
+.entryIcons {
+    display: flex;
+}
+
+.entryButton {
+    color: #aaa;
+    font-size: 24px;
+    border: 0;
+    background: inherit;
+    cursor: pointer;
+    outline: none;
+}
+
+.entryButton:disabled {
+    color: #ccc;
+}
+
+.entryButton:first-child {
+    margin-right: 5px;
+}
+
+.fileInput {
+    display: none;
+}
+
+.fileLabel {
+    color: #aaa;
+    cursor: pointer;
+    font-size: 30px;
+    background: inherit;
+    margin-right: 15px;
+}
+
+.fileLabelDisabled {
+    color: #ccc;
+}
