@@ -17,7 +17,6 @@ import styles from './StartNewQuery.module.scss';
 const StartNewQuery = () => {
     const [title, setTitle] = useState('');
 
-    const stateQueries = useSelector((state) => state.queries);
     const stateActiveMessage = useSelector((state) => state.activeMessage);
 
     const { t } = useTranslation();

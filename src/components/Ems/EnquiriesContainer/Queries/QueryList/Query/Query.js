@@ -17,6 +17,7 @@ const Query = ({ query }) => {
     const [activeUser] = useActiveUser();
 
     const stateSelected = useSelector((state) => state.queries.selected);
+    const stateUnseen = useSelector((state) => state.unseen);
     const dispatch = useDispatch();
 
     useEffect(() => setSelected(stateSelected.includes(query.id)), [
@@ -62,16 +63,22 @@ const Query = ({ query }) => {
                         </Truncate>
                     </div>
                 )}
-                <div className={styles.queryLabels}>
-                    <QueryLabels query={query} />
-                </div>
+                {activeUser.role_code === 'STAFF' && (
+                    <div className={styles.queryLabels}>
+                        <QueryLabels query={query} />
+                    </div>
+                )}
             </div>
             <div className={styles.metaActions}>
                 <div role="complementary" className={styles.timestamp}>
                     {moment(updatedAt()).fromNow()}
                 </div>
-                <div className={styles.actionButtonPlaceholder}></div>
-                <QueryActionButton query={query} />
+                {(activeUser.role_code === 'STAFF' || stateUnseen.unseenCounts[query.id] > 0) && (
+                    <>
+                        <div className={styles.actionButtonPlaceholder}></div>
+                        <QueryActionButton query={query} />
+                    </>
+                )}
             </div>
         </li>
     );

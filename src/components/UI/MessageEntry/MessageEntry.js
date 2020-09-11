@@ -97,7 +97,7 @@ const MessageEntry = ({
                         <button
                             type="button"
                             className={cssOverrides.entryButton ? cssOverrides.entryButton : styles.entryButton}
-                            onClick={dispatchSendAction}
+                            onClick={() => dispatchSendAction(resetEntry)}
                             disabled={
                                 stateActiveMessage.text.length === 0 ||
                                 stateMessages.loading
