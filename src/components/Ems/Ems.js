@@ -5,7 +5,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 import Login from '../Auth/Login';
 import EnquiriesContainer from './EnquiriesContainer/EnquiriesContainer';
-import WebSocketClient from '../../util/WebSocketClient';
+import WebSocketClient from '../../classes/WebSocketClient';
 
 import styles from './Ems.module.scss';
 

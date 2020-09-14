@@ -1,5 +1,5 @@
 import * as unseenTypes from './unseenTypes';
-import api from '../../util/EmsApi';
+import api from '../../classes/EmsApi';
 import { debounce } from '../../util/ui';
 
 export const setMounted = (payload) => {

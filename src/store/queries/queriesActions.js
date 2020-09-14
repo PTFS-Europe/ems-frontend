@@ -1,5 +1,5 @@
 import * as queriesTypes from './queriesTypes';
-import api from '../../util/EmsApi';
+import api from '../../classes/EmsApi';
 
 // TODO: Write tests for the other actions we have here
 

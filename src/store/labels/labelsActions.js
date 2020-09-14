@@ -1,7 +1,7 @@
 import uid from 'uid';
 
 import * as labelsTypes from './labelsTypes';
-import api from '../../util/EmsApi';
+import api from '../../classes/EmsApi';
 
 export const fetchLabelsRequest = () => {
     return {

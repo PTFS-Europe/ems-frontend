@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 import UserIcon from '../../../../UI/UserIcon/UserIcon';
 import useActiveUser from '../../../../../hooks/useActiveUser';
-import api from '../../../../../util/EmsApi';
+import api from '../../../../../classes/EmsApi';
 import useAuthTypes from '../../../../../hooks/useAuthTypes';
 
 import styles from './ActiveUser.module.scss';

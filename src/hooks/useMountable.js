@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import api from '../util/EmsApi';
+import api from '../classes/EmsApi';
 
 // A hook to return whether a component can mount. May depend
 // on the getting of a token

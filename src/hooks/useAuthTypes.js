@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import api from '../util/EmsApi';
+import api from '../classes/EmsApi';
 
 // A hook to return the available authentication types
 export default () => {

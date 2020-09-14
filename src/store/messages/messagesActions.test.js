@@ -4,7 +4,7 @@ import thunk from 'redux-thunk';
 import * as actions from './messagesActions';
 import * as messagesTypes from './messagesTypes';
 
-import api from '../../util/EmsApi';
+import api from '../../classes/EmsApi';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);

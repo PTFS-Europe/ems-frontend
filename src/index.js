@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 
 import './index.scss';
 import { store } from './store';
-import api from './util/EmsApi';
+import api from './classes/EmsApi';
 
 // Initialise our API request and response interceptors
 api.requestInterceptor();

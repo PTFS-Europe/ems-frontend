@@ -1,5 +1,5 @@
 import * as usersTypes from './usersTypes';
-import api from '../../util/EmsApi';
+import api from '../../classes/EmsApi';
 
 export const fetchUsersRequest = (ids) => {
     return {

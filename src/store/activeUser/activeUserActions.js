@@ -1,6 +1,6 @@
 import * as activeUserTypes from './activeUserTypes';
 import { fetchUsersSuccess } from '../users/usersActions';
-import api from '../../util/EmsApi';
+import api from '../../classes/EmsApi';
 
 export const fetchActiveUserRequest = () => {
     return {

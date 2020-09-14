@@ -1,5 +1,5 @@
 import * as foldersTypes from './foldersTypes';
-import api from '../../util/EmsApi';
+import api from '../../classes/EmsApi';
 
 export const fetchFoldersRequest = () => {
     return {

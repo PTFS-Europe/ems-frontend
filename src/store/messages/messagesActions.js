@@ -1,7 +1,7 @@
 import uid from 'uid';
 
 import * as messagesTypes from './messagesTypes';
-import api from '../../util/EmsApi';
+import api from '../../classes/EmsApi';
 
 export const fetchMessagesRequest = () => {
     return {
