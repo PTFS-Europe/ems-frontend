@@ -31,7 +31,7 @@ export default (message) => {
     // First step, report when we're mounted
     useEffect(() => {
         dispatch(setMounted(message.id));
-    }, []);
+    }, [message.id, dispatch]);
 
     // Only dispatch an update if we need to
     useEffect(() => {
@@ -54,7 +54,15 @@ export default (message) => {
                 })
             );
         }
-    }, [inView, mostRecentSeen]);
+    }, [
+        inView,
+        mostRecentSeen,
+        activeQuery,
+        dispatch,
+        message.id,
+        stateMessages.messageList,
+        stateUnseen.mounted
+    ]);
 
     return [ref];
 };

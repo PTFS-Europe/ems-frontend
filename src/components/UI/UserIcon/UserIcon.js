@@ -6,8 +6,6 @@ import PropTypes from 'prop-types';
 
 import Avatar, { ConfigProvider } from 'react-avatar';
 
-import styles from './UserIcon.module.scss';
-
 const UserIcon = ({ userId }) => {
     const [user, setUser] = useState('');
 

@@ -22,6 +22,8 @@ const ActiveQuery = ({ match }) => {
         return () => {
             dispatch(updateActiveQuery(null));
         };
+        // We don't want dispatch to be a dependency of this hook
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [queryId]);
 
     return (

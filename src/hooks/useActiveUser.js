@@ -33,7 +33,7 @@ export default () => {
                 usersList.find((user) => user.id === activeUser.userDetails.id)
             );
         }
-    }, [activeUser, usersList]);
+    }, [activeUser, usersList, user.id]);
 
     const logout = () => {
         dispatch(logoutUser());
