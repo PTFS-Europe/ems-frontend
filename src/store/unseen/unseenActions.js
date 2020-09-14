@@ -65,11 +65,11 @@ const debouncedUpdateMostRecentSeen = debounce(
             .then((response) => response.data)
             .then((data) =>
                 // Update our state
-                dispatch(updateUnseenCounts({ [data.query_id]: data.unseen_count }))
+                dispatch(
+                    updateUnseenCounts({ [data.query_id]: data.unseen_count })
+                )
             )
-            .catch((error) =>
-                dispatch(updateMostRecentSeenFailure())
-            );
+            .catch((error) => dispatch(updateMostRecentSeenFailure()));
     },
     500
 );
@@ -86,6 +86,11 @@ export const updateMostRecentSeen = ({ queryId, messageId }) => {
             return;
         }
         const mostRecentSeen = getState().unseen.mostRecentSeen[queryId];
-        debouncedUpdateMostRecentSeen({ queryId, userId, mostRecentSeen, dispatch });
+        debouncedUpdateMostRecentSeen({
+            queryId,
+            userId,
+            mostRecentSeen,
+            dispatch
+        });
     };
 };

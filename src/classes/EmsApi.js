@@ -16,13 +16,12 @@ class EmsApi {
         this._inProgress = [];
     }
     requester(payload) {
-        return this._client.request(payload)
-            .finally(() => {
-                // Remove this request from our in progress
-                // list
-                const index = this.findRequest(payload);
-                this._inProgress.splice(index, 1);
-            });
+        return this._client.request(payload).finally(() => {
+            // Remove this request from our in progress
+            // list
+            const index = this.findRequest(payload);
+            this._inProgress.splice(index, 1);
+        });
     }
     makeRequest(path, options = {}) {
         const payload = {

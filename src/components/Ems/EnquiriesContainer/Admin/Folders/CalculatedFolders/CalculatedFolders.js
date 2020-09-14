@@ -40,7 +40,10 @@ const CalculatedFolders = ({ stateFolders }) => {
                 </div>
                 <button
                     onClick={() => setFilter('UNREAD')}
-                    className={styles.folderName}>{t('Unread')}</button>
+                    className={styles.folderName}
+                >
+                    {t('Unread')}
+                </button>
                 <span className={styles.folderCount}>
                     {stateFoldersCounts.UNREAD}
                 </span>
@@ -54,7 +57,8 @@ const CalculatedFolders = ({ stateFolders }) => {
                 </div>
                 <button
                     onClick={() => setFilter('ALL_QUERIES')}
-                    className={styles.folderName}>
+                    className={styles.folderName}
+                >
                     {t('All queries')}
                 </button>
                 <span className={styles.folderCount}>

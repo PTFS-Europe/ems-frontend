@@ -73,7 +73,8 @@ const Query = ({ query }) => {
                 <div role="complementary" className={styles.timestamp}>
                     {moment(updatedAt()).fromNow()}
                 </div>
-                {(activeUser.role_code === 'STAFF' || stateUnseen.unseenCounts[query.id] > 0) && (
+                {(activeUser.role_code === 'STAFF' ||
+                    stateUnseen.unseenCounts[query.id] > 0) && (
                     <>
                         <div className={styles.actionButtonPlaceholder}></div>
                         <QueryActionButton query={query} />

@@ -3,15 +3,13 @@ import {
     editMessageSuccess,
     deleteMessageSuccess,
     dispatchIfActiveQuery,
-    receiveUploadedFiles,
+    receiveUploadedFiles
 } from '../store/messages/messagesActions';
 import {
     createQuerySuccess,
-    updateQueryBulkSuccess,
+    updateQueryBulkSuccess
 } from '../store/queries/queriesActions';
-import {
-    setFoldersCounts,
-} from '../store/folders/foldersActions';
+import { setFoldersCounts } from '../store/folders/foldersActions';
 import {
     setLabelsCounts,
     receiveCreatedLabel,
@@ -32,10 +30,7 @@ class WebSocketClient {
     connect(dispatch) {
         this.dispatch = dispatch;
 
-        this.socket = new WebSocket(
-            process.env.REACT_APP_WS_BASE,
-            api.token
-        );
+        this.socket = new WebSocket(process.env.REACT_APP_WS_BASE, api.token);
 
         // Create a message handler
         this.socket.onmessage = (event) => {
@@ -89,13 +84,9 @@ class WebSocketClient {
                 if (action === 'create') {
                     this.dispatch(receiveCreatedLabel(payload));
                 } else if (action === 'update') {
-                    this.dispatch(
-                        updateLabelSuccess(payload)
-                    );
+                    this.dispatch(updateLabelSuccess(payload));
                 } else if (action === 'delete') {
-                    this.dispatch(
-                        deleteLabelSuccess(payload),
-                    );
+                    this.dispatch(deleteLabelSuccess(payload));
                 }
                 break;
             case 'unseenCount':

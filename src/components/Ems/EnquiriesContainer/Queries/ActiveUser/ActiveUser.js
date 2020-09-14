@@ -65,25 +65,25 @@ const ActiveUser = ({ colour = '#fff' }) => {
                 </button>
             </aside>
         ) : (
-                <aside className={styles.activeUserCustomer}>
-                    <div className={styles.iconName}>
-                        <UserIcon userId={activeUser.id} />
-                        <h1 className={styles.userName} style={{ color: colour }}>
-                            {activeUser.name}
-                        </h1>
-                    </div>
-                    <button
-                        onClick={logoutUser}
-                        className={
-                            activeUser.role_code === 'STAFF'
-                                ? styles.logoutStaff
-                                : styles.logoutCustomer
-                        }
-                    >
-                        Log out
+            <aside className={styles.activeUserCustomer}>
+                <div className={styles.iconName}>
+                    <UserIcon userId={activeUser.id} />
+                    <h1 className={styles.userName} style={{ color: colour }}>
+                        {activeUser.name}
+                    </h1>
+                </div>
+                <button
+                    onClick={logoutUser}
+                    className={
+                        activeUser.role_code === 'STAFF'
+                            ? styles.logoutStaff
+                            : styles.logoutCustomer
+                    }
+                >
+                    Log out
                 </button>
-                </aside>
-            );
+            </aside>
+        );
 
     if (redirect) {
         return <Redirect to="/login" />;

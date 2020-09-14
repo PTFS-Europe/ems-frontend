@@ -27,7 +27,7 @@ const messageCollections = (messages = []) => {
         if (currentCollection.timestamp) {
             return (
                 moment(message.created_at) -
-                moment(currentCollection.timestamp) <
+                    moment(currentCollection.timestamp) <
                 groupPeriod * 1000
             );
         } else {
@@ -72,7 +72,7 @@ const messageCollections = (messages = []) => {
                 '_' +
                 currentCollection.messages[0].creator_id +
                 '_' +
-                currentCollection.messages[0].created_at
+                currentCollection.messages[0].created_at;
             currentCollection.id = id;
         }
     });

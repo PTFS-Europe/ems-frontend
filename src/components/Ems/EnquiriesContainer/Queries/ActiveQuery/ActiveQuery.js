@@ -21,7 +21,7 @@ const ActiveQuery = ({ match }) => {
         // When we unmount, reset the state property
         return () => {
             dispatch(updateActiveQuery(null));
-        }
+        };
     }, [queryId]);
 
     return (
@@ -29,9 +29,7 @@ const ActiveQuery = ({ match }) => {
             <QueryHeader />
             {!queryId && <NewQuery />}
             {queryId && <MessageList />}
-            {queryId && (
-                <QueryEntry className={styles.queryEntry} />
-            )}
+            {queryId && <QueryEntry className={styles.queryEntry} />}
         </main>
     );
 };

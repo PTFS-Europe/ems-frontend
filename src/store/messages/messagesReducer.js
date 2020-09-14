@@ -227,10 +227,7 @@ const reducer = (state = initialState, action) => {
         case messagesTypes.RECEIVE_CREATED_MESSAGE:
             // A message has arrived (via a websocket)
             // Add it to our message list
-            const withNewMessage = [
-                ...state.messageList,
-                action.payload
-            ];
+            const withNewMessage = [...state.messageList, action.payload];
             return {
                 ...state,
                 messageList: withNewMessage
@@ -239,10 +236,7 @@ const reducer = (state = initialState, action) => {
             // An array of file upload messages have arrived
             // (via a websocket)
             // Add them to our message list
-            const withNewFiles = [
-                ...state.messageList,
-                ...action.payload
-            ];
+            const withNewFiles = [...state.messageList, ...action.payload];
             return {
                 ...state,
                 messageList: withNewFiles

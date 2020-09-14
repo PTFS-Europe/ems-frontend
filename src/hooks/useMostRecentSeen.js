@@ -5,9 +5,7 @@ import { useInView } from 'react-intersection-observer';
 
 import { setMounted } from '../store/unseen/unseenActions';
 
-import {
-    updateMostRecentSeen
-} from '../store/unseen/unseenActions';
+import { updateMostRecentSeen } from '../store/unseen/unseenActions';
 
 export default (message) => {
     const stateQueries = useSelector((state) => state.queries);
@@ -49,9 +47,12 @@ export default (message) => {
             // Are we more recent
             message.id > mostRecentSeen[activeQuery]
         ) {
-            dispatch(updateMostRecentSeen({
-                queryId: activeQuery, messageId: message.id
-            }));
+            dispatch(
+                updateMostRecentSeen({
+                    queryId: activeQuery,
+                    messageId: message.id
+                })
+            );
         }
     }, [inView, mostRecentSeen]);
 

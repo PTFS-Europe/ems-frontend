@@ -12,7 +12,6 @@ import MessageEntry from '../../../../UI/MessageEntry/MessageEntry';
 import styles from './QueryEntry.module.scss';
 
 const QueryEntry = () => {
-
     const dispatch = useDispatch();
     const stateQueries = useSelector((state) => state.queries);
     const stateActiveMessage = useSelector((state) => state.activeMessage);
@@ -43,9 +42,12 @@ const QueryEntry = () => {
 
     // Call the redux action for sending the edited message to the API
     const dispatchEditAction = (callback) => {
-        dispatch(editMessage(
-            { id: stateActiveMessage.id, text: stateActiveMessage.text }
-        )).then((data) => {
+        dispatch(
+            editMessage({
+                id: stateActiveMessage.id,
+                text: stateActiveMessage.text
+            })
+        ).then((data) => {
             // The call to editMessage may have returned an error, so we
             // need to check for that
             if (data.type === messagesTypes.EDIT_MESSAGE_SUCCESS) {

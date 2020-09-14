@@ -62,12 +62,7 @@ const StartNewQuery = () => {
                     })
                 ).then(async (response) => {
                     const queryId = response.payload.data.id;
-                    await dispatch(
-                        uploadFile(
-                            event.target.files,
-                            queryId
-                        )
-                    );
+                    await dispatch(uploadFile(event.target.files, queryId));
                     history.push(`/query/${queryId}`);
                 });
             } catch (err) {

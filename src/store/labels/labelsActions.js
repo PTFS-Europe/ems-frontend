@@ -253,5 +253,3 @@ export const receiveCreatedLabel = (label) => {
         payload: label
     };
 };
-
-

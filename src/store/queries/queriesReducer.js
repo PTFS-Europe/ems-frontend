@@ -78,10 +78,7 @@ const reducer = (state = initialState, action) => {
                     return action.payload.data;
                 });
             } else {
-                updatedQueries = [
-                    ...state.queryList,
-                    action.payload.data
-                ];
+                updatedQueries = [...state.queryList, action.payload.data];
             }
             return {
                 ...state,
@@ -237,7 +234,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 activeQuery: action.payload
-            }
+            };
         default:
             return state;
     }

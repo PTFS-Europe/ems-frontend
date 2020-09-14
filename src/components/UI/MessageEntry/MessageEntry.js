@@ -25,11 +25,11 @@ const MessageEntry = ({
     const stateMessages = useSelector((state) => state.messages);
     const stateActiveMessage = useSelector((state) => state.activeMessage);
 
-    const getStyle = () => stateActiveMessage.id ? styles.edit : '';
+    const getStyle = () => (stateActiveMessage.id ? styles.edit : '');
 
     // Reset the entry box
     const resetEntry = () => {
-        dispatch(setActiveMessageText(''))
+        dispatch(setActiveMessageText(''));
         dispatch(setActiveMessageId(null));
     };
 
@@ -50,7 +50,9 @@ const MessageEntry = ({
     // the appropriate style
     const uploadDisabled = () => {
         return stateActiveMessage.text.length > 0 || stateMessages.loading
-            ? cssOverrides.fileLabelDisabled ? cssOverrides.fileLabelDisabled : styles.fileLabelDisabled
+            ? cssOverrides.fileLabelDisabled
+                ? cssOverrides.fileLabelDisabled
+                : styles.fileLabelDisabled
             : '';
     };
 
@@ -58,24 +60,33 @@ const MessageEntry = ({
         <form className={styles.messageEntryContainer}>
             <TextareaAutosize
                 value={stateActiveMessage.text}
-                onInput={(e) =>
-                    dispatch(
-                        setActiveMessageText(e.target.value)
-                    )
-                }
+                onInput={(e) => dispatch(setActiveMessageText(e.target.value))}
                 onKeyPress={keyIsPressed}
                 maxRows={maxRows}
                 minRows={minRows}
                 placeholder={t('Type your message')}
-                className={`${cssOverrides.entryBox ? cssOverrides.entryBox : styles.entryBox} ${getStyle()}`}
+                className={`${
+                    cssOverrides.entryBox
+                        ? cssOverrides.entryBox
+                        : styles.entryBox
+                } ${getStyle()}`}
             ></TextareaAutosize>
-            <div className={`${cssOverrides.entryIconsContainer ? cssOverrides.entryIconsContainer : styles.entryIconsContainer} ${getStyle()}`}>
+            <div
+                className={`${
+                    cssOverrides.entryIconsContainer
+                        ? cssOverrides.entryIconsContainer
+                        : styles.entryIconsContainer
+                } ${getStyle()}`}
+            >
                 {!stateActiveMessage.id && (
                     <div className={styles.entryIcons}>
                         <label
                             data-testid="fileattachlabel"
-                            className={`${cssOverrides.fileLabel ? cssOverrides.fileLabel : styles.fileLabel
-                                } ${uploadDisabled()}`}
+                            className={`${
+                                cssOverrides.fileLabel
+                                    ? cssOverrides.fileLabel
+                                    : styles.fileLabel
+                            } ${uploadDisabled()}`}
                         >
                             <FontAwesomeIcon
                                 alt={t('Create an attachment')}
@@ -96,7 +107,11 @@ const MessageEntry = ({
                         </label>
                         <button
                             type="button"
-                            className={cssOverrides.entryButton ? cssOverrides.entryButton : styles.entryButton}
+                            className={
+                                cssOverrides.entryButton
+                                    ? cssOverrides.entryButton
+                                    : styles.entryButton
+                            }
                             onClick={() => dispatchSendAction(resetEntry)}
                             disabled={
                                 stateActiveMessage.text.length === 0 ||
@@ -115,7 +130,11 @@ const MessageEntry = ({
                         <button
                             type="button"
                             onClick={resetEntry}
-                            className={cssOverrides.entryButton ? cssOverrides.entryButton : styles.entryButton}
+                            className={
+                                cssOverrides.entryButton
+                                    ? cssOverrides.entryButton
+                                    : styles.entryButton
+                            }
                         >
                             <FontAwesomeIcon
                                 alt={t('Abandon changes')}
@@ -124,7 +143,11 @@ const MessageEntry = ({
                         </button>
                         <button
                             type="button"
-                            className={cssOverrides.entryButton ? cssOverrides.entryButton : styles.entryButton}
+                            className={
+                                cssOverrides.entryButton
+                                    ? cssOverrides.entryButton
+                                    : styles.entryButton
+                            }
                             onClick={dispatchEditAction}
                             disabled={stateActiveMessage.text.length === 0}
                         >
@@ -136,7 +159,7 @@ const MessageEntry = ({
                     </div>
                 )}
             </div>
-        </form >
+        </form>
     );
 };
 

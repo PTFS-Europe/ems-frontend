@@ -15,7 +15,9 @@ const Folder = ({ folder, stateFolders }) => {
     const dispatch = useDispatch();
 
     // Make the state we need available
-    const stateFoldersCounts = useSelector((state) => state.folders.foldersCounts);
+    const stateFoldersCounts = useSelector(
+        (state) => state.folders.foldersCounts
+    );
 
     // Set the active filter
     const setFilter = (code) => {
@@ -47,7 +49,9 @@ const Folder = ({ folder, stateFolders }) => {
             >
                 {t(`folderName_${folder.code}`)}
             </button>
-            <span className={styles.folderCount}>{stateFoldersCounts[folder.id]}</span>
+            <span className={styles.folderCount}>
+                {stateFoldersCounts[folder.id]}
+            </span>
         </li>
     );
 };

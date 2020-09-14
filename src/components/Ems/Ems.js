@@ -10,7 +10,6 @@ import WebSocketClient from '../../classes/WebSocketClient';
 import styles from './Ems.module.scss';
 
 const Ems = () => {
-
     const dispatch = useDispatch();
 
     // Initialise the websocket connection

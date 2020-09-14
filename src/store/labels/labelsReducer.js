@@ -152,10 +152,7 @@ const reducer = (state = initialState, action) => {
         case labelsTypes.RECEIVE_CREATED_LABEL:
             // A label has arrived (via a websocket)
             // Add it to our label list
-            const withNewLabel = [
-                ...state.labelList,
-                action.payload
-            ];
+            const withNewLabel = [...state.labelList, action.payload];
             return {
                 ...state,
                 labelList: withNewLabel

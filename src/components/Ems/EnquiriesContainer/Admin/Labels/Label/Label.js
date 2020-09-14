@@ -35,7 +35,9 @@ const Label = ({ label, stateLabels }) => {
                 <FontAwesomeIcon alt={label.name} icon={'tag'} />
             </div>
             <button className={styles.labelName}>{label.name}</button>
-            <span className={styles.labelCount}>{stateLabelsCounts[label.id] || 0}</span>
+            <span className={styles.labelCount}>
+                {stateLabelsCounts[label.id] || 0}
+            </span>
         </li>
     );
 };

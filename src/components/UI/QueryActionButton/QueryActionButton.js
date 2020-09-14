@@ -27,7 +27,9 @@ const QueryActionButton = ({ query }) => {
         if (stateUnseen.hasOwnProperty(query.id) && stateUnseen[query.id] > 0) {
             return {
                 class: [styles.actionButton, styles.unseenCount],
-                alt: t('Query has unread messages', { unread: stateUnseen[query.id] })
+                alt: t('Query has unread messages', {
+                    unread: stateUnseen[query.id]
+                })
             };
         }
         return {
@@ -61,8 +63,13 @@ const QueryActionButton = ({ query }) => {
                 </button>
             )}
             {!currentState.icon && (
-                <button alt={currentState.alt} className={currentState.class.join(' ')}>
-                    <span className={styles.unseenNumber}>{stateUnseen[query.id]}</span>
+                <button
+                    alt={currentState.alt}
+                    className={currentState.class.join(' ')}
+                >
+                    <span className={styles.unseenNumber}>
+                        {stateUnseen[query.id]}
+                    </span>
                 </button>
             )}
             {query.folder && (
@@ -101,8 +108,9 @@ const QueryActionButton = ({ query }) => {
                                 )
                             }
                             key={folder.id}
-                            className={`${styles.actionButton} ${styles[folder.code]
-                                }`}
+                            className={`${styles.actionButton} ${
+                                styles[folder.code]
+                            }`}
                         >
                             <FontAwesomeIcon
                                 icon={t(`folderIcon_${folder.code}`)}

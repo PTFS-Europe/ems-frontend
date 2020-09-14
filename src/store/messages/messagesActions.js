@@ -365,4 +365,4 @@ export const dispatchIfActiveQuery = (action, id) => {
             dispatch(action());
         }
     };
-}
+};

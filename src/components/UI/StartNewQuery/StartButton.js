@@ -16,10 +16,7 @@ const StartButton = () => {
         history.push('/');
     };
     return (
-        <button
-            onClick={() => startNewQuery()}
-            className={styles.startButton}
-        >
+        <button onClick={() => startNewQuery()} className={styles.startButton}>
             <FontAwesomeIcon
                 className={styles.startIcon}
                 alt={t('Start a new query')}

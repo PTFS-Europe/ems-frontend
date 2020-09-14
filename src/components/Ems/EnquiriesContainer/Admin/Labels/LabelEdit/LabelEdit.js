@@ -159,7 +159,9 @@ const LabelEdit = ({
                 type="text"
                 className={styles.labelName}
             />
-            <span className={styles.labelCount}>{stateLabelsCounts[label.id] || 0}</span>
+            <span className={styles.labelCount}>
+                {stateLabelsCounts[label.id] || 0}
+            </span>
         </li>
     );
 };
