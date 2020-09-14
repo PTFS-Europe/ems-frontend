@@ -46,6 +46,11 @@ const MessageCollection = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeUser, collection, initiator, usersList]);
 
+    // Don't render until we know the display properties
+    if (!Object.prototype.hasOwnProperty.call(display, 'isSender')) {
+        return null;
+    }
+
     // Return the align-items property for a given collection
     return (
         <div role="group" className={styles[display.css]}>

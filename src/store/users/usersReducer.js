@@ -27,33 +27,37 @@ const updateLoading = (oldLoading, payload) => {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case usersTypes.FETCH_USERS_REQUEST:
-            return {
-                ...state,
-                loading: [...state.loading, ...action.payload]
-            };
-        case usersTypes.FETCH_USERS_SUCCESS:
-            const newUsersList = updateUsersList(
-                state.usersList,
-                action.payload
-            );
-            const newLoading = updateLoading(state.loading, action.payload);
-            return {
-                ...state,
-                loading: newLoading,
-                usersList: newUsersList,
-                error: ''
-            };
-        case usersTypes.FETCH_USERS_FAILURE:
-            return {
-                ...state,
-                // We don't modify the loading state because we don't
-                // know what failed, so can't meaningfully update it
-                usersList: [],
-                error: action.payload
-            };
-        default:
-            return state;
+    case usersTypes.FETCH_USERS_REQUEST: {
+        return {
+            ...state,
+            loading: [...state.loading, ...action.payload]
+        };
+    }
+    case usersTypes.FETCH_USERS_SUCCESS: {
+        const newUsersList = updateUsersList(
+            state.usersList,
+            action.payload
+        );
+        const newLoading = updateLoading(state.loading, action.payload);
+        return {
+            ...state,
+            loading: newLoading,
+            usersList: newUsersList,
+            error: ''
+        };
+    }
+    case usersTypes.FETCH_USERS_FAILURE: {
+        return {
+            ...state,
+            // We don't modify the loading state because we don't
+            // know what failed, so can't meaningfully update it
+            usersList: [],
+            error: action.payload
+        };
+
+    }
+    default:
+        return state;
     }
 };
 

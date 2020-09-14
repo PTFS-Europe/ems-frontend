@@ -97,7 +97,7 @@ export const sendMessage = ({ queryId, message }) => {
             options.mode = 'cors';
         }
         return api
-            .makeRequest(`messages`, options)
+            .makeRequest('messages', options)
             .then((response) => response.data)
             .then((data) => {
                 // Update our messages state
@@ -319,7 +319,7 @@ export const uploadFile = (files, queryId) => {
             data: formData
         };
         return api
-            .makeRequest(`upload`, options)
+            .makeRequest('upload', options)
             .then((response) => response.data)
             .then((data) => {
                 // Replace the temporary messages with actual ones

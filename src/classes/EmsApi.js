@@ -16,11 +16,12 @@ class EmsApi {
         this._inProgress = [];
     }
     requester(payload) {
-        return this._client.request(payload).finally(() => {
+        return this._client.request(payload).then((res) => {
             // Remove this request from our in progress
             // list
             const index = this.findRequest(payload);
             this._inProgress.splice(index, 1);
+            return res;
         });
     }
     makeRequest(path, options = {}) {
@@ -90,10 +91,11 @@ class EmsApi {
             (response) => {
                 // If we've received a JWT, update our cache
                 if (response.headers && response.headers.authorization) {
-                    const responseToken = response.headers.authorization.replace(
-                        'Bearer ',
-                        ''
-                    );
+                    const responseToken = response.headers
+                        .authorization.replace(
+                            'Bearer ',
+                            ''
+                        );
                     if (this._token !== responseToken) {
                         // Update our cache if necessary
                         this.token = responseToken;

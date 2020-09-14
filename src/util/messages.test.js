@@ -6,7 +6,7 @@ const mockMessages = [
         query_id: 33,
         creator_id: 1,
         content:
-            "Hi - I'd like to order some chippies and two pea fritters please",
+            'Hi - I\'d like to order some chippies and two pea fritters please',
         created_at: '2020-05-04 11:56:49.75614+01',
         updated_at: '2020-05-04 11:56:49.75614+01',
         filename: null
@@ -16,7 +16,7 @@ const mockMessages = [
         query_id: 33,
         creator_id: 2,
         content:
-            "Sure, though I've some bad news, we just sold the last pea fritter",
+            'Sure, though I\'ve some bad news, we just sold the last pea fritter',
         created_at: '2020-05-04 11:57:18.972605+01',
         updated_at: '2020-05-04 11:57:18.972605+01',
         filename: null
@@ -25,7 +25,7 @@ const mockMessages = [
         id: 6,
         query_id: 33,
         creator_id: 2,
-        content: "We won't have any new ones until tomorrow",
+        content: 'We won\'t have any new ones until tomorrow',
         created_at: '2020-05-04 11:57:31.165191+01',
         updated_at: '2020-05-04 11:57:31.165191+01',
         filename: null
@@ -43,7 +43,7 @@ const mockMessages = [
         id: 8,
         query_id: 33,
         creator_id: 1,
-        content: "OK, that's a bit troubling. What else do you have?",
+        content: 'OK, that\'s a bit troubling. What else do you have?',
         created_at: '2020-05-04 11:58:01.251987+01',
         updated_at: '2020-05-04 11:58:01.251987+01',
         filename: null

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -67,6 +68,10 @@ const CalculatedFolders = ({ stateFolders }) => {
             </li>
         </React.Fragment>
     );
+};
+
+CalculatedFolders.propTypes = {
+    stateFolders: PropTypes.object.isRequired
 };
 
 export default CalculatedFolders;

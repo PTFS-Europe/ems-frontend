@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Popover from 'react-tiny-popover';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -45,6 +46,18 @@ const ConfirmAction = ({ open, onConfirm, onCancel, children }) => {
             {children}
         </Popover>
     );
+};
+
+ConfirmContent.propTypes = {
+    onConfirm: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired
+};
+
+ConfirmAction.propTypes = {
+    open: PropTypes.bool.isRequired,
+    onConfirm: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    children: PropTypes.object.isRequired
 };
 
 export default ConfirmAction;

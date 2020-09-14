@@ -43,7 +43,9 @@ export default (message) => {
             // Are we visible
             inView &&
             // Has mostRecentSeen been properly populated
-            mostRecentSeen.hasOwnProperty(activeQuery) &&
+            Object.prototype.hasOwnProperty.call(
+                mostRecentSeen, activeQuery
+            ) &&
             // Are we more recent
             message.id > mostRecentSeen[activeQuery]
         ) {

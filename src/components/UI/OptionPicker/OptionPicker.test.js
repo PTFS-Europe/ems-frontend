@@ -4,7 +4,7 @@ import { render, fireEvent } from '@testing-library/react';
 import OptionPicker from './OptionPicker';
 
 jest.mock('@fortawesome/react-fontawesome', () => ({
-    FontAwesomeIcon: (props) => {
+    FontAwesomeIcon: () => {
         return <i className="fa" />;
     }
 }));

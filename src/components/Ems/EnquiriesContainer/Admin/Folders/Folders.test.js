@@ -20,6 +20,7 @@ jest.mock('react-redux', () => ({
 jest.mock('./Folder/Folder', () => {
     return {
         __esModule: true,
+        // eslint-disable-next-line react/prop-types
         default: (props) => <li>{props.folder.position}</li>
     };
 });

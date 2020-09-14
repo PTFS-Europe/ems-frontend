@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { setLabelsFilter } from '../../../store/labels/labelsActions';
@@ -84,6 +85,11 @@ const QueryLabels = ({ query }) => {
             </li>
         ) : null;
     };
+
+    Label.propTypes = {
+        label: PropTypes.number.isRequired
+    };
+
     return (
         <div className={styles.container}>
             <ul className={styles.labelList}>
@@ -96,6 +102,10 @@ const QueryLabels = ({ query }) => {
             </div>
         </div>
     );
+};
+
+QueryLabels.propTypes = {
+    query: PropTypes.object.isRequired
 };
 
 export default QueryLabels;

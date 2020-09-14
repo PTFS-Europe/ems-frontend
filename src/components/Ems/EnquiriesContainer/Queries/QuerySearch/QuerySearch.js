@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -48,6 +49,11 @@ const QuerySearch = ({ placeholder, showAdd }) => {
             )}
         </div>
     );
+};
+
+QuerySearch.propTypes = {
+    placeholder: PropTypes.string.isRequired,
+    showAdd: PropTypes.bool.isRequired
 };
 
 export default QuerySearch;

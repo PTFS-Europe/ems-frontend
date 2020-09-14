@@ -27,8 +27,10 @@ export const fetchUsersFailure = (error) => {
 // - We don't already know about
 // - We're not already fetching
 export const fetchUsers = (args) => {
-    const user_ids =
-        args && args.hasOwnProperty('user_ids') ? args.user_ids : [];
+    const user_ids = args &&
+        Object.prototype.hasOwnProperty.call(args, 'user_ids') ?
+        args.user_ids :
+        [];
     return (dispatch, getState) => {
         let url = 'users';
 

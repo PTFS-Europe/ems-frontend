@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -161,6 +162,15 @@ const MessageEntry = ({
             </div>
         </form>
     );
+};
+
+MessageEntry.propTypes = {
+    dispatchSendAction: PropTypes.func.isRequired,
+    dispatchEditAction: PropTypes.func.isRequired,
+    dispatchUpload: PropTypes.func.isRequired,
+    cssOverrides: PropTypes.object,
+    maxRows: PropTypes.number,
+    minRows: PropTypes.number
 };
 
 export default MessageEntry;

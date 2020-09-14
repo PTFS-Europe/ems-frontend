@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 
 import ConfirmAction from './ConfirmAction';
 
@@ -9,6 +9,7 @@ jest.mock('react-i18next', () => ({
 
 jest.mock('@fortawesome/react-fontawesome', () => ({
     FontAwesomeIcon: (props) => {
+        // eslint-disable-next-line react/prop-types
         return <i className="fa" alt={props.alt} />;
     }
 }));

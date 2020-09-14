@@ -176,9 +176,10 @@ export const updateQueryBulk = (updatedQueries) => {
         const unmodifiedQueries = JSON.parse(JSON.stringify(toUpdate));
         // We update our state with the updated query here, it is then
         // replaced once we receive a response
-        // For each of the queries to be updated, find the associated query in the updated
-        // queries we were passed and replace any changed properties
-        // What we get back is an array of updated query objects we can send to the API
+        // For each of the queries to be updated, find the associated query
+        // in the updated queries we were passed and replace any changed
+        // properties. What we get back is an array of updated query
+        // objects we can send to the API
         const updateObj = toUpdate.map((updateMe) => {
             // Get the object containing the updated properties for this query
             const updateWith = updatedQueries.find(
@@ -263,9 +264,10 @@ export const toggleLabelBulk = ({ labelId, isSelected, affectedQueries }) => {
             toggleLabelBulkRequest({ labelId, isSelected, affectedQueries })
         );
         // Make the request
-        // Determine what we're doing, if the label we're working with is already attached
-        // to the query (or all queries in the case of a bulk operation),
-        // we need the API method to be DELETE otherwise it's POST
+        // Determine what we're doing, if the label we're working with is
+        // already attached to the query (or all queries in the case of a
+        // bulk operation), we need the API method to be DELETE otherwise
+        // it's POST
         const method = isSelected ? 'DELETE' : 'POST';
         const joinedQueries = affectedQueries.join(',');
         const options = {

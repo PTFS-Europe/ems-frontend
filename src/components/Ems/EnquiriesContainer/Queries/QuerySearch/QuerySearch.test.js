@@ -9,12 +9,12 @@ jest.mock('react-i18next', () => ({
 }));
 
 jest.mock('@fortawesome/react-fontawesome', () => ({
-    FontAwesomeIcon: (props) => {
+    FontAwesomeIcon: () => {
         return <i className="fa" />;
     }
 }));
 
-const mockDispatch = jest.fn().mockImplementation((d) => {});
+const mockDispatch = jest.fn().mockImplementation(() => {});
 
 jest.mock('react-redux', () => ({
     // Mock useSelector
@@ -71,7 +71,7 @@ describe('QuerySearch', () => {
 
     describe('showAdd is falsy', () => {
         beforeEach(() => {
-            q = render(<QuerySearch />);
+            q = render(<QuerySearch showAdd={false} />);
         });
         test('does not display start new query button when showAdd is falsy', () => {
             const new_query_button = q.queryByRole('button');

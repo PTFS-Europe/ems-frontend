@@ -8,6 +8,7 @@ const mockDispatch = jest.fn().mockImplementation(() => {});
 
 jest.mock('@fortawesome/react-fontawesome', () => ({
     FontAwesomeIcon: (props) => {
+        // eslint-disable-next-line react/prop-types
         return <i className="fa" alt={props.alt} />;
     }
 }));

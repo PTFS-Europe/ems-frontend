@@ -69,7 +69,7 @@ const debouncedUpdateMostRecentSeen = debounce(
                     updateUnseenCounts({ [data.query_id]: data.unseen_count })
                 )
             )
-            .catch((error) => dispatch(updateMostRecentSeenFailure()));
+            .catch(() => dispatch(updateMostRecentSeenFailure()));
     },
     500
 );

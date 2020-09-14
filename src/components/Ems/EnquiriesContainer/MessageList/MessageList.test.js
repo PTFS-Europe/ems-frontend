@@ -71,7 +71,7 @@ const mockState = {
                 query_id: 33,
                 creator_id: 1,
                 content:
-                    "Hi - I'd like to order some chippies and two pea fritters please",
+                    'Hi - I\'d like to order some chippies and two pea fritters please',
                 created_at: '2020-05-04 11:56:49.75614+01',
                 updated_at: '2020-05-04 11:56:49.75614+01',
                 filename: null
@@ -81,7 +81,7 @@ const mockState = {
                 query_id: 33,
                 creator_id: 2,
                 content:
-                    "Sure, though I've some bad news, we just sold the last pea fritter",
+                    'Sure, though I\'ve some bad news, we just sold the last pea fritter',
                 created_at: '2020-05-04 11:57:18.972605+01',
                 updated_at: '2020-05-04 11:57:18.972605+01',
                 filename: null

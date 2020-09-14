@@ -106,7 +106,8 @@ const OptionPicker = ({
 
 Option.propTypes = {
     option: PropTypes.object.isRequired,
-    onChoose: PropTypes.func.isRequired
+    onChoose: PropTypes.func.isRequired,
+    isSelected: PropTypes.bool.isRequired
 };
 
 Options.propTypes = {
@@ -120,7 +121,7 @@ OptionPicker.propTypes = {
     onChoose: PropTypes.func.isRequired,
     button: PropTypes.object.isRequired,
     selected: PropTypes.array.isRequired,
-    shouldClose: PropTypes.bool,
+    shouldClose: PropTypes.bool.isRequired,
     promptText: PropTypes.string
 };
 

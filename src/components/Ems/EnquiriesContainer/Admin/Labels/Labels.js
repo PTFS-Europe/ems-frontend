@@ -52,8 +52,8 @@ const Labels = () => {
     const labelList = editing
         ? stateLabels.labelList
         : stateLabels.labelList.sort((a, b) =>
-              a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
-          );
+            a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1
+        );
 
     if (!stateLabels || (stateLabels && stateLabels.loading)) {
         return (

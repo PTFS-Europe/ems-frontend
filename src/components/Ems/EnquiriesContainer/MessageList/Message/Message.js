@@ -89,7 +89,8 @@ const Message = ({ message, css, isSender }) => {
         <li ref={ref} className={finalStyles}>
             <div className={styles.messageText}>
                 <div>
-                    {/* ^^^ Do not remove this div, it preserves the vertical-ness of the text & "edited" */}
+                    {/* ^^^ Do not remove this div, it preserves the
+                    vertical-ness of the text & "edited" */}
                     {messageDisplay()}
                     {message.created_at !== message.updated_at && (
                         <div className={styles.edited}>(edited)</div>
@@ -107,7 +108,8 @@ const Message = ({ message, css, isSender }) => {
 
 Message.propTypes = {
     css: PropTypes.string,
-    message: PropTypes.object.isRequired
+    message: PropTypes.object.isRequired,
+    isSender: PropTypes.bool.isRequired
 };
 
 export default Message;

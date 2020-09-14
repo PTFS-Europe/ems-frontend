@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -56,6 +57,10 @@ const LabelPicker = ({ disabled }) => {
             onChoose={(labelId) => dispatchBulkLabel(labelId)}
         ></OptionPicker>
     );
+};
+
+LabelPicker.propTypes = {
+    disabled: PropTypes.bool.isRequired
 };
 
 export default LabelPicker;

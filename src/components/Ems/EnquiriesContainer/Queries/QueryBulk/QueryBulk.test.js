@@ -1,11 +1,11 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { useSelector } from 'react-redux';
+import { render, fireEvent } from '@testing-library/react';
 
 import QueryBulk from './QueryBulk';
 
 jest.mock('@fortawesome/react-fontawesome', () => ({
-    FontAwesomeIcon: (props) => {
+    FontAwesomeIcon: () => {
         return <i className="fa" />;
     }
 }));

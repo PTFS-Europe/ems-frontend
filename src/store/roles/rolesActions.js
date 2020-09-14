@@ -22,7 +22,7 @@ export const fetchRolesFailure = (error) => {
 };
 
 // Our action creator for fetching roles
-export const fetchRoles = (args) => {
+export const fetchRoles = () => {
     return (dispatch) => {
         // Set our loading state
         dispatch(fetchRolesRequest());

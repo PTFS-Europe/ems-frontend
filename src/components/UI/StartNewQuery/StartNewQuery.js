@@ -27,27 +27,23 @@ const StartNewQuery = () => {
 
     const startCreate = (reset) => {
         if (title.length > 0) {
-            try {
-                dispatch(
-                    createQuery({
-                        query: title
+            dispatch(
+                createQuery({
+                    query: title
+                })
+            ).then(async (response) => {
+                const queryId = response.payload.data.id;
+                await dispatch(
+                    sendMessage({
+                        queryId,
+                        message: stateActiveMessage.text
                     })
-                ).then(async (response) => {
-                    const queryId = response.payload.data.id;
-                    await dispatch(
-                        sendMessage({
-                            queryId,
-                            message: stateActiveMessage.text
-                        })
-                    );
-                    if (reset) {
-                        reset();
-                    }
-                    history.push(`/query/${queryId}`);
-                });
-            } catch (err) {
-                throw err;
-            }
+                );
+                if (reset) {
+                    reset();
+                }
+                history.push(`/query/${queryId}`);
+            });
         }
     };
 
@@ -55,19 +51,15 @@ const StartNewQuery = () => {
         if (title.length > 0) {
             // Allow the promise callback below to access the event
             event.persist();
-            try {
-                dispatch(
-                    createQuery({
-                        query: title
-                    })
-                ).then(async (response) => {
-                    const queryId = response.payload.data.id;
-                    await dispatch(uploadFile(event.target.files, queryId));
-                    history.push(`/query/${queryId}`);
-                });
-            } catch (err) {
-                throw err;
-            }
+            dispatch(
+                createQuery({
+                    query: title
+                })
+            ).then(async (response) => {
+                const queryId = response.payload.data.id;
+                await dispatch(uploadFile(event.target.files, queryId));
+                history.push(`/query/${queryId}`);
+            });
         }
     };
 

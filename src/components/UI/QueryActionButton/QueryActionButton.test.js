@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import QueryActionButton from './QueryActionButton';
 
 jest.mock('@fortawesome/react-fontawesome', () => ({
-    FontAwesomeIcon: (props) => {
+    FontAwesomeIcon: () => {
         return <i className="fa" />;
     }
 }));

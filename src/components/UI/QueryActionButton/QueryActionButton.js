@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useTranslation } from 'react-i18next';
@@ -24,7 +25,10 @@ const QueryActionButton = ({ query }) => {
     // Derive the display state of this query's action button
     const deriveNewState = () => {
         // If this query has unread message, that takes precedent
-        if (stateUnseen.hasOwnProperty(query.id) && stateUnseen[query.id] > 0) {
+        if (
+            Object.prototype.hasOwnProperty.call(stateUnseen, query.id) &&
+            stateUnseen[query.id] > 0
+        ) {
             return {
                 class: [styles.actionButton, styles.unseenCount],
                 alt: t('Query has unread messages', {
@@ -119,6 +123,10 @@ const QueryActionButton = ({ query }) => {
                     ))}
         </div>
     );
+};
+
+QueryActionButton.propTypes = {
+    query: PropTypes.object.isRequired
 };
 
 export default QueryActionButton;

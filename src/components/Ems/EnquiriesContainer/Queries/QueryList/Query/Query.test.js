@@ -43,7 +43,7 @@ jest.mock('../../../../../UI/QueryLabels/QueryLabels', () => {
 });
 
 jest.mock('@fortawesome/react-fontawesome', () => ({
-    FontAwesomeIcon: (props) => {
+    FontAwesomeIcon: () => {
         return <i className="fa" />;
     }
 }));

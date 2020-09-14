@@ -107,10 +107,10 @@ const MessageList = ({ match }) => {
             {!stateMessages.loading &&
                 stateMessages.messageList &&
                 stateMessages.messageList.length === 0 && (
-                    <h1 className={styles.noMessages}>
-                        {t('No messages found')}
-                    </h1>
-                )}
+                <h1 className={styles.noMessages}>
+                    {t('No messages found')}
+                </h1>
+            )}
             <ol className={styles.messagesList}>
                 {stateMessages.messageList &&
                     // We pass our collection-ified messages,

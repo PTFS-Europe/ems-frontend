@@ -28,7 +28,7 @@ const Query = ({ query }) => {
     const isPending = query.pending ? styles.semiTrans : '';
     const isDeleted = query.folder === 'COMPLETE' ? styles.semiTrans : '';
     const updatedAt = () => {
-        return query.hasOwnProperty('latestMessage')
+        return Object.prototype.hasOwnProperty.call(query, 'latestMessage')
             ? query.latestMessage.updated_at
             : query.updated_at;
     };

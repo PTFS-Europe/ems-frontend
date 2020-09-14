@@ -6,6 +6,7 @@ import api from '../classes/EmsApi';
 // on the getting of a token
 export default () => {
     const [complete, setComplete] = useState();
+    const [hasAuth, setHasAuth] = useState(false);
 
     // An array of paths that should not be blocked by token refresh
     const tokenRefreshWhitelist = ['login'];
@@ -18,14 +19,22 @@ export default () => {
         // If this path is not whitelisted, we need to get the token before
         // rendering
         if (!whitelisted) {
-            api.makeRequest('/token').finally(() => setComplete(true));
+            api.makeRequest('/token')
+                .then((res) => {
+                    console.log(res);
+                    setHasAuth(true);
+                })
+                .then(() => {
+                    setComplete(true);
+                });
         } else {
             // We can render immediately
+            setHasAuth(true);
             setComplete(true);
         }
         // This hook should only run on mount, stop bugging me
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return complete;
+    return [complete, hasAuth];
 };

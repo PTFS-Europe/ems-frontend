@@ -1,6 +1,6 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { render, screen } from '@testing-library/react';
+import { useSelector } from 'react-redux';
+import { render } from '@testing-library/react';
 
 import BulkLabelPicker from './BulkLabelPicker';
 
@@ -8,6 +8,7 @@ const mockDispatch = jest.fn().mockImplementation(() => {});
 
 jest.mock('@fortawesome/react-fontawesome', () => ({
     FontAwesomeIcon: (props) => {
+        // eslint-disable-next-line react/prop-types
         return <i className="fa" alt={props.alt} />;
     }
 }));
@@ -29,6 +30,7 @@ jest.mock('../../../../../UI/OptionPicker/OptionPicker', () => {
         default: (props) => (
             <div data-testid="option-picker">
                 <div data-testid="selected">
+                    {/* eslint-disable-next-line react/prop-types */}
                     selected {props.selected.join(',')}
                 </div>
             </div>

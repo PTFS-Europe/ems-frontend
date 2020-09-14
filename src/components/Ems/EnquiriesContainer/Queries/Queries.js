@@ -18,7 +18,10 @@ const Queries = () => {
             {activeUser.role_code === 'STAFF' && (
                 <>
                     <div role="search" className={styles.adminSearch}>
-                        <QuerySearch placeholder={t('Search queries')} />
+                        <QuerySearch
+                            placeholder={t('Search queries')}
+                            showAdd={false}
+                        />
                     </div>
                     <div className={styles.headerContainer}>
                         <div className={styles.header}>
@@ -35,7 +38,7 @@ const Queries = () => {
                             <QuerySearch
                                 placeholder={t('Search or start new query')}
                                 showAdd={true}
-                            ></QuerySearch>
+                            />
                         </div>
                     </div>
                     <div className={styles.yourQueries}>

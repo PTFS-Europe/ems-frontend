@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -54,6 +55,11 @@ const Folder = ({ folder, stateFolders }) => {
             </span>
         </li>
     );
+};
+
+Folder.propTypes = {
+    folder: PropTypes.object.isRequired,
+    stateFolders: PropTypes.object.isRequired
 };
 
 export default Folder;

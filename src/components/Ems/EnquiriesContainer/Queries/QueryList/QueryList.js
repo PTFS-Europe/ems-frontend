@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -68,7 +69,7 @@ const QueryList = ({ match }) => {
     // Given a query, get the date that should be used for sorting
     // and return it as a Date object
     const getSortingDate = (query) => {
-        return query.hasOwnProperty('latestMessage')
+        return Object.prototype.hasOwnProperty.call(query, 'latestMessage')
             ? Date.parse(query.latestMessage.updated_at)
             : Date.parse(query.updated_at);
     };
@@ -187,6 +188,10 @@ const QueryList = ({ match }) => {
             )}
         </nav>
     );
+};
+
+QueryList.propTypes = {
+    match: PropTypes.object.isRequired
 };
 
 export default withRouter(QueryList);

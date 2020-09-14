@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -34,6 +35,10 @@ const ActiveQuery = ({ match }) => {
             {queryId && <QueryEntry className={styles.queryEntry} />}
         </main>
     );
+};
+
+ActiveQuery.propTypes = {
+    match: PropTypes.object.isRequired
 };
 
 export default withRouter(ActiveQuery);

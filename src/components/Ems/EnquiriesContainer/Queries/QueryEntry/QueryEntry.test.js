@@ -6,7 +6,7 @@ import { renderWithRouterMatch } from '../../../../../util/testHelpers';
 import QueryEntry from './QueryEntry';
 
 jest.mock('@fortawesome/react-fontawesome', () => ({
-    FontAwesomeIcon: (props) => {
+    FontAwesomeIcon: () => {
         return <i className="fa" />;
     }
 }));

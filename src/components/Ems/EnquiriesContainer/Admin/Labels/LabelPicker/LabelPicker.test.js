@@ -5,7 +5,7 @@ import { render } from '@testing-library/react';
 import LabelPicker from './LabelPicker';
 
 jest.mock('@fortawesome/react-fontawesome', () => ({
-    FontAwesomeIcon: (props) => {
+    FontAwesomeIcon: () => {
         return <i className="fa" />;
     }
 }));
