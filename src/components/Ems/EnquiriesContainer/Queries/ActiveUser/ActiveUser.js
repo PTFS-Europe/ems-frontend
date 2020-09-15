@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import UserIcon from '../../../../UI/UserIcon/UserIcon';
 import useActiveUser from '../../../../../hooks/useActiveUser';
@@ -9,9 +10,10 @@ import useAuthTypes from '../../../../../hooks/useAuthTypes';
 import styles from './ActiveUser.module.scss';
 
 const ActiveUser = ({ colour = '#fff' }) => {
+    const { t } = useTranslation();
     const authTypes = useAuthTypes();
     const [logoutUrl, setLogoutUrl] = useState();
-    const [activeUser, logout] = useActiveUser();
+    const [activeUser] = useActiveUser();
     const [redirect, shouldRedirect] = useState(false);
 
     // Make sure the logoutUrl is correct based on the method
@@ -33,8 +35,6 @@ const ActiveUser = ({ colour = '#fff' }) => {
         await api.makeRequest('/token', { method: 'DELETE' });
         // Remove our storage of their JWT
         api.removeToken();
-        // Reset the entire app state
-        logout();
         // Redirect to whereever we should go
         if (!logoutUrl) {
             // This provider doesn't have a logout URL, we therefore
@@ -61,7 +61,7 @@ const ActiveUser = ({ colour = '#fff' }) => {
                             : styles.logoutCustomer
                     }
                 >
-                    Log out
+                    {t('Log out')}
                 </button>
             </aside>
         ) : (
@@ -80,7 +80,7 @@ const ActiveUser = ({ colour = '#fff' }) => {
                             : styles.logoutCustomer
                     }
                 >
-                    Log out
+                    {t('Log out')}
                 </button>
             </aside>
         );

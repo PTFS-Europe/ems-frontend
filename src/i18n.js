@@ -47,7 +47,8 @@ const resources = {
             'Add or remove labels': 'Add or remove labels',
             'You must filter queries before selecting all':
                 'You must filter queries before selecting all',
-            'Query has unread messages': 'Query has {{unread}} unread messages'
+            'Query has unread messages': 'Query has {{unread}} unread messages',
+            'Log out': 'Log out'
         }
     }
 };
