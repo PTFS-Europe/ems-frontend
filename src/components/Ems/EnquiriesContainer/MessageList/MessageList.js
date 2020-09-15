@@ -8,7 +8,6 @@ import { fetchMessages } from '../../../../store/messages/messagesActions';
 import MessageCollection from './MessageCollection/MessageCollection';
 import LoadingSpinner from '../../../UI/LoadingSpinner/LoadingSpinner';
 import useActiveUser from '../../../../hooks/useActiveUser';
-import { debounce } from '../../../../util/ui';
 
 import messageCollections from '../../../../util/messages';
 
@@ -18,13 +17,13 @@ const MessageList = ({ match }) => {
     const { t } = useTranslation();
 
     const [initiator, setInitiator] = useState(0);
-    const [scrollPosition, setScrollPosition] = useState();
 
     const myRef = useRef(null);
 
     // Make the state we need available
     const stateMessages = useSelector((state) => state.messages);
     const stateQueries = useSelector((state) => state.queries);
+    const stateUnseen = useSelector((state) => state.unseen);
     const [activeUser] = useActiveUser();
 
     // The ID of the query currently being viewed
@@ -57,11 +56,6 @@ const MessageList = ({ match }) => {
         }
     }, [stateQueries, queryId]);
 
-    // If a new query is loaded, reset our scroll position
-    useEffect(() => {
-        setScrollPosition();
-    }, [queryId]);
-
     // When the messageList changes (e.g. a new message comes in)
     // scroll to the bottom of the messages if appropriate
     useEffect(() => {
@@ -69,10 +63,13 @@ const MessageList = ({ match }) => {
         // test complains about the subsequent call of it. I've not
         // been able to find a way to mock it in the test, so have
         // resorted to preventing it being called in the test :-(
-        if (!scrollPosition && myRef.current.scrollIntoView) {
+        if (
+            stateUnseen.mounted.length === stateMessages.messageList.length &&
+            myRef.current.scrollIntoView
+        ) {
             myRef.current.scrollIntoView();
         }
-    }, [stateMessages.messageList, scrollPosition]);
+    }, [stateUnseen.mounted, stateMessages.messageList]);
 
     // When we're mounted, fetch the messages
     useEffect(() => {
@@ -83,25 +80,9 @@ const MessageList = ({ match }) => {
         return <LoadingSpinner />;
     }
 
-    // We need to debounce the updating of our scroll position
-    const debounceScrollUpdate = debounce((data) => {
-        const newScrollPosition = data.scrollHeight - data.scrollTop;
-        // If we have scrolled to the bottom, we want to nullify
-        // scrollPosition
-        const newScrollValue =
-            newScrollPosition === data.clientHeight ? null : data;
-        setScrollPosition(newScrollValue);
-    }, 500);
     return (
         <section
             className={styles.messages}
-            onScroll={(e) =>
-                debounceScrollUpdate({
-                    scrollHeight: e.target.scrollHeight,
-                    scrollTop: e.target.scrollTop,
-                    clientHeight: e.target.clientHeight
-                })
-            }
         >
             {stateMessages.loading && <LoadingSpinner />}
             {!stateMessages.loading &&

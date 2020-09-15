@@ -23,14 +23,20 @@ export default (message) => {
 
     // We cannot reliably know if we're visible or not until us
     // and all our siblings are mounted (and the layout has therefore
-    // stabilised). Therefore we watch stateMessages.mounted, when
-    // stateMessages.mounted.length === stateMessages.messageList.length
+    // stabilised). Therefore we watch stateUnseen.mounted, when
+    // stateUnseen.mounted.length === stateMessages.messageList.length
     // then all messages in this query are mounted and we can reliably
     // start reporting our visibility
     //
     // First step, report when we're mounted
     useEffect(() => {
-        dispatch(setMounted(message.id));
+        // We only want to report the mounted-ness of the final
+        // message ID otherwise we end up adding the temporary IDs
+        // to the mounted array as well as the final ID
+        // Temporary IDs are strings
+        if (typeof message.id === 'number') {
+            dispatch(setMounted(message.id));
+        }
     }, [message.id, dispatch]);
 
     // Only dispatch an update if we need to
