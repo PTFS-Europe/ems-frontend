@@ -10,7 +10,7 @@ import WebSocketClient from '../../classes/WebSocketClient';
 
 import styles from './Ems.module.scss';
 
-const Ems = () => {
+const Ems = ({ hasAuth }) => {
     const dispatch = useDispatch();
 
     // Initialise the websocket connection
@@ -18,7 +18,7 @@ const Ems = () => {
     // class to dispatch actions
     WebSocketClient.connect(dispatch);
 
-    return (
+    return hasAuth ? (
         <div className={styles.emsContainer}>
             <BrowserRouter>
                 <Route exact path="/" component={EnquiriesContainer} />
@@ -27,6 +27,12 @@ const Ems = () => {
                     path="/query/:queryId"
                     component={EnquiriesContainer}
                 />
+                <Route exact path="/login" component={Login} />
+            </BrowserRouter>
+        </div>
+    ) : (
+        <div className={styles.emsContainer}>
+            <BrowserRouter>
                 <Route exact path="/login" component={Login} />
             </BrowserRouter>
         </div>

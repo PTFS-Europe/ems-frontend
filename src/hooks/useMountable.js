@@ -21,11 +21,14 @@ export default () => {
         if (!whitelisted) {
             api.makeRequest('/token')
                 .then((res) => {
-                    console.log(res);
-                    setHasAuth(true);
-                })
-                .then(() => {
-                    setComplete(true);
+                    // If the request for the token has not succeeded, res
+                    // will be undefined. This is due to the response
+                    // interceptor redirecting the user rather than passing
+                    // forward the response
+                    if (res) {
+                        setHasAuth(true);
+                        setComplete(true);
+                    }
                 });
         } else {
             // We can render immediately
