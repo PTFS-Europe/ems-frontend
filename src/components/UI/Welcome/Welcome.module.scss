@@ -1,0 +1,14 @@
+@import '../../../variables.scss';
+
+.welcome {
+    display: flex;
+    background: $message-list-background;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0px 0px 12px 0px;
+    text-align: center;
+    line-height: 55px;
+    font-size: 35px;
+    color: rgba(0,0,0,0.5);
+}
