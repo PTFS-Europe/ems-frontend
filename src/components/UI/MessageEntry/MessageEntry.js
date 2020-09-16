@@ -39,6 +39,13 @@ const MessageEntry = ({
         if (e.key === 'Enter') {
             // Prevent the newline from being added
             e.preventDefault();
+            sendMessage();
+        }
+    };
+
+    // Send the new or edited message
+    const sendMessage = () => {
+        if (stateActiveMessage.text.length > 0) {
             if (stateActiveMessage.id) {
                 dispatchEditAction(resetEntry);
             } else {
@@ -113,7 +120,7 @@ const MessageEntry = ({
                                     ? cssOverrides.entryButton
                                     : styles.entryButton
                             }
-                            onClick={() => dispatchSendAction(resetEntry)}
+                            onClick={sendMessage}
                             disabled={
                                 stateActiveMessage.text.length === 0 ||
                                 stateMessages.loading
@@ -149,7 +156,7 @@ const MessageEntry = ({
                                     ? cssOverrides.entryButton
                                     : styles.entryButton
                             }
-                            onClick={dispatchEditAction}
+                            onClick={sendMessage}
                             disabled={stateActiveMessage.text.length === 0}
                         >
                             <FontAwesomeIcon
