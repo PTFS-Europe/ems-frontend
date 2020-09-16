@@ -181,9 +181,11 @@ const QueryList = ({ match }) => {
                     <h1 className={styles.noQueries}>
                         {t('No queries found')}
                     </h1>
-                    <div className={styles.startNewQuery}>
-                        <StartButton />
-                    </div>
+                    {activeUser.role_code !== 'STAFF' && (
+                        <div className={styles.startNewQuery}>
+                            <StartButton />
+                        </div>
+                    )}
                 </div>
             )}
         </nav>
