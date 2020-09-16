@@ -76,6 +76,26 @@ const MessageList = ({ match }) => {
         dispatch(fetchMessages({ queryId }));
     }, [dispatch, queryId]);
 
+    // Should we display the "Thank you" message
+    const shouldDisplayThanks = () => {
+        if (
+            stateMessages.messageList.length === 0 ||
+            stateUsers.usersList.length === 0 ||
+            !activeUser.id
+        ) {
+            return false;
+        }
+        const lastMessage = stateMessages.messageList[
+            stateMessages.messageList.length - 1
+        ];
+        const sender = stateUsers.usersList.find(
+            (user) => user.id === lastMessage.creator_id
+        );
+        return sender &&
+            sender.id === activeUser.id &&
+            sender.role_code !== 'STAFF';
+    };
+
     if (!stateMessages) {
         return <LoadingSpinner />;
     }
@@ -105,6 +125,9 @@ const MessageList = ({ match }) => {
                             usersList={stateUsers.usersList}
                         ></MessageCollection>
                     ))}
+                {shouldDisplayThanks() && (
+                    <li className={styles.thankYou}>{t('Thank you for your message, one of our staff will reply as soon as possible')}</li>
+                )}
                 <li ref={myRef}></li>
             </ol>
         </section>

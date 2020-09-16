@@ -48,7 +48,8 @@ const resources = {
             'You must filter queries before selecting all':
                 'You must filter queries before selecting all',
             'Query has unread messages': 'Query has {{unread}} unread messages',
-            'Log out': 'Log out'
+            'Log out': 'Log out',
+            'Thank you for your message, one of our staff will reply as soon as possible': 'Thank you for your message, one of our staff will reply as soon as possible'
         }
     }
 };
