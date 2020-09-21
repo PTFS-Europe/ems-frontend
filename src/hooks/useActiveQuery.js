@@ -15,7 +15,9 @@ export default () => {
     const stateActiveQuery = useSelector((state) => state.queries.activeQuery);
     const dispatch = useDispatch();
 
-    useEffect(() => setId(queryId), [queryId]);
+    // Make sure the active query changes when a new query is selected
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => resetActiveQuery(), [queryId]);
 
     useEffect(() => {
         dispatch(updateActiveQuery(id));
@@ -34,5 +36,9 @@ export default () => {
         }
     };
 
-    return [stateActiveQuery, setNewActiveQuery];
+    const resetActiveQuery = () => {
+        setId(queryId);
+    };
+
+    return [stateActiveQuery, setNewActiveQuery, resetActiveQuery];
 };

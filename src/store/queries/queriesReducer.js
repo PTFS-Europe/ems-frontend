@@ -6,7 +6,6 @@ const initialState = {
     queryList: [],
     error: '',
     search: '',
-    preserved: false,
     selected: [],
     activeQuery: null
 };
@@ -21,34 +20,12 @@ const reducer = (state = initialState, action) => {
 
     }
     case queriesTypes.FETCH_QUERIES_SUCCESS: {
-        // If we've received a queryId (the ID of the
-        // active query) we need to keep that query in
-        // our state. This situation can arise if the
-        // user is doing a search whilst an active query
-        // is selected
-        let preserve = false;
         const queryList = action.payload.data;
-        if (action.payload.queryId) {
-            // Ensure we don't add it again if it's already there
-            const found = queryList.find(
-                (returned) =>
-                    returned.id === parseInt(action.payload.queryId)
-            );
-            if (!found) {
-                preserve = state.queryList.find(
-                    (query) => query.id === parseInt(action.payload.queryId)
-                );
-                if (preserve) {
-                    queryList.push(preserve);
-                }
-            }
-        }
         return {
             ...state,
             loading: false,
             queryList,
-            error: '',
-            preserved: preserve ? true : false
+            error: ''
         };
 
     }

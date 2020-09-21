@@ -29,7 +29,7 @@ const QueryList = () => {
 
     const [activeUser] = useActiveUser();
 
-    const [queryId] = useActiveQuery();
+    const [queryId, setActiveQuery, resetActiveQuery] = useActiveQuery();
 
     // The number of characters that must be present before a
     // search will trigger
@@ -92,8 +92,6 @@ const QueryList = () => {
 
     // When the search string changes, or a folder or label is
     // toggled, fetch the queries, debounced
-    // We pass the query ID so the reducer can ultimately keep the
-    // currently active query (if there is one) in the queryList
     useEffect(() => {
         if (myRef.current) {
             let params = {};
@@ -109,15 +107,18 @@ const QueryList = () => {
                 activeSearch.length >= minSearchLength ||
                 activeSearch.length === 0
             ) {
-                if (queryId) {
-                    params.search = { queryId };
-                }
                 if (activeSearch.length > 0) {
                     params.search = {
                         ...params.search,
                         title: activeSearch
                     };
                 }
+            }
+            // If we're getting filtered results
+            if (Object.keys(params).length > 0) {
+                setActiveQuery(null);
+            } else {
+                resetActiveQuery();
             }
             params.showLoading = false;
             debDispatch(fetchQueries(params));
@@ -133,17 +134,9 @@ const QueryList = () => {
     const shouldDisplayNewQuery = () => {
         // If there is an active search or selected folder
         if (isActiveFilter) {
-            // The valid length of queryList varies according to whether
-            // we have an active query or not
-            if (
-                (queryId &&
-                    stateQueries.queryList.length === 1 &&
-                    stateQueries.preserved) ||
-                (!queryId && stateQueries.queryList.length === 0)
-            ) {
+            if (stateQueries.queryList.length === 0) {
                 return true;
             }
-            return false;
         }
         return false;
     };

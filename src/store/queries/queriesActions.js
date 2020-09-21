@@ -52,10 +52,7 @@ export const fetchQueries = ({
             .makeRequest(`queries${appendStr}`, {})
             .then((response) => response.data)
             .then((data) => {
-                // Update our queries state
-                const queryId =
-                    search && search.queryId ? search.queryId : null;
-                dispatch(fetchQueriesSuccess({ data, queryId }));
+                dispatch(fetchQueriesSuccess({ data }));
             })
             .catch((error) => {
                 // Update our error state

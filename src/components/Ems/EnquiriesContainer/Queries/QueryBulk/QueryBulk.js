@@ -47,7 +47,7 @@ const QueryBulk = () => {
                             'You must filter queries before selecting all'
                         )}
                         type="checkbox"
-                        checked={selectAll}
+                        checked={selectAll && stateQueries.queryList.length > 0}
                         onChange={() =>
                             dispatch(setQuerySelectedAll(!selectAll))
                         }
@@ -58,7 +58,7 @@ const QueryBulk = () => {
                 {isActiveFilter && (
                     <input
                         type="checkbox"
-                        checked={selectAll}
+                        checked={selectAll && stateQueries.queryList.length > 0}
                         onChange={() =>
                             dispatch(setQuerySelectedAll(!selectAll))
                         }
