@@ -24,14 +24,6 @@ ul, ol {
     list-style: none;
 }
 
-// react-router-dom styles the a element with an .active class when it
-// is active. We actually want the child li to be styled. So this
-// achieves that
-a.active > li {
-    background: $query-list-query-background-active;
-    transition: background 0.5s;
-}
-
 // The react-tiny-popover should appear above everything else,
 // be rounded, and have a drop shadow
 .react-tiny-popover-container {

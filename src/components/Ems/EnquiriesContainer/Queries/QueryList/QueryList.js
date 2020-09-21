@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -170,9 +170,9 @@ const QueryList = () => {
             <ol role="directory" className={styles.queryList}>
                 {stateQueries.queryList &&
                     stateQueries.queryList.sort(querySorter).map((query) => (
-                        <NavLink key={query.id} to={`/query/${query.id}`}>
+                        <Link key={query.id} to={`/query/${query.id}`}>
                             <Query query={query} />
-                        </NavLink>
+                        </Link>
                     ))}
             </ol>
             {!stateQueries.loading && shouldDisplayNewQuery() && (
