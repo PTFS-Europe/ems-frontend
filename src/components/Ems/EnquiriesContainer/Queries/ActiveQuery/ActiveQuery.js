@@ -1,35 +1,18 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import React from 'react';
 
 import QueryHeader from '../QueryHeader/QueryHeader';
 import NewQuery from '../NewQuery/NewQuery';
 import Welcome from '../../../../UI/Welcome/Welcome';
 import MessageList from '../../MessageList/MessageList';
 import QueryEntry from '../QueryEntry/QueryEntry';
-import { updateActiveQuery } from '../../../../../store/queries/queriesActions';
 import useActiveUser from '../../../../../hooks/useActiveUser';
+import useActiveQuery from '../../../../../hooks/useActiveQuery';
 
 import styles from './ActiveQuery.module.scss';
 
-const ActiveQuery = ({ match }) => {
-    const dispatch = useDispatch();
-
+const ActiveQuery = () => {
     const [activeUser] = useActiveUser();
-
-    const queryId = match.params.queryId;
-
-    // Ensure our state has the active query set
-    useEffect(() => {
-        dispatch(updateActiveQuery(parseInt(queryId)));
-        // When we unmount, reset the state property
-        return () => {
-            dispatch(updateActiveQuery(null));
-        };
-        // We don't want dispatch to be a dependency of this hook
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [queryId]);
+    const [queryId] = useActiveQuery();
 
     // Front page content
     const getFrontPage = () => {
@@ -54,8 +37,4 @@ const ActiveQuery = ({ match }) => {
     );
 };
 
-ActiveQuery.propTypes = {
-    match: PropTypes.object.isRequired
-};
-
-export default withRouter(ActiveQuery);
+export default ActiveQuery;

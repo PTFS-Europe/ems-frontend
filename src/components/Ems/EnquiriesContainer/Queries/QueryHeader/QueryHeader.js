@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import UserIcon from '../../../../UI/UserIcon/UserIcon';
+import useActiveQuery from '../../../../../hooks/useActiveQuery';
 
 import styles from './QueryHeader.module.scss';
 
-const QueryHeader = ({ match }) => {
+const QueryHeader = () => {
     const [query, setQuery] = useState({});
+
+    const [queryId] = useActiveQuery();
 
     // Make the state we need available
     const stateQueries = useSelector((state) => state.queries);
 
-    // The ID of the query currently being viewed
-    const queryId = parseInt(match.params.queryId);
-
     useEffect(() => {
         if (stateQueries) {
             const query = stateQueries.queryList.find(
-                (query) => query.id === queryId
+                (query) => parseInt(query.id) === parseInt(queryId)
             );
             setQuery(query);
         }
@@ -46,8 +44,4 @@ const QueryHeader = ({ match }) => {
     );
 };
 
-QueryHeader.propTypes = {
-    match: PropTypes.object.isRequired
-};
-
-export default withRouter(QueryHeader);
+export default QueryHeader;

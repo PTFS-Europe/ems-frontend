@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,15 +6,18 @@ import { fetchMessages } from '../../../../store/messages/messagesActions';
 import MessageCollection from './MessageCollection/MessageCollection';
 import LoadingSpinner from '../../../UI/LoadingSpinner/LoadingSpinner';
 import useActiveUser from '../../../../hooks/useActiveUser';
+import useActiveQuery from '../../../../hooks/useActiveQuery';
 
 import messageCollections from '../../../../util/messages';
 
 import styles from './MessageList.module.scss';
 
-const MessageList = ({ match }) => {
+const MessageList = () => {
     const { t } = useTranslation();
 
     const [initiator, setInitiator] = useState(0);
+
+    const [queryId] = useActiveQuery();
 
     const myRef = useRef(null);
 
@@ -25,9 +26,6 @@ const MessageList = ({ match }) => {
     const stateQueries = useSelector((state) => state.queries);
     const stateUnseen = useSelector((state) => state.unseen);
     const [activeUser] = useActiveUser();
-
-    // The ID of the query currently being viewed
-    const queryId = parseInt(match.params.queryId);
 
     // We grab the usersList here and pass it down to MessageCollection
     // because otherwise every instance of MessageCollection will be
@@ -134,8 +132,4 @@ const MessageList = ({ match }) => {
     );
 };
 
-MessageList.propTypes = {
-    match: PropTypes.object.isRequired
-};
-
-export default withRouter(MessageList);
+export default MessageList;

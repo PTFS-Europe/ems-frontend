@@ -1,6 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,10 +11,11 @@ import LoadingSpinner from '../../../../UI/LoadingSpinner/LoadingSpinner';
 import StartButton from '../../../../UI/StartNewQuery/StartButton';
 import useFilters from '../../../../../hooks/useFilters';
 import useActiveUser from '../../../../../hooks/useActiveUser';
+import useActiveQuery from '../../../../../hooks/useActiveQuery';
 
 import styles from './QueryList.module.scss';
 
-const QueryList = ({ match }) => {
+const QueryList = () => {
     const { t } = useTranslation();
 
     // Enable us to check on the status of the various filters which
@@ -29,6 +28,8 @@ const QueryList = ({ match }) => {
     } = useFilters();
 
     const [activeUser] = useActiveUser();
+
+    const [queryId] = useActiveQuery();
 
     // The number of characters that must be present before a
     // search will trigger
@@ -45,8 +46,6 @@ const QueryList = ({ match }) => {
     // be). So the debouncer didn't recognise it as multiple calls to the
     // same function
     const debouncedDispatchRef = useRef();
-
-    const queryId = match.params.queryId;
 
     const queryListContainerStyle =
         activeUser.role_code === 'STAFF'
@@ -192,8 +191,4 @@ const QueryList = ({ match }) => {
     );
 };
 
-QueryList.propTypes = {
-    match: PropTypes.object.isRequired
-};
-
-export default withRouter(QueryList);
+export default QueryList;
