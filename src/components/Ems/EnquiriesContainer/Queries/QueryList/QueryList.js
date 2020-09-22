@@ -97,6 +97,7 @@ const QueryList = () => {
         if (stateQueries.queryList.length > 0) {
             dispatch(updateActiveQuery(queryId));
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [stateQueries.queryList, queryId]);
 
     // When the search string changes, or a folder or label is

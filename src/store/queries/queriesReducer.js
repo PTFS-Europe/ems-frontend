@@ -227,13 +227,14 @@ const reducer = (state = initialState, action) => {
         if (state.queryList.length > 0) {
             const activeQuery = state.queryList.find((query) =>
                 parseInt(query.id) === parseInt(action.payload));
-            return {
-                ...state,
-                activeQuery
-            };
-        } else {
-            return state;
+            if (activeQuery) {
+                return {
+                    ...state,
+                    activeQuery
+                };
+            }
         }
+        return state;
     }
     default:
         return state;

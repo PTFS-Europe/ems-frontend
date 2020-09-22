@@ -13,10 +13,7 @@ const QueryHeader = () => {
 
     useEffect(() => {
         if (stateQueries && stateQueries.activeQuery) {
-            const query = stateQueries.queryList.find(
-                (query) => parseInt(query.id) === parseInt(stateQueries.activeQuery.id)
-            );
-            setQuery(query);
+            setQuery(stateQueries.activeQuery);
         }
     }, [stateQueries, stateQueries.activeQuery]);
 
