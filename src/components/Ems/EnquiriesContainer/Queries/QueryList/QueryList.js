@@ -29,6 +29,7 @@ const QueryList = () => {
 
     const [activeUser] = useActiveUser();
 
+    // eslint-disable-next-line no-unused-vars
     const [queryId, setActiveQuery, resetActiveQuery] = useActiveQuery();
 
     // The number of characters that must be present before a

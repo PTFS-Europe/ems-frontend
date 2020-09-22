@@ -46,7 +46,7 @@ const MessageList = () => {
     useEffect(() => {
         if (stateQueries) {
             const query = stateQueries.queryList.find(
-                (query) => query.id === queryId
+                (query) => parseInt(query.id) === parseInt(queryId)
             );
             if (query) {
                 setInitiator(query.initiator);
