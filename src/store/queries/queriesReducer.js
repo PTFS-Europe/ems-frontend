@@ -7,7 +7,7 @@ const initialState = {
     error: '',
     search: '',
     selected: [],
-    activeQuery: null
+    activeQuery: {}
 };
 
 const reducer = (state = initialState, action) => {
@@ -224,10 +224,16 @@ const reducer = (state = initialState, action) => {
         };
     }
     case queriesTypes.UPDATE_ACTIVE_QUERY: {
-        return {
-            ...state,
-            activeQuery: action.payload
-        };
+        if (state.queryList.length > 0) {
+            const activeQuery = state.queryList.find((query) =>
+                parseInt(query.id) === parseInt(action.payload));
+            return {
+                ...state,
+                activeQuery
+            };
+        } else {
+            return state;
+        }
     }
     default:
         return state;

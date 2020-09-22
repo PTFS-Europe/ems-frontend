@@ -2,26 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import UserIcon from '../../../../UI/UserIcon/UserIcon';
-import useActiveQuery from '../../../../../hooks/useActiveQuery';
 
 import styles from './QueryHeader.module.scss';
 
 const QueryHeader = () => {
     const [query, setQuery] = useState({});
 
-    const [queryId] = useActiveQuery();
-
     // Make the state we need available
     const stateQueries = useSelector((state) => state.queries);
 
     useEffect(() => {
-        if (stateQueries) {
+        if (stateQueries && stateQueries.activeQuery) {
             const query = stateQueries.queryList.find(
-                (query) => parseInt(query.id) === parseInt(queryId)
+                (query) => parseInt(query.id) === parseInt(stateQueries.activeQuery.id)
             );
             setQuery(query);
         }
-    }, [stateQueries, queryId]);
+    }, [stateQueries, stateQueries.activeQuery]);
 
     return (
         <div role="banner" className={styles.queryHeader}>

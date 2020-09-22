@@ -6,7 +6,6 @@ import { fetchMessages } from '../../../../store/messages/messagesActions';
 import MessageCollection from './MessageCollection/MessageCollection';
 import LoadingSpinner from '../../../UI/LoadingSpinner/LoadingSpinner';
 import useActiveUser from '../../../../hooks/useActiveUser';
-import useActiveQuery from '../../../../hooks/useActiveQuery';
 
 import messageCollections from '../../../../util/messages';
 
@@ -16,8 +15,6 @@ const MessageList = () => {
     const { t } = useTranslation();
 
     const [initiator, setInitiator] = useState(0);
-
-    const [queryId] = useActiveQuery();
 
     const myRef = useRef(null);
 
@@ -44,15 +41,15 @@ const MessageList = () => {
 
     // Determine this query's initiator
     useEffect(() => {
-        if (stateQueries) {
+        if (stateQueries && stateQueries.activeQuery) {
             const query = stateQueries.queryList.find(
-                (query) => parseInt(query.id) === parseInt(queryId)
+                (query) => parseInt(query.id) === parseInt(stateQueries.activeQuery.id)
             );
             if (query) {
                 setInitiator(query.initiator);
             }
         }
-    }, [stateQueries, queryId]);
+    }, [stateQueries, stateQueries.activeQuery]);
 
     // When the messageList changes (e.g. a new message comes in)
     // scroll to the bottom of the messages if appropriate
@@ -71,8 +68,10 @@ const MessageList = () => {
 
     // When we're mounted, fetch the messages
     useEffect(() => {
-        dispatch(fetchMessages({ queryId }));
-    }, [dispatch, queryId]);
+        if (stateQueries.activeQuery) {
+            dispatch(fetchMessages({ queryId: stateQueries.activeQuery.id }));
+        }
+    }, [dispatch, stateQueries.activeQuery]);
 
     // Should we display the "Thank you" message
     const shouldDisplayThanks = () => {

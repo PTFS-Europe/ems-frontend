@@ -5,7 +5,6 @@ import Truncate from 'react-truncate';
 import { useSelector, useDispatch } from 'react-redux';
 
 import useActiveUser from '../../../../../../hooks/useActiveUser';
-import useActiveQuery from '../../../../../../hooks/useActiveQuery';
 import { setQuerySelected } from '../../../../../../store/queries/queriesActions';
 import UserIcon from '../../../../../UI/UserIcon/UserIcon';
 import QueryActionButton from '../../../../../UI/QueryActionButton/QueryActionButton';
@@ -16,9 +15,9 @@ import styles from './Query.module.scss';
 const Query = ({ query }) => {
     const [selected, setSelected] = useState(false);
     const [activeUser] = useActiveUser();
-    const [activeQuery] = useActiveQuery();
 
-    const stateSelected = useSelector((state) => state.queries.selected);
+    const stateQueries = useSelector((state) => state.queries);
+    const stateSelected = stateQueries.selected;
     const stateUnseen = useSelector((state) => state.unseen);
     const dispatch = useDispatch();
 
@@ -27,7 +26,11 @@ const Query = ({ query }) => {
         stateSelected
     ]);
 
-    const isActive = parseInt(query.id) === parseInt(activeQuery) ? styles.active : '';
+    const isActive =
+        stateQueries.activeQuery &&
+        (parseInt(query.id) === parseInt(stateQueries.activeQuery.id)) ?
+            styles.active :
+            '';
     const isPending = query.pending ? styles.semiTrans : '';
     const isDeleted = query.folder === 'COMPLETE' ? styles.semiTrans : '';
     const updatedAt = () => {

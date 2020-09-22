@@ -1,17 +1,19 @@
 import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { debounce } from '../../../../../util/ui';
-import { fetchQueries } from '../../../../../store/queries/queriesActions';
+import {
+    fetchQueries,
+    updateActiveQuery
+} from '../../../../../store/queries/queriesActions';
 import { fetchUsers } from '../../../../../store/users/usersActions';
 import Query from './Query/Query';
 import LoadingSpinner from '../../../../UI/LoadingSpinner/LoadingSpinner';
 import StartButton from '../../../../UI/StartNewQuery/StartButton';
 import useFilters from '../../../../../hooks/useFilters';
 import useActiveUser from '../../../../../hooks/useActiveUser';
-import useActiveQuery from '../../../../../hooks/useActiveQuery';
 
 import styles from './QueryList.module.scss';
 
@@ -29,8 +31,7 @@ const QueryList = () => {
 
     const [activeUser] = useActiveUser();
 
-    // eslint-disable-next-line no-unused-vars
-    const [queryId, setActiveQuery, resetActiveQuery] = useActiveQuery();
+    const { queryId } = useParams();
 
     // The number of characters that must be present before a
     // search will trigger
@@ -91,6 +92,13 @@ const QueryList = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
 
+    // When we have all the queries, set the active query
+    useEffect(() => {
+        if (stateQueries.queryList.length > 0) {
+            dispatch(updateActiveQuery(queryId));
+        }
+    }, [stateQueries.queryList, queryId]);
+
     // When the search string changes, or a folder or label is
     // toggled, fetch the queries, debounced
     useEffect(() => {
@@ -114,12 +122,6 @@ const QueryList = () => {
                         title: activeSearch
                     };
                 }
-            }
-            // If we're getting filtered results
-            if (Object.keys(params).length > 0) {
-                setActiveQuery(null);
-            } else {
-                resetActiveQuery();
             }
             params.showLoading = false;
             debDispatch(fetchQueries(params));

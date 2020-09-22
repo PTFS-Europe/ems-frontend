@@ -361,7 +361,7 @@ export const receiveUploadedFiles = (files) => {
 export const dispatchIfActiveQuery = (action, id) => {
     return (dispatch, getState) => {
         const activeQuery = getState().queries.activeQuery;
-        if (id === activeQuery) {
+        if (id === activeQuery.id) {
             dispatch(action());
         }
     };
