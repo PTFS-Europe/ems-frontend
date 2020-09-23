@@ -1,9 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import {
+    setQuerySearch,
+    updateActiveQuery
+} from '../../../store/queries/queriesActions';
 import styles from './StartButton.module.scss';
 
 const StartButton = () => {
@@ -11,8 +16,12 @@ const StartButton = () => {
 
     const history = useHistory();
 
+    const dispatch = useDispatch();
+
     // Initiate query creation
     const startNewQuery = () => {
+        dispatch(setQuerySearch(''));
+        dispatch(updateActiveQuery());
         history.push('/');
     };
     return (

@@ -5,7 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setQuerySearch } from '../../../../../store/queries/queriesActions';
+import {
+    setQuerySearch,
+    updateActiveQuery
+} from '../../../../../store/queries/queriesActions';
 import styles from './QuerySearch.module.scss';
 
 const QuerySearch = ({ placeholder, showAdd }) => {
@@ -18,6 +21,8 @@ const QuerySearch = ({ placeholder, showAdd }) => {
 
     // Initiate query creation
     const startNewQuery = () => {
+        dispatch(setQuerySearch(''));
+        dispatch(updateActiveQuery());
         history.push('/');
     };
 
