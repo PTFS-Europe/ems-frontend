@@ -224,6 +224,12 @@ const reducer = (state = initialState, action) => {
         };
     }
     case queriesTypes.UPDATE_ACTIVE_QUERY: {
+        if (!action.payload) {
+            return {
+                ...state,
+                activeQuery: {}
+            };
+        }
         if (state.queryList.length > 0) {
             const activeQuery = state.queryList.find((query) =>
                 parseInt(query.id) === parseInt(action.payload));
