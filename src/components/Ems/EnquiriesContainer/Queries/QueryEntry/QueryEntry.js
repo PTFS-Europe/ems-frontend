@@ -24,7 +24,7 @@ const QueryEntry = () => {
         // before sending the request
         dispatch(
             sendMessage({
-                queryId: stateQueries.activeQuery,
+                queryId: stateQueries.activeQuery.id,
                 message: stateActiveMessage.text
             })
         ).then((data) => {
@@ -60,7 +60,7 @@ const QueryEntry = () => {
     };
 
     const dispatchUpload = (event) => {
-        dispatch(uploadFile(event.target.files, stateQueries.activeQuery));
+        dispatch(uploadFile(event.target.files, stateQueries.activeQuery.id));
     };
 
     return (

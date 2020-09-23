@@ -50,14 +50,14 @@ export default (message) => {
             inView &&
             // Has mostRecentSeen been properly populated
             Object.prototype.hasOwnProperty.call(
-                mostRecentSeen, activeQuery
+                mostRecentSeen, activeQuery.id
             ) &&
             // Are we more recent
-            message.id > mostRecentSeen[activeQuery]
+            message.id > mostRecentSeen[activeQuery.id]
         ) {
             dispatch(
                 updateMostRecentSeen({
-                    queryId: activeQuery,
+                    queryId: activeQuery.id,
                     messageId: message.id
                 })
             );

@@ -49,7 +49,7 @@ const MessageList = () => {
                 setInitiator(query.initiator);
             }
         }
-    }, [stateQueries, stateQueries.activeQuery]);
+    }, [stateQueries, stateQueries.activeQuery.id]);
 
     // When the messageList changes (e.g. a new message comes in)
     // scroll to the bottom of the messages if appropriate
@@ -71,7 +71,8 @@ const MessageList = () => {
         if (stateQueries.activeQuery) {
             dispatch(fetchMessages({ queryId: stateQueries.activeQuery.id }));
         }
-    }, [dispatch, stateQueries.activeQuery]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch, stateQueries.activeQuery.id]);
 
     // Should we display the "Thank you" message
     const shouldDisplayThanks = () => {

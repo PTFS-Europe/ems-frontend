@@ -15,7 +15,7 @@ const QueryHeader = () => {
         if (stateQueries && stateQueries.activeQuery) {
             setQuery(stateQueries.activeQuery);
         }
-    }, [stateQueries, stateQueries.activeQuery]);
+    }, [stateQueries, stateQueries.activeQuery.id]);
 
     return (
         <div role="banner" className={styles.queryHeader}>
