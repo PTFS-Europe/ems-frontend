@@ -1,42 +1,67 @@
-.collectionLeft {
+.collection {
     display: flex;
     padding: 10px 0;
-    flex-direction: row;
 }
 
+.collection-left {
+    justify-content: flex-start;
+}
 
-.collectionRight {
-    display: flex;
-    padding: 10px 0;
-    flex-direction: row-reverse;
-    text-align: right;
+.collection-right {
+    justify-content: flex-end;
 }
 
 .collectionContent {
     display: flex;
     flex-direction: column;
+}
+
+.collectionContent-left {
     margin-left: 15px;
 }
 
-.collectionRight .collectionContent {
+.collectionContent-right {
     margin-right: 15px;
 }
 
 h1.creator {
     font-size: 14px;
-    margin: 0 0 10px 0;
     font-weight: bold;
+    margin: 0 0 10px 0;
+}
+
+.creator-left {
+    text-align: left;
+}
+
+.creator-right {
+    text-align: right;
 }
 
 ol.messages {
     display: flex;
     padding: 0;
     flex-direction: column;
+}
+
+.messages-left {
     align-items: flex-start;
+}
+
+.messages-right {
+    align-items: flex-end;
 }
 
 .timestamp {
     margin-top: 10px;
     color: #aaa;
     font-size: 12px;
+}
+
+.timestamp-left {
+    text-align: left;
+}
+
+.timestamp-right {
+    text-align: right;
 }

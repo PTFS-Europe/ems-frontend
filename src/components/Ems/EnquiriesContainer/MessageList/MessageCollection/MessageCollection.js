@@ -29,14 +29,10 @@ const MessageCollection = ({
                     isSender: cSender === activeUser.id,
                     displayName:
                         cSender === activeUser.id ? t('You') : senderObj.name,
-                    css:
+                    position:
                         cSender === initiator
-                            ? 'collectionLeft'
-                            : 'collectionRight',
-                    messageCss:
-                        cSender === initiator
-                            ? 'messageStaff'
-                            : 'messageCustomer'
+                            ? 'left'
+                            : 'right'
                 });
             }
         }
@@ -50,30 +46,47 @@ const MessageCollection = ({
     if (!Object.prototype.hasOwnProperty.call(display, 'isSender')) {
         return null;
     }
+    
+    // Return appropriate styles for a given thing
+    // according to their position
+    const getPositionStyle = (type) => [
+        styles[type],
+        styles[`${type}-${display.position}`]
+    ].join(' ');
+
+
+    const collectionContent = (
+        <div className={getPositionStyle('collectionContent')}>
+            <h1 className={getPositionStyle('creator')}>{display.displayName}</h1>
+            <ol className={getPositionStyle('messages')}>
+                {collection.messages.map((message) => (
+                    <Message
+                        isSender={display.isSender}
+                        position={display.position}
+                        key={message.id}
+                        message={message}
+                    />
+                ))}
+            </ol>
+            <div
+                data-testid="message-timestamp"
+                className={getPositionStyle('timestamp')}
+            >
+                {moment(collection.timestamp).fromNow()}
+            </div>
+        </div>
+    );
 
     // Return the align-items property for a given collection
-    return (
-        <div role="group" className={styles[display.css]}>
+    return display.position === 'left' ? (
+        <div role="group" className={getPositionStyle('collection')}>
             <UserIcon userId={collection.sender} />
-            <div className={styles.collectionContent}>
-                <h1 className={styles.creator}>{display.displayName}</h1>
-                <ol className={styles.messages}>
-                    {collection.messages.map((message) => (
-                        <Message
-                            isSender={display.isSender}
-                            css={display.messageCss}
-                            key={message.id}
-                            message={message}
-                        />
-                    ))}
-                </ol>
-                <div
-                    data-testid="message-timestamp"
-                    className={styles.timestamp}
-                >
-                    {moment(collection.timestamp).fromNow()}
-                </div>
-            </div>
+            {collectionContent}
+        </div>
+    ) : (
+        <div role="group" className={getPositionStyle('collection')}>
+            {collectionContent}
+            <UserIcon userId={collection.sender} />
         </div>
     );
 };

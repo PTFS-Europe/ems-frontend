@@ -17,21 +17,36 @@
 }
 
 .message > div.actionContainer {
+    width: 0;
     opacity: 0;
-    margin-left: 15px;
-    transition: opacity 0.5s;
 }
 
 .message:hover > div.actionContainer {
+    width: auto;
     opacity: 1;
+}
+
+.actionContainer-left {
+    margin-left: 15px;
+}
+
+.actionContainer-right {
+    margin-right: 15px;
 }
 
 .message .messageText {
     display: flex;
     align-items: center;
-    border-radius: 4px 20px 20px 4px;
     padding: 10px 15px;
     font-size: 14px;
+}
+
+.messageText-left {
+    border-radius: 4px 20px 20px 4px;
+}
+
+.messageText-right {
+    border-radius: 20px 4px 4px 20px;
 }
 
 .edited {
@@ -46,6 +61,7 @@
 }
 
 .messageStaff .messageText {
+    background: $message-staff-background;
     color: $message-staff-text;
     a:link,
     a:visited,
@@ -55,11 +71,8 @@
     }
 }
 
-.messageStaff .messageText {
-    background: $message-staff-background;
-}
-
 .messageCustomer .messageText {
+    background: $message-customer-background;
     color: $message-customer-text;
     a:link,
     a:visited,
@@ -69,19 +82,27 @@
     }
 }
 
-.messageCustomer .messageText {
-    background: $message-customer-background;
-}
-
-.message:first-child .messageText {
+.message:first-child .messageText-left {
     border-radius: 20px 20px 20px 4px;
 }
 
-.message:last-child .messageText {
+.message:last-child .messageText-left {
     border-radius: 4px 20px 20px 20px;
 }
 
-.message:only-child .messageText {
+.message:only-child .messageText-left {
+    border-radius: 20px 20px 20px 20px;
+}
+
+.message:first-child .messageText-right {
+    border-radius: 20px 20px 4px 20px;
+}
+
+.message:last-child .messageText-right {
+    border-radius: 20px 4px 20px 20px;
+}
+
+.message:only-child .messageText-right {
     border-radius: 20px 20px 20px 20px;
 }
 

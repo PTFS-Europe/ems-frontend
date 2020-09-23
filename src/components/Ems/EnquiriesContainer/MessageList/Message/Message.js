@@ -17,7 +17,7 @@ import useMostRecentSeen from '../../../../../hooks/useMostRecentSeen';
 
 import styles from './Message.module.scss';
 
-const Message = ({ message, css, isSender }) => {
+const Message = ({ message, isSender, position }) => {
     const { t } = useTranslation();
 
     const [ref] = useMostRecentSeen(message);
@@ -25,7 +25,8 @@ const Message = ({ message, css, isSender }) => {
     const dispatch = useDispatch();
 
     // Compile the list of styles this message needs
-    const stylesList = [styles.message, styles[css]];
+    const stylesList = [styles.message];
+    stylesList.push(position === 'left' ? styles.messageStaff : styles.messageCustomer);
     if (message.pending) {
         stylesList.push(styles.pending);
     }
@@ -58,6 +59,20 @@ const Message = ({ message, css, isSender }) => {
         return actions;
     };
 
+    const getMessageTextStyle = () => {
+        return [
+            styles.messageText,
+            styles[`messageText-${position}`]
+        ].join(' ');
+    };
+
+    const getActionContainerStyle = () => {
+        return [
+            styles.actionContainer,
+            styles[`actionContainer-${position}`]
+        ].join(' ');
+    };
+
     // Determine what we should display for this message
     const messageDisplay = () => {
         if (message.content) {
@@ -85,31 +100,44 @@ const Message = ({ message, css, isSender }) => {
         }
     };
 
-    return (
-        <li ref={ref} className={finalStyles}>
-            <div className={styles.messageText}>
-                <div>
-                    {/* ^^^ Do not remove this div, it preserves the
+    const messageText = (
+        <div className={getMessageTextStyle()}>
+            <div>
+                {/* ^^^ Do not remove this div, it preserves the
                     vertical-ness of the text & "edited" */}
-                    {messageDisplay()}
-                    {message.created_at !== message.updated_at && (
-                        <div className={styles.edited}>(edited)</div>
-                    )}
-                </div>
+                {messageDisplay()}
+                {message.created_at !== message.updated_at && (
+                    <div className={styles.edited}>(edited)</div>
+                )}
             </div>
-            {isSender && (
-                <div className={styles.actionContainer}>
-                    <MessageActions actions={validActions()} />
-                </div>
-            )}
+        </div>
+    );
+
+    const actionButtons = () =>
+        isSender ? (
+            <div className={getActionContainerStyle()}>
+                <MessageActions actions={validActions()} />
+            </div>
+        ) : null;
+
+    return position === 'left' ? (
+        <li ref={ref} className={finalStyles}>
+            {messageText}
+            {actionButtons()}
         </li>
+    ) : (
+        <li ref={ref} className={finalStyles}>
+            {actionButtons()}
+            {messageText}
+        </li>
+            
     );
 };
 
 Message.propTypes = {
-    css: PropTypes.string,
     message: PropTypes.object.isRequired,
-    isSender: PropTypes.bool.isRequired
+    isSender: PropTypes.bool.isRequired,
+    position: PropTypes.string.isRequired
 };
 
 export default Message;
