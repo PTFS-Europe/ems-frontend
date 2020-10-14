@@ -76,26 +76,6 @@ const QueryActionButton = ({ query }) => {
                     </span>
                 </button>
             )}
-            {query.folder && (
-                <button
-                    onClick={() =>
-                        dispatch(
-                            updateQueryBulk([
-                                {
-                                    id: query.id,
-                                    folder: null
-                                }
-                            ])
-                        )
-                    }
-                    className={`${styles.actionButton} ${styles.remove}`}
-                >
-                    <FontAwesomeIcon
-                        alt={t('Remove from folder')}
-                        icon={'times'}
-                    />
-                </button>
-            )}
             {stateFolders &&
                 stateFolders.folderList
                     .filter((f) => f.code !== query.folder)
@@ -121,6 +101,26 @@ const QueryActionButton = ({ query }) => {
                             />
                         </button>
                     ))}
+            {query.folder && (
+                <button
+                    onClick={() =>
+                        dispatch(
+                            updateQueryBulk([
+                                {
+                                    id: query.id,
+                                    folder: null
+                                }
+                            ])
+                        )
+                    }
+                    className={`${styles.actionButton} ${styles.remove}`}
+                >
+                    <FontAwesomeIcon
+                        alt={t('Remove from folder')}
+                        icon={'times'}
+                    />
+                </button>
+            )}
         </div>
     );
 };
