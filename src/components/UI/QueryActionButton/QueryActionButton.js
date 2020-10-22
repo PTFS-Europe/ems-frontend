@@ -5,11 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import useActiveUser from '../../../hooks/useActiveUser';
 import { updateQueryBulk } from '../../../store/queries/queriesActions';
 import styles from './QueryActionButton.module.scss';
 
 const QueryActionButton = ({ query }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation(); 
+
+    const [activeUser] = useActiveUser();
 
     const dispatch = useDispatch();
 
@@ -105,7 +108,7 @@ const QueryActionButton = ({ query }) => {
                             />
                         </button>
                     ))}
-            {query.folder && (
+            {activeUser.role_code === 'STAFF' && query.folder && (
                 <button
                     aria-label={t('Remove from folder')}
                     onClick={() =>
