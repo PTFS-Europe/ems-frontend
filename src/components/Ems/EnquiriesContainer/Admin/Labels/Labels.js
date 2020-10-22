@@ -68,6 +68,7 @@ const Labels = () => {
             <div className={styles.headingContainer}>
                 <h1 className={styles.heading}>{t('Labels')}</h1>
                 <button
+                    aria-label={editing ? t('Finish editing') : t('Edit labels')}
                     onClick={toggleEditing}
                     className={styles.editButton}
                     type="button"

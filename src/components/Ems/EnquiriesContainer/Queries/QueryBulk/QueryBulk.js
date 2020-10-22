@@ -42,34 +42,47 @@ const QueryBulk = () => {
         <>
             <div className={styles.checkboxContainer}>
                 {!isActiveFilter && (
-                    <input
-                        title={t(
-                            'You must filter queries before selecting all'
-                        )}
-                        type="checkbox"
-                        checked={selectAll && stateQueries.queryList.length > 0}
-                        onChange={() =>
-                            dispatch(setQuerySelectedAll(!selectAll))
-                        }
-                        disabled={true}
-                        className={styles.checkbox}
-                    />
+                    <>
+                        <label htmlFor="filterCheckbox" className="hiddenLabel">
+                            {t('You must filter queries before selecting all')}
+                        </label>
+                        <input
+                            id="filterCheckbox"
+                            title={t(
+                                'You must filter queries before selecting all'
+                            )}
+                            type="checkbox"
+                            checked={selectAll && stateQueries.queryList.length > 0}
+                            onChange={() =>
+                                dispatch(setQuerySelectedAll(!selectAll))
+                            }
+                            disabled={true}
+                            className={styles.checkbox}
+                        />
+                    </>
                 )}
                 {isActiveFilter && (
-                    <input
-                        type="checkbox"
-                        checked={selectAll && stateQueries.queryList.length > 0}
-                        onChange={() =>
-                            dispatch(setQuerySelectedAll(!selectAll))
-                        }
-                        disabled={false}
-                        className={styles.checkbox}
-                    />
+                    <>
+                        <label htmlFor="filterCheckbox" className="hiddenLabel">
+                            {t('Checkbox')}
+                        </label>
+                        <input
+                            id="filterCheckbox"
+                            type="checkbox"
+                            checked={selectAll && stateQueries.queryList.length > 0}
+                            onChange={() =>
+                                dispatch(setQuerySelectedAll(!selectAll))
+                            }
+                            disabled={false}
+                            className={styles.checkbox}
+                        />
+                    </>
                 )}
             </div>
             <div className={styles.divider} />
             <div className={styles.bulkActions}>
                 <button
+                    aria-label={t('Move to bin')}
                     disabled={stateQueries.selected.length === 0}
                     onClick={() => moveSelectedToFolder('BIN')}
                     type="button"

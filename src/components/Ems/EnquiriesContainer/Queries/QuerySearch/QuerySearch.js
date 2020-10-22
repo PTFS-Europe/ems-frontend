@@ -31,7 +31,11 @@ const QuerySearch = ({ placeholder, showAdd }) => {
             <div data-testid="query-search-icon" className={styles.searchIcon}>
                 <FontAwesomeIcon alt={t('Search icon')} icon="search" />
             </div>
+            <label htmlFor="searchInput" className="hiddenLabel">
+                {placeholder}
+            </label>
             <input
+                id="searchInput"
                 type="text"
                 value={search}
                 onChange={(e) =>
@@ -42,6 +46,7 @@ const QuerySearch = ({ placeholder, showAdd }) => {
             ></input>
             {showAdd && (
                 <button
+                    aria-label={t('Start a new query')}
                     onClick={startNewQuery}
                     type="button"
                     className={styles.newQueryButton}

@@ -45,6 +45,7 @@ const Folder = ({ folder, stateFolders }) => {
                 />
             </div>
             <button
+                aria-label={t(`folderName_${folder.code}`)}
                 onClick={() => setFilter(folder.code)}
                 className={styles.folderName}
             >

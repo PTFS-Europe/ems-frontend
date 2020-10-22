@@ -59,7 +59,9 @@ const QueryActionButton = ({ query }) => {
     return (
         <div className={styles.container} role="group">
             {currentState.icon && (
-                <button className={currentState.class.join(' ')}>
+                <button
+                    aria-label={currentState.alt}
+                    className={currentState.class.join(' ')}>
                     <FontAwesomeIcon
                         alt={currentState.alt}
                         icon={currentState.icon}
@@ -68,6 +70,7 @@ const QueryActionButton = ({ query }) => {
             )}
             {!currentState.icon && (
                 <button
+                    aria-label={currentState.alt}
                     alt={currentState.alt}
                     className={currentState.class.join(' ')}
                 >
@@ -81,6 +84,7 @@ const QueryActionButton = ({ query }) => {
                     .filter((f) => f.code !== query.folder)
                     .map((folder) => (
                         <button
+                            aria-label={folder.name}
                             onClick={() =>
                                 dispatch(
                                     updateQueryBulk([
@@ -103,6 +107,7 @@ const QueryActionButton = ({ query }) => {
                     ))}
             {query.folder && (
                 <button
+                    aria-label={t('Remove from folder')}
                     onClick={() =>
                         dispatch(
                             updateQueryBulk([

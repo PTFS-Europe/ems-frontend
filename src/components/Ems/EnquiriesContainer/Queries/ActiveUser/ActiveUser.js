@@ -54,6 +54,7 @@ const ActiveUser = ({ colour = '#fff' }) => {
                     {activeUser.name}
                 </h1>
                 <button
+                    aria-label={t('Log out')}
                     onClick={logoutUser}
                     className={
                         activeUser.role_code === 'STAFF'
@@ -73,6 +74,7 @@ const ActiveUser = ({ colour = '#fff' }) => {
                     </h1>
                 </div>
                 <button
+                    aria-label={t('Log out')}
                     onClick={logoutUser}
                     className={
                         activeUser.role_code === 'STAFF'

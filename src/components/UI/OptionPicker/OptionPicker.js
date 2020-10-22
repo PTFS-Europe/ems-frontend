@@ -9,6 +9,7 @@ const Option = ({ option, isSelected, onChoose }) => {
     const optionIsSelected = isSelected ? styles.selected : '';
     return (
         <button
+            aria-label={option.label}
             onClick={(e) => onChoose(e, option.id)}
             className={`${styles.option} ${optionIsSelected}`}
         >
@@ -92,6 +93,7 @@ const OptionPicker = ({
             onClickOutside={() => setOpen(false)}
         >
             <button
+                aria-label={button.label}
                 onClick={handleOpen}
                 className={`${styles.button} ${buttonAdditionalStyles}`}
             >

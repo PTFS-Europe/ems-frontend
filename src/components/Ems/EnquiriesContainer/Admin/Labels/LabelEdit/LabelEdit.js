@@ -117,6 +117,7 @@ const LabelEdit = ({
                 onCancel={() => setConfirmOpen(false)}
             >
                 <button
+                    aria-label={label.name}
                     type="button"
                     onClick={() => setConfirmOpen(true)}
                     className={`${styles.deleteButton} ${canDelete}`}
@@ -137,6 +138,7 @@ const LabelEdit = ({
                 }
             >
                 <button
+                    aria-label={label.name}
                     onClick={() =>
                         setActiveColourPicker(
                             // We reset to -1 since using null causes it to fail
@@ -152,7 +154,13 @@ const LabelEdit = ({
                     <FontAwesomeIcon alt={label.name} icon={'tag'} />
                 </button>
             </Popover>
+            <label
+                htmlFor={`labelEntry_${label.id || 'new'}`}
+                className="hiddenLabel">
+                {t('New label')}
+            </label>
             <input
+                id={`labelEntry_${label.id || 'new'}`}
                 placeholder={t('New label')}
                 value={labelName}
                 onChange={(e) => setLabelName(e.target.value)}

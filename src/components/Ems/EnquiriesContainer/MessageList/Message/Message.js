@@ -84,9 +84,9 @@ const Message = ({ message, isSender, position }) => {
                     {message.uploading && <LoadingSpinner colour={'#fff'} />}
                     {!message.uploading && (
                         <div className={styles.fileIcon}>
-                            <a href={filePath}>
+                            <a aria-label={t('Download') + ` ${message.filename}`} href={filePath}>
                                 <FontAwesomeIcon
-                                    alt={'Download'}
+                                    alt={t('Download') + ` ${message.filename}`}
                                     icon={'download'}
                                 />
                             </a>

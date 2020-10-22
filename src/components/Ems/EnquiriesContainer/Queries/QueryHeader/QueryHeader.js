@@ -18,7 +18,7 @@ const QueryHeader = () => {
     }, [stateQueries, stateQueries.activeQuery.id]);
 
     return (
-        <div role="banner" className={styles.queryHeader}>
+        <div className={styles.queryHeader}>
             {query && (
                 <React.Fragment>
                     {query &&

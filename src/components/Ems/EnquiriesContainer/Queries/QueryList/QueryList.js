@@ -164,14 +164,16 @@ const QueryList = () => {
     return (
         <nav className={queryListContainerStyle}>
             {stateQueries.loading && <LoadingSpinner />}
-            <ol role="directory" className={styles.queryList}>
+            <div role="tree" className={styles.queryList}>
                 {stateQueries.queryList &&
                     stateQueries.queryList.sort(querySorter).map((query) => (
-                        <Link key={query.id} to={`/query/${query.id}`}>
-                            <Query query={query} />
-                        </Link>
+                        <div role="treeitem" key={query.id}>
+                            <Link to={`/query/${query.id}`}>
+                                <Query query={query} />
+                            </Link>
+                        </div>
                     ))}
-            </ol>
+            </div>
             {!stateQueries.loading && shouldDisplayNewQuery() && (
                 <div className={styles.noResultsContainer}>
                     <h1 className={styles.noQueries}>

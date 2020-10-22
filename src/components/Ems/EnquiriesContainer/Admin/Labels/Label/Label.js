@@ -34,7 +34,11 @@ const Label = ({ label, stateLabels }) => {
             <div style={{ color: label.colour }} data-testid="labelIcon">
                 <FontAwesomeIcon alt={label.name} icon={'tag'} />
             </div>
-            <button className={styles.labelName}>{label.name}</button>
+            <button
+                aria-label={label.name}
+                className={styles.labelName}>
+                {label.name}
+            </button>
             <span className={styles.labelCount}>
                 {stateLabelsCounts[label.id] || 0}
             </span>

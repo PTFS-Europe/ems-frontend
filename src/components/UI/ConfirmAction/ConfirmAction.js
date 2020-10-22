@@ -12,6 +12,7 @@ const ConfirmContent = ({ onConfirm, onCancel }) => {
     return (
         <div role="dialog" className={styles.container}>
             <button
+                aria-label={t('Confirm action')}
                 className={`${styles.button} ${styles.confirm}`}
                 onClick={onConfirm}
             >
@@ -21,6 +22,7 @@ const ConfirmContent = ({ onConfirm, onCancel }) => {
                 />
             </button>
             <button
+                aria-label={t('Cancel action')}
                 className={`${styles.button} ${styles.cancel}`}
                 onClick={onCancel}
             >

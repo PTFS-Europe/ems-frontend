@@ -11,12 +11,15 @@ const MessageActions = ({ actions }) => {
 
     return (
         <div className={styles.container} role="group">
-            <button className={`${styles.actionButton} ${styles.default}`}>
+            <button
+                aria-label={t('Make changes')}
+                className={`${styles.actionButton} ${styles.default}`}>
                 <FontAwesomeIcon alt={t('Make changes')} icon="ellipsis-h" />
             </button>
             {actions &&
                 Object.keys(actions).map((action) => (
                     <button
+                        aria-label={actions[action].alt}
                         key={action}
                         onClick={actions[action].callback}
                         className={`${styles.actionButton} ${styles[action]}`}

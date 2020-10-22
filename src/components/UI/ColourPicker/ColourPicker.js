@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { useTranslation } from 'react-i18next';
+
 import styles from './ColourPicker.module.scss';
 
 const colours = [
@@ -17,10 +19,12 @@ const colours = [
 ];
 
 const ColourPicker = ({ updateColour, icon }) => {
+    const { t } = useTranslation();
     return (
         <div className={styles.swatchContainer}>
             {colours.map((colour) => (
                 <button
+                    aria-label={t('Label')}
                     key={colour}
                     onClick={() => updateColour({ colour })}
                     className={styles.swatch}

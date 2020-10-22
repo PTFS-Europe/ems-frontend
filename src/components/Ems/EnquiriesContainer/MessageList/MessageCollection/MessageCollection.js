@@ -79,15 +79,15 @@ const MessageCollection = ({
 
     // Return the align-items property for a given collection
     return display.position === 'left' ? (
-        <div role="group" className={getPositionStyle('collection')}>
+        <li className={getPositionStyle('collection')}>
             <UserIcon userId={collection.sender} />
             {collectionContent}
-        </div>
+        </li>
     ) : (
-        <div role="group" className={getPositionStyle('collection')}>
+        <li className={getPositionStyle('collection')}>
             {collectionContent}
             <UserIcon userId={collection.sender} />
-        </div>
+        </li>
     );
 };
 

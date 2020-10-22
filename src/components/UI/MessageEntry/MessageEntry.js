@@ -67,6 +67,7 @@ const MessageEntry = ({
     return (
         <form className={styles.messageEntryContainer}>
             <TextareaAutosize
+                aria-label={t('Type your message')}
                 value={stateActiveMessage.text}
                 onInput={(e) => dispatch(setActiveMessageText(e.target.value))}
                 onKeyPress={keyIsPressed}
@@ -100,7 +101,11 @@ const MessageEntry = ({
                                 alt={t('Create an attachment')}
                                 icon="paperclip"
                             />
+                            <label htmlFor="attachFile" className="hiddenLabel">
+                                {t('File picker')}
+                            </label>
                             <input
+                                id="attachFile"
                                 multiple
                                 data-testid="fileattach"
                                 onChange={dispatchUpload}
@@ -110,10 +115,10 @@ const MessageEntry = ({
                                 }
                                 type="file"
                                 className={styles.fileInput}
-                                aria-label={t('File picker')}
                             />
                         </label>
                         <button
+                            aria-label={t('Send message')}
                             type="button"
                             className={
                                 cssOverrides.entryButton
@@ -136,6 +141,7 @@ const MessageEntry = ({
                 {stateActiveMessage.id && (
                     <div className={styles.entryIcons}>
                         <button
+                            aria-label={t('Abandon changes')}
                             type="button"
                             onClick={resetEntry}
                             className={
@@ -150,6 +156,7 @@ const MessageEntry = ({
                             />
                         </button>
                         <button
+                            aria-label={t('Save changes')}
                             type="button"
                             className={
                                 cssOverrides.entryButton

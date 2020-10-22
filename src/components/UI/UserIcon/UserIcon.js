@@ -22,13 +22,14 @@ const UserIcon = ({ userId }) => {
     return user ? (
         <figure>
             <ConfigProvider
-                colors={['#d33e43', '#9b7874', '#666370', '#1c1f33']}
+                colors={['#a6262a', '#705151', '#595661', '#4d5280']}
             >
                 <Avatar
                     round={true}
                     size="40"
-                    name={user.name}
+                    aria-label={user.name}
                     src={user.avatar}
+                    alt={user.name}
                 ></Avatar>
             </ConfigProvider>
         </figure>

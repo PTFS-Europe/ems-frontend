@@ -40,6 +40,7 @@ const CalculatedFolders = ({ stateFolders }) => {
                     />
                 </div>
                 <button
+                    aria-label={t('Unread')}
                     onClick={() => setFilter('UNREAD')}
                     className={styles.folderName}
                 >
@@ -57,6 +58,7 @@ const CalculatedFolders = ({ stateFolders }) => {
                     />
                 </div>
                 <button
+                    aria-label={t('All queries')}
                     onClick={() => setFilter('ALL_QUERIES')}
                     className={styles.folderName}
                 >

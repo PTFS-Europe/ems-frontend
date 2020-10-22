@@ -66,7 +66,11 @@ const StartNewQuery = () => {
     return (
         <div className={styles.entryContainer}>
             <div className={styles.setTitle}>
+                <label htmlFor="queryTitle" className="hiddenLabel">
+                    {t('Enter a query title')}
+                </label>
                 <input
+                    id="queryTitle"
                     autoFocus
                     className={styles.queryTitle}
                     placeholder={t('Enter a query title')}

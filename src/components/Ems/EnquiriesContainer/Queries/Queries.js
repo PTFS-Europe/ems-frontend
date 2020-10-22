@@ -14,10 +14,10 @@ const Queries = () => {
     const { t } = useTranslation();
     const [activeUser] = useActiveUser();
     return (
-        <div className={styles.queries}>
+        <div role="region" className={styles.queries}>
             {activeUser.role_code === 'STAFF' && (
                 <>
-                    <div role="search" className={styles.adminSearch}>
+                    <div className={styles.adminSearch}>
                         <QuerySearch
                             placeholder={t('Search queries')}
                             showAdd={false}
@@ -34,7 +34,7 @@ const Queries = () => {
                 <>
                     <div className={styles.activeUserContainer}>
                         <ActiveUser colour={'#707070'}></ActiveUser>
-                        <div role="search" className={styles.querySearch}>
+                        <div className={styles.querySearch}>
                             <QuerySearch
                                 placeholder={t('Search or start new query')}
                                 showAdd={true}

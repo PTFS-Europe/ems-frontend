@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import Truncate from 'react-truncate';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import useActiveUser from '../../../../../../hooks/useActiveUser';
 import { setQuerySelected } from '../../../../../../store/queries/queriesActions';
@@ -15,6 +16,8 @@ import styles from './Query.module.scss';
 const Query = ({ query }) => {
     const [selected, setSelected] = useState(false);
     const [activeUser] = useActiveUser();
+
+    const { t } = useTranslation();
 
     const stateQueries = useSelector((state) => state.queries);
     const stateSelected = stateQueries.selected;
@@ -47,14 +50,20 @@ const Query = ({ query }) => {
     };
 
     return (
-        <li className={`${styles.query} ${isPending} ${isDeleted} ${isActive}`}>
+        <div className={`${styles.query} ${isPending} ${isDeleted} ${isActive}`}>
             {activeUser.role_code === 'STAFF' && (
-                <input
-                    type="checkbox"
-                    checked={selected}
-                    onChange={dispatchSelect}
-                    className={styles.checkbox}
-                />
+                <>
+                    <label htmlFor={`selectCheckbox_${query.id}`} className="hiddenLabel">
+                        {t('Checkbox')}
+                    </label>
+                    <input
+                        id={`selectCheckbox_${query.id}`}
+                        type="checkbox"
+                        checked={selected}
+                        onChange={dispatchSelect}
+                        className={styles.checkbox}
+                    />
+                </>
             )}
             {query.latestMessage && (
                 <UserIcon userId={query.latestMessage.creator_id} />
@@ -85,7 +94,7 @@ const Query = ({ query }) => {
                     <QueryActionButton query={query} />
                 )}
             </div>
-        </li>
+        </div>
     );
 };
 
