@@ -9,8 +9,11 @@ class EmsApi {
         // to refresh it (in seconds)
         this._premptiveRefresh = 180;
         this._refreshTimer = null;
+        const baseURL = process.env.NODE_ENV === 'production' ?
+            '/api/v1.0' :
+            process.env.REACT_APP_API_URL;
         this._client = axios.create({
-            baseURL: process.env.REACT_APP_API_URL,
+            baseURL,
             withCredentials: true
         });
         this._inProgress = [];

@@ -14,12 +14,16 @@ const Login = () => {
         dispatch(logoutUser());
     });
 
+    const url = process.env.NODE_ENV === 'production' ?
+        '/auth/' :
+        `${process.env.REACT_APP_API_BASE}/auth/`;
+
     return (
         <div className={styles.loginContainer}>
             {authTypes.map((authType) => (
                 <div key={authType.id} className={styles.authType}>
                     <a
-                        href={`${process.env.REACT_APP_API_BASE}/auth/${authType.id}`}
+                        href={`${url}${authType.id}`}
                     >
                         Login with {authType.name}
                     </a>

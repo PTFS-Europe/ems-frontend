@@ -78,7 +78,10 @@ const Message = ({ message, isSender, position }) => {
         if (message.content) {
             return message.content;
         } else {
-            const filePath = `${process.env.REACT_APP_API_BASE}/download/${message.filename}`;
+            const url = process.env.NODE_ENV === 'production' ?
+                '/' :
+                `${process.env.REACT_APP_API_BASE}/`;
+            const filePath = `${url}download/${message.filename}`;
             return (
                 <div className={styles.attachment}>
                     {message.uploading && <LoadingSpinner colour={'#fff'} />}

@@ -29,8 +29,10 @@ class WebSocketClient {
     }
     connect(dispatch) {
         this.dispatch = dispatch;
-
-        this.socket = new WebSocket(process.env.REACT_APP_WS_BASE, api.token);
+        const base = process.env.NODE_ENV === 'production' ?
+            `wss://${window.location.host}` :
+            process.env.REACT_APP_WS_BASE;
+        this.socket = new WebSocket(base, api.token);
 
         // Create a message handler
         this.socket.onmessage = (event) => {
