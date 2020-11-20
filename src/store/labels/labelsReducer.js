@@ -40,7 +40,7 @@ const reducer = (state = initialState, action) => {
         };
     }
     case labelsTypes.CREATE_LABEL_REQUEST: {
-        const labelListCreate = [...state.labelList, action.payload];
+        const labelListCreate = [action.payload, ...state.labelList];
         return {
             ...state,
             labelList: labelListCreate

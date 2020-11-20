@@ -18,7 +18,7 @@ import {
     faTimesCircle,
     faExclamation,
     faTag,
-    faPenSquare,
+    faPen,
     faCheckSquare
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -42,7 +42,7 @@ export default () => {
         faTimesCircle,
         faExclamation,
         faTag,
-        faPenSquare,
+        faPen,
         faCheckSquare
     );
 };

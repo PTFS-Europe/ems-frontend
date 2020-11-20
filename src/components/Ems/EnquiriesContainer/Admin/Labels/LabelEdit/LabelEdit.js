@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Popover from 'react-tiny-popover';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { debounce } from '../../../../../../util/ui';
 import {
     createLabel,
     updateLabel,
@@ -17,58 +16,40 @@ import ConfirmAction from '../../../../../UI/ConfirmAction/ConfirmAction';
 import styles from './LabelEdit.module.scss';
 
 const LabelEdit = ({
-    label = { name: '' },
+    label = { name: '', id: 99999, colour: '#ccc' },
     activeColourPicker,
-    setActiveColourPicker
+    setActiveColourPicker,
+    hasHover,
+    setHasHover,
+    setAddingNew
 }) => {
-    const [labelName, setLabelName] = useState(label.name);
+    const [localLabel, setLocalLabel] = useState(label);
     const [confirmOpen, setConfirmOpen] = useState(false);
+    const [dirty, setDirty] = useState(false);
 
     // Enable us to dispatch
     const dispatch = useDispatch();
 
-    // Make the state we need available
-    const stateLabelsCounts = useSelector((state) => state.labels.labelsCounts);
-
-    // We create a ref containing a debounced dispatch. Just creating a
-    // debounced dispatch, without storing it in a ref seemed to break the
-    // debouncing, I think because the function that was returned was
-    // different every time it was called (I'm not 100% sure why that would
-    // be). So the debouncer didn't recognise it as multiple calls to the
-    // same function
-    const debouncedDispatchRef = useRef();
-
     const { t } = useTranslation();
 
-    // Create the debounced dispatch and debounced setLabelName
-    // and store them in the ref
+    // When the label we're passed changes, update our local state
     useEffect(() => {
-        if (!debouncedDispatchRef.current) {
-            debouncedDispatchRef.current = {
-                dispatch: debounce(dispatch, 1000),
-                setLabelName: debounce(setLabelName, 1000)
-            };
-        }
-    }, [dispatch]);
+        setLocalLabel(label);
+        setDirty(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [label.name]);
 
-    // When our internal labelName state changes, we may need to send
-    // a debounced update to the server. We're using a ref to avoid doing
-    // an update when we first mount
-    const myRef = useRef(false);
     useEffect(() => {
-        // If this isn't the first time labelName has changed, i.e.
-        // we've not just mounted
-        if (myRef.current && labelName.length > 0) {
-            dispatchUpdate({ name: labelName }, true);
+        if (
+            localLabel.name !== label.name ||
+            localLabel.colour !== label.colour
+        ) {
+            setDirty(true);
+        } else {
+            setDirty(false);
         }
-        // Ensure any future changes of labelName cause a dispatch
-        myRef.current = true;
-        // Disable liniting on the dependencies, why would dispatchUpdate
-        // make sense as a dependency here...
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [labelName]);
-
-    const getColour = (colour) => (colour ? colour : '#ccc');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [localLabel, label]);
 
     const labelIcon = (colour) => (
         <FontAwesomeIcon
@@ -79,22 +60,30 @@ const LabelEdit = ({
     );
 
     // Dispatch the action to update a label
-    const dispatchUpdate = (props, debounced) => {
+    const dispatchUpdate = () => {
+        // Only proceed if the name is populated
+        if (localLabel.name.length === 0) {
+            return;
+        }
+        // If we're using the temporary ID, remove it before
+        // making the API call
+        if (localLabel.id === 99999) {
+            delete localLabel.id;
+        }
         // Remove the colour picker popover
         // We set -1 since using null causes it to fail
         // PropTypes.isRequired
         setActiveColourPicker(-1);
-        const action = label.id ? updateLabel : createLabel;
-        if (debounced) {
-            debouncedDispatchRef.current.dispatch(
-                action({ id: label.id, ...props })
-            );
-            if (!label.id) {
-                debouncedDispatchRef.current.setLabelName('');
+        const action = localLabel.id ? updateLabel : createLabel;
+        // Dispatch the action, optionally resetting the display of the
+        // "Add a new label" button in our parent, once the creation is complete
+        dispatch(action({ id: localLabel.id, ...localLabel })).then(
+            () => {
+                if (action === createLabel) {
+                    setAddingNew(false);
+                }
             }
-        } else {
-            dispatch(action({ id: label.id, ...props }));
-        }
+        );
     };
 
     // Dispatch the action to delete a label
@@ -102,37 +91,31 @@ const LabelEdit = ({
         dispatch(deleteLabel(label));
     };
 
+    const updateColour = ({ colour }) => {
+        setLocalLabel({ ...localLabel, colour });
+        setActiveColourPicker(-1);
+    };
+
     // Is an action pending on this label
     const isPending = label.pending ? styles.pending : '';
 
-    // Should a label be deleteable
-    const canDelete = !label.id ? styles.noDelete : '';
+    const hideDelete = hasHover !== label.id ? styles.hideDelete : '';
 
     return (
-        <li key={label.id} className={`${styles.label} ${isPending}`}>
-            <ConfirmAction
-                setOpen={setConfirmOpen}
-                open={confirmOpen}
-                onConfirm={dispatchDelete}
-                onCancel={() => setConfirmOpen(false)}
-            >
-                <button
-                    aria-label={label.name}
-                    type="button"
-                    onClick={() => setConfirmOpen(true)}
-                    className={`${styles.deleteButton} ${canDelete}`}
-                >
-                    <FontAwesomeIcon alt={label.name} icon={'times'} />
-                </button>
-            </ConfirmAction>
+        <li
+            key={label.id}
+            className={`${styles.label} ${isPending}`}
+            onMouseOver={() => setHasHover(label.id)}
+            onMouseLeave={() => setHasHover(0)}
+        >
             <Popover
                 role="dialog"
-                isOpen={activeColourPicker === label.id}
+                isOpen={activeColourPicker === localLabel.id}
                 position={'right'}
                 onClickOutside={() => setActiveColourPicker(-1)}
                 content={
                     <ColourPicker
-                        updateColour={dispatchUpdate}
+                        updateColour={updateColour}
                         icon={labelIcon}
                     />
                 }
@@ -143,33 +126,56 @@ const LabelEdit = ({
                         setActiveColourPicker(
                             // We reset to -1 since using null causes it to fail
                             // PropTypes.isRequired
-                            activeColourPicker === label.id ? -1 : label.id
+                            activeColourPicker === localLabel.id ? -1 : label.id
                         )
                     }
                     type="button"
                     className={styles.labelIcon}
-                    style={{ color: getColour(label.colour) }}
+                    style={{ color: localLabel.colour }}
                     data-testid="labelIcon"
                 >
                     <FontAwesomeIcon alt={label.name} icon={'tag'} />
                 </button>
             </Popover>
-            <label
-                htmlFor={`labelEntry_${label.id || 'new'}`}
-                className="hiddenLabel">
-                {t('New label')}
-            </label>
-            <input
-                id={`labelEntry_${label.id || 'new'}`}
-                placeholder={t('New label')}
-                value={labelName}
-                onChange={(e) => setLabelName(e.target.value)}
-                type="text"
-                className={styles.labelName}
-            />
-            <span className={styles.labelCount}>
-                {stateLabelsCounts[label.id] || 0}
-            </span>
+            <div className={styles.inputContainer}>
+                <label
+                    htmlFor={`labelEntry_${label.id || 'new'}`}
+                    className="hiddenLabel">
+                    {t('Label name')}
+                </label>
+                <input
+                    id={`labelEntry_${label.id || 'new'}`}
+                    placeholder={t('Label name')}
+                    value={localLabel.name}
+                    onChange={(e) => setLocalLabel({ ...localLabel, name: e.target.value })}
+                    type="text"
+                    className={styles.labelName}
+                />
+                {dirty && (
+                    <button
+                        type="button"
+                        className={styles.saveButton}
+                        onClick={dispatchUpdate}
+                    >
+                        <FontAwesomeIcon alt={t('Save')} icon={'check-square'} />
+                    </button>
+                )}
+            </div>
+            <ConfirmAction
+                setOpen={setConfirmOpen}
+                open={confirmOpen}
+                onConfirm={dispatchDelete}
+                onCancel={() => setConfirmOpen(false)}
+            >
+                <button
+                    aria-label={label.name}
+                    type="button"
+                    onClick={() => setConfirmOpen(true)}
+                    className={`${styles.deleteButton} ${hideDelete}`}
+                >
+                    <FontAwesomeIcon alt={label.name} icon={'times'} />
+                </button>
+            </ConfirmAction>
         </li>
     );
 };
@@ -177,7 +183,10 @@ const LabelEdit = ({
 LabelEdit.propTypes = {
     label: PropTypes.object,
     activeColourPicker: PropTypes.number.isRequired,
-    setActiveColourPicker: PropTypes.func.isRequired
+    setActiveColourPicker: PropTypes.func.isRequired,
+    hasHover: PropTypes.number.isRequired,
+    setHasHover: PropTypes.func.isRequired,
+    setAddingNew: PropTypes.func
 };
 
 export default LabelEdit;

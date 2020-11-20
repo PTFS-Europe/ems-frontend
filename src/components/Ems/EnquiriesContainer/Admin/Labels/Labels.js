@@ -13,6 +13,8 @@ import styles from './Labels.module.scss';
 
 const Labels = () => {
     const [editing, setEditing] = useState(false);
+    const [addingNew, setAddingNew] = useState(false);
+    const [hasHover, setHasHover] = useState(0);
     // This state is not used directly by this component, it is passed
     // down to the LabelEdit component, so we can ensure that only a single
     // colour edit popover is open at a time. It contains the ID of the
@@ -70,20 +72,26 @@ const Labels = () => {
                 <button
                     aria-label={editing ? t('Finish editing') : t('Edit labels')}
                     onClick={toggleEditing}
-                    className={styles.editButton}
+                    className={`${styles.editButton} ${editing ? styles.editing : ''}`}
                     type="button"
                 >
                     {!editing && (
-                        <FontAwesomeIcon
-                            alt={t('Edit labels')}
-                            icon="pen-square"
-                        />
+                        <>
+                            <FontAwesomeIcon
+                                alt={t('Edit labels')}
+                                icon="pen"
+                            />
+                            <div className={styles.editButtonTextEdit}>{t('Edit')}</div>
+                        </>
                     )}
                     {editing && (
-                        <FontAwesomeIcon
-                            alt={t('Finish editing')}
-                            icon="check-square"
-                        />
+                        <>
+                            <FontAwesomeIcon
+                                alt={t('Finish editing')}
+                                icon="check"
+                            />
+                            <span className={styles.editButtonTextDone}>{t('Done')}</span>
+                        </>
                     )}
                 </button>
             </div>
@@ -92,11 +100,38 @@ const Labels = () => {
             )}
             <div className={styles.listContainer}>
                 <ul className={styles.labelList}>
+                    {editing && !addingNew && (
+                        <li
+                            className={styles.addNewLabel}
+                            onClick={() => setAddingNew(true)}
+                        >
+                            <FontAwesomeIcon
+                                alt={t('Add a new label')}
+                                icon="plus-circle"
+                            />
+                            <span className={styles.addNewLabelText}>
+                                {t('Add a new label')}
+                            </span>
+                        </li>
+                    )}
+                    {editing && addingNew && (
+                        <LabelEdit
+                            hasHover={0}
+                            setHasHover={() => setHasHover(0)}
+                            activeColourPicker={activeColourPicker}
+                            setActiveColourPicker={
+                                setActiveColourPicker
+                            }
+                            setAddingNew={setAddingNew}
+                        />
+                    )}
                     {labelList &&
                         labelList.length > 0 &&
                         labelList.map((label) => {
                             return editing ? (
                                 <LabelEdit
+                                    hasHover={hasHover}
+                                    setHasHover={setHasHover}
                                     activeColourPicker={activeColourPicker}
                                     setActiveColourPicker={
                                         setActiveColourPicker
@@ -112,12 +147,6 @@ const Labels = () => {
                                 />
                             );
                         })}
-                    {editing && (
-                        <LabelEdit
-                            activeColourPicker={activeColourPicker}
-                            setActiveColourPicker={setActiveColourPicker}
-                        />
-                    )}
                 </ul>
             </div>
         </aside>
