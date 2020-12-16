@@ -2,6 +2,8 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import isEqual from 'lodash.isequal';
 
+import Destination from '../classes/Destination';
+
 class EmsApi {
     constructor() {
         this._token = null;
@@ -113,6 +115,11 @@ class EmsApi {
                 // We've received a 401 - redirect the useragent
                 // to the login page
                 if (err.response.status === 401) {
+                    // The user was trying to go somewhere, store that
+                    // destination so they can be taken to it after
+                    // authentication
+                    const dest = new Destination();
+                    dest.setDestination(window.location.pathname);
                     window.location.replace('/login');
                 }
             }
